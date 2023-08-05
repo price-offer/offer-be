@@ -1,10 +1,15 @@
 package com.offer.authentication;
 
-import com.offer.authentication.application.response.OAuthLoginResponse;
+import com.offer.member.User.OAuthType;
+import com.offer.client.KakaoAccessTokenRequest;
+import com.offer.client.KakaoProfileClient;
+import com.offer.client.KakaoTokenClient;
+import com.offer.client.KakaoSocialProfileResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -17,20 +22,27 @@ public class KakaoOAuthGateway {
 
     private static final String OAUTH_LOGIN_URL_SUFFIX = "?client_id=%s&redirect_uri=%s&response_type=code";
 
+    @Autowired
+    private KakaoTokenClient kakaoTokenClient;
+
+    @Autowired
+    private KakaoProfileClient kakaoProfileClient;
+
     private String clientId;
     private String clientSecret;
     private String redirectUrl;
     private String oauthServerUrl;
-    private String accessTokenUrl;
-    private String userProfileUrl;
 
     public String getLoginUrl() {
         String oauthLoginUrl = oauthServerUrl + OAUTH_LOGIN_URL_SUFFIX;
         return String.format(oauthLoginUrl, clientId, redirectUrl);
     }
 
-    public OAuthLoginResponse login(String authCode) {
-        // TODO: 2023/07/30 not implemented yet
-        return null;
+    public SocialProfile getUserProfile(String authCode) {
+        String accessToken = kakaoTokenClient.getAccessToken(
+            new KakaoAccessTokenRequest(clientId, clientSecret, redirectUrl, authCode))
+            .getAccessToken();
+        KakaoSocialProfileResponse profileResponse = kakaoProfileClient.getSocialProfile(accessToken);
+        return new SocialProfile(OAuthType.KAKAO, profileResponse.getId(), profileResponse.getProfileImageUrl());
     }
 }
