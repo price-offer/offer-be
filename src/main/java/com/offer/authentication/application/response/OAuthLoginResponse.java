@@ -1,12 +1,14 @@
 package com.offer.authentication.application.response;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class OAuthLoginResponse {
 
     private Long id;
-    private String username;
+    private String nickname;
     private String accessToken;
     private Boolean newUser;
 }
