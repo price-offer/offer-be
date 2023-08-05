@@ -10,5 +10,5 @@ public class OAuthLoginResponse {
     private Long id;
     private String nickname;
     private String accessToken;
-    private Boolean newUser;
+    private Boolean newMember;
 }

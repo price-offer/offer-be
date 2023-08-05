@@ -1,6 +1,6 @@
 package com.offer.authentication;
 
-import com.offer.member.User.OAuthType;
+import com.offer.member.Member.OAuthType;
 import com.offer.client.KakaoAccessTokenRequest;
 import com.offer.client.KakaoProfileClient;
 import com.offer.client.KakaoTokenClient;

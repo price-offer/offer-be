@@ -1,6 +1,6 @@
 package com.offer.authentication;
 
-import com.offer.member.User.OAuthType;
+import com.offer.member.Member.OAuthType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

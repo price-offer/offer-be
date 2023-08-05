@@ -2,8 +2,8 @@ package com.offer.authentication.application;
 
 import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.KakaoOAuthGateway;
-import com.offer.member.User;
-import com.offer.member.UserRepository;
+import com.offer.member.Member;
+import com.offer.member.MemberRepository;
 import com.offer.member.RandomNicknameGenerator;
 import com.offer.authentication.SocialProfile;
 import com.offer.authentication.application.response.OAuthLoginResponse;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OAuthService {
 
     private final KakaoOAuthGateway kakaoOAuthGateway;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final RandomNicknameGenerator randomNicknameGenerator;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -28,33 +28,33 @@ public class OAuthService {
 
     public OAuthLoginResponse kakaoLogin(String authCode) {
         SocialProfile socialProfile = kakaoOAuthGateway.getUserProfile(authCode);
-        boolean alreadyJoined = userRepository.existsByOauthTypeAndOauthId(socialProfile.getOauthType(),
+        boolean alreadyJoined = memberRepository.existsByOauthTypeAndOauthId(socialProfile.getOauthType(),
             socialProfile.getOauthId());
-        User user = findOrCreateUser(alreadyJoined, socialProfile);
-        String token = jwtTokenProvider.createToken(String.valueOf(user.getId()));
+        Member member = findOrCreateMember(alreadyJoined, socialProfile);
+        String token = jwtTokenProvider.createToken(String.valueOf(member.getId()));
 
         return OAuthLoginResponse.builder()
-            .id(user.getId())
-            .nickname(user.getNickname())
+            .id(member.getId())
+            .nickname(member.getNickname())
             .accessToken(token)
-            .newUser(alreadyJoined)
+            .newMember(alreadyJoined)
             .build();
     }
 
-    private User findOrCreateUser(boolean alreadyJoined, SocialProfile socialProfileResponse) {
+    private Member findOrCreateMember(boolean alreadyJoined, SocialProfile socialProfileResponse) {
         if (alreadyJoined) {
-            return userRepository.getByOauthTypeAndOauthId(socialProfileResponse.getOauthType(),
+            return memberRepository.getByOauthTypeAndOauthId(socialProfileResponse.getOauthType(),
                 socialProfileResponse.getOauthId());
         }
-        return createNewUser(socialProfileResponse);
+        return createNewMember(socialProfileResponse);
     }
 
-    private User createNewUser(SocialProfile socialProfile) {
+    private Member createNewMember(SocialProfile socialProfile) {
         String nickname = randomNicknameGenerator.generateRandomNickname();
-        while (userRepository.existsByNickname(nickname)) {
+        while (memberRepository.existsByNickname(nickname)) {
             nickname = randomNicknameGenerator.generateRandomNickname();
         }
-        return userRepository.save(User.builder()
+        return memberRepository.save(Member.builder()
             .oauthId(socialProfile.getOauthId())
             .oauthType(socialProfile.getOauthType())
             .nickname(nickname)
