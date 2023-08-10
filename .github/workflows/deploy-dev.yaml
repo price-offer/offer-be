@@ -1,0 +1,79 @@
+name: Deploy to Dev Server
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+env:
+  DOCKER_FILE: docker/Dockerfile-dev
+
+jobs:
+  build_and_deploy_to_dev:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      ## checkout and setup jdk
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      ## gradle build
+      - name: Build with Gradle
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build # -x test
+        shell: bash
+
+      ## docker build & push to registry
+      - name: Save to container registry
+        id: GET_LAST_COMMIT_HASH
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          
+          LAST_COMMIT_HASH=$(git log -1 --pretty=%h)
+          REPO=${{ secrets.DOCKER_USERNAME }}/offer-dev
+          IMAGE_NEW_TAG="${REPO}:${LAST_COMMIT_HASH}"
+          IMAGE_LATEST_TAG="${REPO}:latest"
+          BUILD_TIMESTAMP=$( date '+%F_%H:%M:%S' )
+          
+          # build and push container image
+          docker build \
+            -t "$IMAGE_NEW_TAG" -t "$IMAGE_LATEST_TAG" \
+            --build-arg VERSION="$LAST_COMMIT_HASH" --build-arg BUILD_TIMESTAMP="$BUILD_TIMESTAMP" \
+            -f "$DOCKER_FILE" .
+          
+          docker push "$IMAGE_NEW_TAG"
+          docker push "$IMAGE_LATEST_TAG"
+          
+          echo ">> New container image tag: $LAST_COMMIT_HASH"
+          echo "::set-output name=LAST_COMMIT_HASH::$LAST_COMMIT_HASH"
+
+      ## Checkout Application manifest repository
+      - name: App manifest repository checkout
+        uses: actions/checkout@v2
+        with:
+          repository: price-offer/application-manifests
+          token: ${{ secrets.TRIGGER_ARGO_CD_GITHUB_TOKEN }}
+          path: application-manifests
+
+      ## Trigger Argo Rollout
+      - name: Push app manifest repo to trigger argo-rollout
+        run: |
+          LAST_COMMIT_HASH=${{ steps.GET_LAST_COMMIT_HASH.outputs.LAST_COMMIT_HASH }}
+          
+          cd application-manifests
+          sed -i "s/offer-dev:.*\$/offer-dev:${LAST_COMMIT_HASH}/g" ./services/offer-be-rollout/rollout.yaml
+
+          git config --global user.email ${{ secrets.GIT_USER_EMAIL }}
+          git config --global user.name ${{ secrets.GIT_USER_NAME }}
+
+          git add ./services/offer-be-rollout/rollout.yaml
+          git commit -m "[FROM GitHub Actions] New Container Image: Tag=${LAST_COMMIT_HASH}"
+          git push
