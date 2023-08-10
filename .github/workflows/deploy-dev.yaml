@@ -24,14 +24,14 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      ## gradle build without test jar
+      ## gradle build
       - name: Build with Gradle
         run: |
           chmod +x gradlew
           ./gradlew clean build # -x test
         shell: bash
 
-      ## docker build & push to hub
+      ## docker build & push to registry
       - name: Save to container registry
         id: GET_LAST_COMMIT_HASH
         run: |
@@ -55,6 +55,7 @@ jobs:
           echo ">> New container image tag: $LAST_COMMIT_HASH"
           echo "::set-output name=LAST_COMMIT_HASH::$LAST_COMMIT_HASH"
 
+      ## Checkout Application manifest repository
       - name: App manifest repository checkout
         uses: actions/checkout@v2
         with:
@@ -62,6 +63,7 @@ jobs:
           token: ${{ secrets.TRIGGER_ARGO_CD_GITHUB_TOKEN }}
           path: application-manifests
 
+      ## Trigger Argo Rollout
       - name: Push app manifest repo to trigger argo-rollout
         run: |
           LAST_COMMIT_HASH=${{ steps.GET_LAST_COMMIT_HASH.outputs.LAST_COMMIT_HASH }}
@@ -73,5 +75,5 @@ jobs:
           git config --global user.name ${{ secrets.GIT_USER_NAME }}
 
           git add ./services/offer-be-rollout/rollout.yaml
-          git commit -m "[FROM GitHub Actions] Container Image Tag was changed to ${NEW_TAG}"
+          git commit -m "[FROM GitHub Actions] New Container Image: Tag=${LAST_COMMIT_HASH}"
           git push
