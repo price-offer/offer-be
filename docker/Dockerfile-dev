@@ -9,9 +9,6 @@ LABEL maintainer="Jihun Hwang <goharrm@gmail.com>"
 LABEL version="$VERSION"
 LABEL description="build at $BUILD_TIMESTAMP"
 
-# TimeZone correction
-RUN echo "Asia/Seoul" > /etc/timezone
-
 EXPOSE 7070
 VOLUME ["/var/log"]
 
@@ -20,6 +17,9 @@ COPY ${JAR_FILE} /offer-dev-app.jar
 
 USER root
 WORKDIR /
+
+# TimeZone correction
+RUN echo "Asia/Seoul" > /etc/timezone
 
 ENTRYPOINT ["java","-jar","/offer-dev-app.jar"]
 # ENTRYPOINT ["java","-jar","-Dspring.config.location=/spring-run-env/application-dev.yml","/offer-dev-app.jar"]
