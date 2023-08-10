@@ -9,6 +9,9 @@ LABEL maintainer="Jihun Hwang <goharrm@gmail.com>"
 LABEL version="$VERSION"
 LABEL description="build at $BUILD_TIMESTAMP"
 
+# TimeZone correction
+RUN echo "Asia/Seoul" > /etc/timezone
+
 EXPOSE 7070
 VOLUME ["/var/log"]
 
