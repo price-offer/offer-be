@@ -39,7 +39,6 @@ jobs:
           
           LAST_COMMIT_HASH=$(git log -1 --pretty=%h)
           REPO=${{ secrets.DOCKER_USERNAME }}/offer-dev
-          DOCKER_FILE=${{ secrets.DOCKER_USERNAME }}/offer-dev
           IMAGE_NEW_TAG="${REPO}:${LAST_COMMIT_HASH}"
           IMAGE_LATEST_TAG="${REPO}:latest"
           BUILD_TIMESTAMP=$( date '+%F_%H:%M:%S' )
@@ -63,7 +62,7 @@ jobs:
           token: ${{ secrets.TRIGGER_ARGO_CD_GITHUB_TOKEN }}
           path: application-manifests
 
-      - name: Push app manifest repo
+      - name: Push app manifest repo to trigger argo-rollout
         run: |
           LAST_COMMIT_HASH=${{ steps.GET_LAST_COMMIT_HASH.outputs.LAST_COMMIT_HASH }}
           
