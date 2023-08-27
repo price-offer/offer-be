@@ -1,10 +1,10 @@
 package com.offer.authentication;
 
-import com.offer.member.Member.OAuthType;
 import com.offer.client.KakaoAccessTokenRequest;
 import com.offer.client.KakaoProfileClient;
-import com.offer.client.KakaoTokenClient;
 import com.offer.client.KakaoSocialProfileResponse;
+import com.offer.client.KakaoTokenClient;
+import com.offer.member.Member.OAuthType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

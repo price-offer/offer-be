@@ -1,6 +1,6 @@
 package com.offer.post.application;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.offer.member.Member;
 import com.offer.member.Member.OAuthType;

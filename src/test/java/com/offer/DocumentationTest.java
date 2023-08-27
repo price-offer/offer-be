@@ -4,11 +4,17 @@ package com.offer;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.offer.authentication.JwtTokenProvider;
+import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.presentation.AuthController;
+import com.offer.authentication.presentation.AuthenticationContext;
+import com.offer.post.application.PostService;
+import com.offer.post.presentation.PostController;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
@@ -18,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest({
     AuthController.class,
+    PostController.class,
 })
 @Import(MockMvcConfig.class)
 @AutoConfigureRestDocs
@@ -29,6 +36,18 @@ public class DocumentationTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @MockBean
+    protected AuthenticationContext authenticationContext;
+
+    @MockBean
+    protected JwtTokenProvider jwtTokenProvider;
+
+    @MockBean
+    protected OAuthService oAuthService;
+
+    @MockBean
+    protected PostService postService;
 
     protected OperationResponsePreprocessor getResponsePreprocessor() {
         return Preprocessors.preprocessResponse(prettyPrint());
