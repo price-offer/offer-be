@@ -26,6 +26,7 @@ public class OAuthService {
         return new OAuthLoginUrlResponse(kakaoOAuthGateway.getLoginUrl());
     }
 
+    @Transactional
     public OAuthLoginResponse kakaoLogin(String authCode) {
         SocialProfile socialProfile = kakaoOAuthGateway.getUserProfile(authCode);
         boolean alreadyJoined = memberRepository.existsByOauthTypeAndOauthId(socialProfile.getOauthType(),
@@ -36,6 +37,7 @@ public class OAuthService {
         return OAuthLoginResponse.builder()
             .id(member.getId())
             .nickname(member.getNickname())
+            .profileImageUrl(socialProfile.getProfileImageUrl())
             .accessToken(token)
             .newMember(alreadyJoined)
             .build();

@@ -9,6 +9,7 @@ public class OAuthLoginResponse {
 
     private Long id;
     private String nickname;
+    private String profileImageUrl;
     private String accessToken;
     private Boolean newMember;
 }

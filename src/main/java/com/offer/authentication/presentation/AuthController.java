@@ -21,7 +21,8 @@ public class AuthController {
         return oAuthService.getKakaoLoginUrl();
     }
 
-    @GetMapping("access-token/kakao")
+    // kakao redirect-url 경로와 일치 해야함.
+    @GetMapping("login/kakao")
     public OAuthLoginResponse kakaoLogin(@RequestParam String code) {
         return oAuthService.kakaoLogin(code);
     }
