@@ -1,0 +1,32 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 1
+:sectlinks:
+
+= 로그인
+== 카카오 로그인 페이지 URL 조회
+==== Example Curl
+include::{snippets}/authentication/kakao-login-url/curl-request.adoc[]
+==== Example Request
+include::{snippets}/authentication/kakao-login-url/http-request.adoc[]
+==== Example Response
+include::{snippets}/authentication/kakao-login-url/http-response.adoc[]
+==== Response Fields
+include::{snippets}/authentication/kakao-login-url/response-fields.adoc[]
+
+== 카카오 로그인
+==== Example Curl
+include::{snippets}/authentication/kakao-login/curl-request.adoc[]
+==== Example Request
+include::{snippets}/authentication/kakao-login/http-request.adoc[]
+==== Request Query Parameters
+include::{snippets}/authentication/kakao-login/query-parameters.adoc[]
+==== Example Response
+include::{snippets}/authentication/kakao-login/http-response.adoc[]
+==== Response Fields
+include::{snippets}/authentication/kakao-login/response-fields.adoc[]
