@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginMember {
 
-    public enum Authority {
-        ANONYMOUS, MEMBER
-    }
-
     private Long id;
     private Authority authority;
 
@@ -30,5 +26,9 @@ public class LoginMember {
 
     public boolean isMember() {
         return Authority.MEMBER.equals(authority);
+    }
+
+    public enum Authority {
+        ANONYMOUS, MEMBER
     }
 }

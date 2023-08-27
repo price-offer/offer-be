@@ -17,7 +17,6 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
-
     @Transactional
     public Long createPost(PostCreateRequest request, Long memberId) {
         Member member = memberRepository.getById(memberId);

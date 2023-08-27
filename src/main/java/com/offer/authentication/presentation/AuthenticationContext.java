@@ -12,6 +12,6 @@ import org.springframework.web.context.annotation.RequestScope;
 @Setter
 public class AuthenticationContext {
 
-    private String principal;
+    private String principal;  // 토큰에서 추출한 memberId
     private Authority authority;
 }
