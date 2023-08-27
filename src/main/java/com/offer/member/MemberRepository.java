@@ -13,4 +13,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     default Member getByOauthTypeAndOauthId(OAuthType oauthType, Long oauthId) {
         return findByOauthTypeAndOauthId(oauthType, oauthId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
     }
+
+    default Member getById(Long id) {
+        return findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id: " + id));
+    }
 }

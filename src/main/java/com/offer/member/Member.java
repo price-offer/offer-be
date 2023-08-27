@@ -14,15 +14,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 public class Member {
 
     @Id
@@ -49,6 +49,17 @@ public class Member {
     @Column(name = "createdDate", nullable = false)
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @Builder
+    public Member(Long oauthId, OAuthType oauthType, String nickname, String profileImageUrl,
+        int offerLevel, LocalDateTime createdDate) {
+        this.oauthId = oauthId;
+        this.oauthType = oauthType;
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
+        this.offerLevel = offerLevel;
+        this.createdDate = createdDate;
+    }
 
     public enum OAuthType {
         KAKAO
