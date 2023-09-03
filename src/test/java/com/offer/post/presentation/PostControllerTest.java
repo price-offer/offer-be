@@ -1,23 +1,33 @@
 package com.offer.post.presentation;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.offer.DocumentationTest;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.response.SortResponse;
+import com.offer.post.domain.SortType;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +36,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 class PostControllerTest extends DocumentationTest {
 
-    @DisplayName("포스트 생성")
+    @DisplayName("판매게시글 생성")
     @Test
     void createPost() throws Exception {
         // given
@@ -76,6 +86,49 @@ class PostControllerTest extends DocumentationTest {
                     fieldWithPath("tradeType").type(STRING).description("거래 방식"),
                     fieldWithPath("thumbnailImageUrl").type(STRING).description("대표 이미지 url"),
                     fieldWithPath("imageUrls").type(ARRAY).description("상품 이미지 url(대표 이미지 url을 제외한 나머지 url")
+                )
+            )
+        );
+    }
+
+    @DisplayName("정렬 조회")
+    @Test
+    void showSortItems() throws Exception {
+        // given
+        String type = "post";
+        SortResponse recentItem = SortResponse.builder()
+            .name("RECENT_CREATED")
+            .exposureTitle("최신순")
+            .build();
+        SortResponse lowPrice = SortResponse.builder()
+            .name("LOW_PRICE")
+            .exposureTitle("낮은 가격순")
+            .build();
+        List<SortResponse> response = List.of(recentItem, lowPrice);
+
+        given(postService.getSortItems(SortType.POST))
+            .willReturn(response);
+
+        // when && then
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/sorts")
+                    .queryParam("type", type)
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk(),
+                content().string(objectMapper.writeValueAsString(response)));
+
+        resultActions.andDo(
+            document("posts/read-sortItems",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                queryParameters(
+                    parameterWithName("type").description("정렬 옵션 그룹 타입")
+                ),
+                responseFields(
+                    fieldWithPath("[].name").type(STRING).description("정렬옵션 이름"),
+                    fieldWithPath("[].exposureTitle").type(STRING).description("화면에 표시될 타이틀")
                 )
             )
         );
