@@ -2,12 +2,12 @@ package com.offer.authentication.application;
 
 import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.KakaoOAuthGateway;
-import com.offer.member.Member;
-import com.offer.member.MemberRepository;
-import com.offer.member.RandomNicknameGenerator;
 import com.offer.authentication.SocialProfile;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
+import com.offer.member.Member;
+import com.offer.member.MemberRepository;
+import com.offer.member.RandomNicknameGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

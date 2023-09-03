@@ -30,3 +30,14 @@ include::{snippets}/authentication/kakao-login/query-parameters.adoc[]
 include::{snippets}/authentication/kakao-login/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/authentication/kakao-login/response-fields.adoc[]
+
+= 판매 게시글
+== 판매 게시글 생성
+==== Example Curl
+include::{snippets}/posts/create-post/curl-request.adoc[]
+==== Example Request
+include::{snippets}/posts/create-post/http-request.adoc[]
+==== Request Fields
+include::{snippets}/posts/create-post/request-fields.adoc[]
+==== Example Response
+include::{snippets}/posts/create-post/http-response.adoc[]

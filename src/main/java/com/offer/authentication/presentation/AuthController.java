@@ -1,8 +1,8 @@
 package com.offer.authentication.presentation;
 
+import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
-import com.offer.authentication.application.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

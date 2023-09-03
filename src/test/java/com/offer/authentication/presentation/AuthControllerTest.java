@@ -15,20 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.offer.DocumentationTest;
-import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 
 class AuthControllerTest extends DocumentationTest {
-
-    @MockBean
-    private OAuthService oAuthService;
-
 
     @DisplayName("카카오 로그인 페이지 url 조회")
     @Test

@@ -14,15 +14,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
+@ToString
 public class Member {
 
     @Id
