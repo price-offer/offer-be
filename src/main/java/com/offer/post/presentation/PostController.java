@@ -4,6 +4,7 @@ import com.offer.authentication.presentation.AuthenticationPrincipal;
 import com.offer.authentication.presentation.LoginMember;
 import com.offer.post.application.PostService;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.SortType;
 import java.net.URI;
@@ -35,5 +36,10 @@ public class PostController {
     @GetMapping("/sorts")
     public List<SortResponse> showSortItems(String type) {
         return postService.getSortItems(SortType.from(type));
+    }
+
+    @GetMapping("/categories")
+    public List<CategoryResponse> showCategories() {
+        return postService.getCategoryItems();
     }
 }

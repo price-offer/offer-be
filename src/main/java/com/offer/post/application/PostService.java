@@ -3,6 +3,7 @@ package com.offer.post.application;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
@@ -31,5 +32,9 @@ public class PostService {
 
     public List<SortResponse> getSortItems(SortType type) {
         return sortItemRepository.get(type);
+    }
+
+    public List<CategoryResponse> getCategoryItems() {
+        return null;
     }
 }

@@ -24,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.offer.DocumentationTest;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.CategoryResponse.CategoryResponseBuilder;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.SortType;
 import java.util.List;
@@ -128,6 +130,51 @@ class PostControllerTest extends DocumentationTest {
                 ),
                 responseFields(
                     fieldWithPath("[].name").type(STRING).description("정렬옵션 이름"),
+                    fieldWithPath("[].exposureTitle").type(STRING).description("화면에 표시될 타이틀")
+                )
+            )
+        );
+    }
+
+    @DisplayName("카테고리 목록 조회")
+    @Test
+    void showCategories() throws Exception {
+        // given
+
+        CategoryResponse category1 = CategoryResponse.builder()
+            .name("MAN_FASHION")
+            .exposureTitle("남성패션/잡화")
+            .build();
+        CategoryResponse category2 = CategoryResponse.builder()
+            .name("WOMAN_FASHION")
+            .exposureTitle("여성패션/잡화")
+            .build();
+        CategoryResponse category3 = CategoryResponse.builder()
+            .name("GAME")
+            .exposureTitle("게임")
+            .build();
+
+        List<CategoryResponse> response = List.of(category1, category2, category3);
+
+        given(postService.getCategoryItems())
+            .willReturn(response);
+
+
+        // when && then
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/categories")
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk(),
+                content().string(objectMapper.writeValueAsString(response)));
+
+        resultActions.andDo(
+            document("posts/read-category-items",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                responseFields(
+                    fieldWithPath("[].name").type(STRING).description("카테고리 옵션 이름"),
                     fieldWithPath("[].exposureTitle").type(STRING).description("화면에 표시될 타이틀")
                 )
             )
