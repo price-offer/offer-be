@@ -5,6 +5,7 @@ import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.SortResponse;
+import com.offer.post.domain.CategoryRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.post.domain.SortItemRepository;
@@ -22,6 +23,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final SortItemRepository sortItemRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public Long createPost(PostCreateRequest request, Long memberId) {
@@ -35,6 +37,6 @@ public class PostService {
     }
 
     public List<CategoryResponse> getCategoryItems() {
-        return null;
+        return categoryRepository.getCategories();
     }
 }
