@@ -3,14 +3,22 @@ package com.offer.post.application;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.PostSummaries;
+import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
-import com.offer.post.domain.CategoryRepository;
+import com.offer.post.domain.category.Category;
+import com.offer.post.domain.category.CategoryRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
-import com.offer.post.domain.SortItemRepository;
-import com.offer.post.domain.SortType;
+import com.offer.post.domain.sort.SortGroup;
+import com.offer.post.domain.sort.SortGroupRepository;
+import com.offer.post.domain.sort.SortItem;
+import com.offer.post.domain.sort.SortItemRepository;
+import com.offer.post.domain.sort.SortType;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +31,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final SortItemRepository sortItemRepository;
+    private final SortGroupRepository sortGroupRepository;
     private final CategoryRepository categoryRepository;
 
     @Transactional
@@ -32,11 +41,24 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
+    public PostSummaries getPosts(PostReadParams params) {
+        SortItem sortItem = sortItemRepository.findByName(params.getSort());
+        Category category = categoryRepository.findByName(params.getCategory());
+        // TODO: 2023/09/17 NOT IMPLEMENTED
+        return null;
+    }
+
     public List<SortResponse> getSortItems(SortType type) {
-        return sortItemRepository.get(type);
+        SortGroup sortGroup = sortGroupRepository.findBySortType(type);
+        List<SortItem> sortItems = sortGroup.getSortItems();
+        return sortItems.stream()
+            .map(SortResponse::from)
+            .collect(Collectors.toList());
     }
 
     public List<CategoryResponse> getCategoryItems() {
-        return categoryRepository.getCategories();
+        return categoryRepository.findAll().stream()
+            .map(CategoryResponse::from)
+            .collect(Collectors.toList());
     }
 }

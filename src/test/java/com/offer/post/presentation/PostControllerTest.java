@@ -1,6 +1,5 @@
 package com.offer.post.presentation;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -25,9 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.offer.DocumentationTest;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.response.CategoryResponse;
-import com.offer.post.application.response.CategoryResponse.CategoryResponseBuilder;
+import com.offer.post.application.response.PostSummaries;
+import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
-import com.offer.post.domain.SortType;
+import com.offer.post.domain.sort.SortType;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -93,6 +94,74 @@ class PostControllerTest extends DocumentationTest {
         );
     }
 
+    @DisplayName("게시글 목록 조회")
+    @Test
+    void showPosts() throws Exception {
+        // given
+        PostSummary postSummary1 = PostSummary.builder()
+            .title("청바지 팔아요")
+            .price(10000)
+            .location("동작구 사당동")
+            .thumbnailImageUrl("http://thumbnail.image.url")
+            .liked(true)
+            .createdAt(LocalDateTime.of(2023, 9, 10, 14, 30))
+            .build();
+
+        PostSummary postSummary2 = PostSummary.builder()
+            .title("티셔츠 팔아요")
+            .price(11000)
+            .location("동작구 사당동")
+            .thumbnailImageUrl("http://thumbnail.image.url")
+            .liked(true)
+            .createdAt(LocalDateTime.of(2023, 9, 11, 14, 30))
+            .build();
+
+        PostSummaries response = PostSummaries.builder()
+            .data(List.of(postSummary1, postSummary2))
+            .build();
+
+        given(postService.getPosts(any()))
+            .willReturn(response);
+
+        // when && then
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/posts")
+                    .queryParam("sort", "RECENT_CREATED")
+                    .queryParam("tradeType", "FACE_TO_FACE")
+                    .queryParam("category", "MAN_FASHION")
+                    .queryParam("minPrice", "0")
+                    .queryParam("maxPrice", "999999")
+                    .header("Authorization", "Bearer jwt.token.here")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk(),
+                content().string(objectMapper.writeValueAsString(response)));
+
+        resultActions.andDo(
+            document("posts/get-posts",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                queryParameters(
+                    parameterWithName("sort").description("정렬 필터 name"),
+                    parameterWithName("category").description("카테고리 name"),
+                    parameterWithName("tradeType").description("거래방식 name"),
+                    parameterWithName("minPrice").description("최소 가격"),
+                    parameterWithName("maxPrice").description("최대 가격")
+                ),
+                responseFields(
+                    fieldWithPath("data[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("data[].price").type(NUMBER).description("시작 가격"),
+                    fieldWithPath("data[].location").type(STRING).description("판매자 거래 위치"),
+                    fieldWithPath("data[].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
+                    fieldWithPath("data[].liked").type(BOOLEAN).description("사용자 좋아요 여부"),
+                    fieldWithPath("data[].createdAt").type(STRING).description("게시글 생성 시간")
+                )
+            )
+        );
+    }
+
     @DisplayName("정렬 조회")
     @Test
     void showSortItems() throws Exception {
@@ -140,7 +209,6 @@ class PostControllerTest extends DocumentationTest {
     @Test
     void showCategories() throws Exception {
         // given
-
         CategoryResponse category1 = CategoryResponse.builder()
             .name("MAN_FASHION")
             .exposureTitle("남성패션/잡화")

@@ -1,4 +1,4 @@
-package com.offer.post.domain;
+package com.offer.post.domain.sort;
 
 import java.util.Arrays;
 

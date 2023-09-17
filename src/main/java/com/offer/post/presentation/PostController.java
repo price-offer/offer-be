@@ -4,9 +4,12 @@ import com.offer.authentication.presentation.AuthenticationPrincipal;
 import com.offer.authentication.presentation.LoginMember;
 import com.offer.post.application.PostService;
 import com.offer.post.application.request.PostCreateRequest;
+import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.PostSummaries;
+import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
-import com.offer.post.domain.SortType;
+import com.offer.post.domain.sort.SortType;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,11 @@ public class PostController {
         @RequestBody PostCreateRequest request) {
         Long postId = postService.createPost(request, loginMember.getId());
         return ResponseEntity.created(URI.create("/api/posts/" + postId)).build();
+    }
+
+    @GetMapping("/posts")
+    public PostSummaries showPosts(PostReadParams params) {
+        return postService.getPosts(params);
     }
 
     // TODO: #14 추후 분리
