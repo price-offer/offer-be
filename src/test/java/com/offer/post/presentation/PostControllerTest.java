@@ -99,6 +99,7 @@ class PostControllerTest extends DocumentationTest {
     void showPosts() throws Exception {
         // given
         PostSummary postSummary1 = PostSummary.builder()
+            .id(1L)
             .title("청바지 팔아요")
             .price(10000)
             .location("동작구 사당동")
@@ -108,6 +109,7 @@ class PostControllerTest extends DocumentationTest {
             .build();
 
         PostSummary postSummary2 = PostSummary.builder()
+            .id(2L)
             .title("티셔츠 팔아요")
             .price(11000)
             .location("동작구 사당동")

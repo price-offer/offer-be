@@ -8,10 +8,11 @@ import lombok.Getter;
 public class PostSummaries {
 
     private List<PostSummary> data;
-    // TODO: 2023/09/17 페이징 정보
+    private boolean hasNext;
 
     @Builder
-    public PostSummaries(List<PostSummary> data) {
+    public PostSummaries(List<PostSummary> data, boolean hasNext) {
         this.data = data;
+        this.hasNext = hasNext;
     }
 }

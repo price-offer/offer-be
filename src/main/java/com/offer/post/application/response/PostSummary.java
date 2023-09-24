@@ -1,5 +1,6 @@
 package com.offer.post.application.response;
 
+import com.offer.post.domain.Post;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 public class PostSummary {
 
+    private Long id;
     private String title;
     private int price;
     private String location;
@@ -19,7 +21,7 @@ public class PostSummary {
     private LocalDateTime createdAt;
 
     @Builder
-    public PostSummary(String title, int price, String location, String thumbnailImageUrl,
+    public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
         boolean liked, LocalDateTime createdAt) {
         this.title = title;
         this.price = price;
@@ -27,5 +29,17 @@ public class PostSummary {
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.liked = liked;
         this.createdAt = createdAt;
+    }
+
+    public static PostSummary from(Post post) {
+        return PostSummary.builder()
+            .id(post.getId())
+            .title(post.getTitle())
+            .price(post.getPrice())
+            .location(post.getLocation())
+            .thumbnailImageUrl(post.getThumbnailImageUrl())
+            .liked(false)  // TODO: 2023/09/24 NOT IMPLEMENTED
+            .createdAt(post.getCreatedAt())
+            .build();
     }
 }

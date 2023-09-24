@@ -12,4 +12,6 @@ public class PostReadParams {
     private String category;
     private int minPrice;
     private int maxPrice;
+    private Long lastId;
+    private int limit;
 }
