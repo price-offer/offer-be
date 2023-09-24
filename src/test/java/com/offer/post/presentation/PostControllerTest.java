@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.offer.DocumentationTest;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
@@ -120,6 +121,7 @@ class PostControllerTest extends DocumentationTest {
 
         PostSummaries response = PostSummaries.builder()
             .data(List.of(postSummary1, postSummary2))
+            .hasNext(true)
             .build();
 
         given(postService.getPosts(any()))
@@ -133,6 +135,7 @@ class PostControllerTest extends DocumentationTest {
                     .queryParam("category", "MAN_FASHION")
                     .queryParam("minPrice", "0")
                     .queryParam("maxPrice", "999999")
+                    .queryParam("limit", "10")
                     .header("Authorization", "Bearer jwt.token.here")
                     .contentType(MediaType.APPLICATION_JSON)
             )
@@ -146,19 +149,71 @@ class PostControllerTest extends DocumentationTest {
                 getRequestPreprocessor(),
                 getResponsePreprocessor(),
                 queryParameters(
-                    parameterWithName("sort").description("정렬 필터 name"),
-                    parameterWithName("category").description("카테고리 name"),
-                    parameterWithName("tradeType").description("거래방식 name"),
+                    parameterWithName("sort").optional().description("정렬 필터 name"),
+                    parameterWithName("category").optional().description("카테고리 name"),
+                    parameterWithName("tradeType").optional().description("거래방식 name"),
                     parameterWithName("minPrice").description("최소 가격"),
-                    parameterWithName("maxPrice").description("최대 가격")
+                    parameterWithName("maxPrice").description("최대 가격"),
+                    parameterWithName("limit").optional().description("요청 게시글 수")
                 ),
                 responseFields(
+                    fieldWithPath("data[].id").type(NUMBER).description("게시글 아이디"),
                     fieldWithPath("data[].title").type(STRING).description("게시글 제목"),
                     fieldWithPath("data[].price").type(NUMBER).description("시작 가격"),
                     fieldWithPath("data[].location").type(STRING).description("판매자 거래 위치"),
                     fieldWithPath("data[].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
                     fieldWithPath("data[].liked").type(BOOLEAN).description("사용자 좋아요 여부"),
-                    fieldWithPath("data[].createdAt").type(STRING).description("게시글 생성 시간")
+                    fieldWithPath("data[].createdAt").type(STRING).description("게시글 생성 시간"),
+                    fieldWithPath("hasNext").type(BOOLEAN).description("다음 페이지 존재 여부")
+                )
+            )
+        );
+    }
+
+    @DisplayName("게시글 단건 조회")
+    @Test
+    void getPost() throws Exception {
+        // given
+        PostDetail response = PostDetail.builder()
+            .id(1L)
+            .title("티셔츠 팔아요")
+            .description("티셔츠 싸게 팝니다.")
+            .price(11000)
+            .location("동작구 사당동")
+            .imageUrls(List.of("http://thumbnail.image1.url", "http://thumbnail.image2.url"))
+            .tradeType("직거래")
+            .productCondition("새상품")
+            .createdAt(LocalDateTime.of(2023, 9, 11, 14, 30))
+            .build();
+
+        given(postService.getPost(1L))
+            .willReturn(response);
+
+        // when && then
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/posts/{postId}", 1L)
+                    .header("Authorization", "Bearer jwt.token.here")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk(),
+                content().string(objectMapper.writeValueAsString(response)));
+
+        resultActions.andDo(
+            document("posts/get-single-post",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                responseFields(
+                    fieldWithPath("id").type(NUMBER).description("게시글 아이디"),
+                    fieldWithPath("title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("description").type(STRING).description("게시글 상세 내용"),
+                    fieldWithPath("price").type(NUMBER).description("시작 가격"),
+                    fieldWithPath("location").type(STRING).description("판매자 거래 위치"),
+                    fieldWithPath("imageUrls").type(ARRAY).description("상품 이미지 url"),
+                    fieldWithPath("tradeType").type(STRING).description("거래 방식"),
+                    fieldWithPath("productCondition").type(STRING).description("상품 상태"),
+                    fieldWithPath("createdAt").type(STRING).description("게시글 생성 시간")
                 )
             )
         );

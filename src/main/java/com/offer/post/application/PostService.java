@@ -5,6 +5,7 @@ import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
@@ -45,6 +46,11 @@ public class PostService {
 
     public PostSummaries getPosts(PostReadParams params) {
         return postQueryRepository.searchPost(params);
+    }
+
+    public PostDetail getPost(Long postId) {
+        Post post = postRepository.getById(postId);
+        return PostDetail.from(post);
     }
 
     public List<SortResponse> getSortItems(SortType type) {

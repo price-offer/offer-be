@@ -23,6 +23,7 @@ public class PostSummary {
     @Builder
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
         boolean liked, LocalDateTime createdAt) {
+        this.id = id;
         this.title = title;
         this.price = price;
         this.location = location;
