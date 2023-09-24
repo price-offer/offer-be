@@ -5,9 +5,11 @@ import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.CategoryResponse;
+import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
+import com.offer.post.domain.PostQueryRepository;
 import com.offer.post.domain.category.Category;
 import com.offer.post.domain.category.CategoryRepository;
 import com.offer.post.domain.Post;
@@ -33,6 +35,7 @@ public class PostService {
     private final SortItemRepository sortItemRepository;
     private final SortGroupRepository sortGroupRepository;
     private final CategoryRepository categoryRepository;
+    private final PostQueryRepository postQueryRepository;
 
     @Transactional
     public Long createPost(PostCreateRequest request, Long memberId) {
@@ -42,10 +45,12 @@ public class PostService {
     }
 
     public PostSummaries getPosts(PostReadParams params) {
-        SortItem sortItem = sortItemRepository.findByName(params.getSort());
-        Category category = categoryRepository.findByName(params.getCategory());
-        // TODO: 2023/09/17 NOT IMPLEMENTED
-        return null;
+        return postQueryRepository.searchPost(params);
+    }
+
+    public PostDetail getPost(Long postId) {
+        Post post = postRepository.getById(postId);
+        return PostDetail.from(post);
     }
 
     public List<SortResponse> getSortItems(SortType type) {

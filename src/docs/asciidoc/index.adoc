@@ -91,3 +91,13 @@ include::{snippets}/posts/get-posts/query-parameters.adoc[]
 include::{snippets}/posts/get-posts/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/posts/get-posts/response-fields.adoc[]
+
+== 판매 게시글 단건 조회
+==== Example Curl
+include::{snippets}/posts/get-single-post/curl-request.adoc[]
+==== Example Request
+include::{snippets}/posts/get-single-post/http-request.adoc[]
+==== Example Response
+include::{snippets}/posts/get-single-post/http-response.adoc[]
+==== Response Fields
+include::{snippets}/posts/get-single-post/response-fields.adoc[]
