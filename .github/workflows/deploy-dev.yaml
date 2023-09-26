@@ -24,6 +24,7 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      ## Checkout submodules
       - name: Checkout submodules
         uses: actions/checkout@v3
         with:
