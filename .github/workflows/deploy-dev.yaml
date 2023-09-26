@@ -24,6 +24,12 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.GIT_REPO_ACCESS }}
+          submodules: true
+
       ## gradle build
       - name: Build with Gradle
         run: |
