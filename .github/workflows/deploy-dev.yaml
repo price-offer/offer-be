@@ -24,11 +24,11 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Checkout submodules
+        uses: actions/checkout@v3
         with:
+          submodules: recursive
           token: ${{ secrets.GIT_REPO_ACCESS }}
-          submodules: true
 
       ## gradle build
       - name: Build with Gradle
