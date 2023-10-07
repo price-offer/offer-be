@@ -20,37 +20,37 @@ import org.springframework.test.web.servlet.ResultActions;
 
 class ImageControllerTest extends DocumentationTest {
 
-//    @DisplayName("이미지를 업로드한다")
-//    @Test
-//    void uploadImage() throws Exception {
-//        // given
-//        given(imageService.saveImage(any()))
-//            .willReturn(new ImageUploadResponse("image.jpg"));
-//
-//        MockMultipartFile image = new MockMultipartFile("image",
-//            "test.jpg",
-//            "images/jpg",
-//            new byte[]{});
-//
-//        // when
-//        ResultActions resultActions = mockMvc.perform(
-//                multipart("/api/upload-image")
-//                    .file(image)
-//            )
-//            .andDo(print())
-//            .andExpectAll(
-//                status().isOk()
-//            );
-//
-//        resultActions.andDo(
-//            document("images/upload-image",
-//                getRequestPreprocessor(),
-//                getResponsePreprocessor(),
-//                requestPartBody("image"),
-//                responseFields(
-//                    fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("저장된 Image Url")
-//                )
-//            )
-//        );
-//    }
+    @DisplayName("이미지를 업로드한다")
+    @Test
+    void uploadImage() throws Exception {
+        // given
+        given(imageService.saveImage(any()))
+            .willReturn(new ImageUploadResponse("image.jpg"));
+
+        MockMultipartFile image = new MockMultipartFile("image",
+            "test.jpg",
+            "images/jpg",
+            new byte[]{});
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                multipart("/api/upload-image")
+                    .file(image)
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk()
+            );
+
+        resultActions.andDo(
+            document("images/upload-image",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                requestPartBody("image"),
+                responseFields(
+                    fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("저장된 Image Url")
+                )
+            )
+        );
+    }
 }

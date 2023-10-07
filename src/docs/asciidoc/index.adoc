@@ -102,6 +102,17 @@ include::{snippets}/posts/get-single-post/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/posts/get-single-post/response-fields.adoc[]
 
+== 이미지 업로드
+==== Example Curl
+include::{snippets}/images/upload-image/curl-request.adoc[]
+==== Example Request
+include::{snippets}/images/upload-image/http-request.adoc[]
+==== Example Response
+include::{snippets}/images/upload-image/http-response.adoc[]
+==== Response Fields
+include::{snippets}/images/upload-image/response-fields.adoc[]
+
+
 = 가격제안
 
 == 가격제안 생성
