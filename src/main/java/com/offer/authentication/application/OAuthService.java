@@ -39,7 +39,7 @@ public class OAuthService {
             .nickname(member.getNickname())
             .profileImageUrl(socialProfile.getProfileImageUrl())
             .accessToken(token)
-            .newMember(alreadyJoined)
+            .newMember(!alreadyJoined)
             .build();
     }
 
