@@ -3,17 +3,24 @@ package com.offer.offer.presentation;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.offer.DocumentationTest;
+import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OfferResponse;
 import com.offer.offer.application.response.OffererResponse;
 import com.offer.offer.application.response.OffersResponse;
@@ -21,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -101,6 +109,48 @@ class OfferControllerTest extends DocumentationTest {
                     fieldWithPath("offers[].offerer.level").type(STRING).description("가격제안자 오퍼레벨"),
                     fieldWithPath("offers[].offerer.profileImageUrl").type(STRING).description("가격제안자 프로필이미지"),
                     fieldWithPath("offers[].createdAt").type(STRING).description("가격제안 생성 시간")
+                )
+            )
+        );
+    }
+
+    @DisplayName("가격제안 생성")
+    @Test
+    void createOffer() throws Exception {
+        // given
+        OfferCreateRequest request = OfferCreateRequest.builder()
+            .price(10000)
+            .location("동작구 사당동")
+            .tradeType("직거래")
+            .build();
+
+        given(offerService.createOffer(any(), any(), any()))
+            .willReturn(1L);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/posts/{postId}/offers", 1L)
+                    .header("Authorization", "Bearer jwt.token.here")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk()
+            );
+
+        // then
+        resultActions.andDo(
+            document("offers/create-offer",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                requestHeaders(
+                    headerWithName(HttpHeaders.AUTHORIZATION).description("token")
+                ),
+                requestFields(
+                    fieldWithPath("price").type(NUMBER).description("제안 가격"),
+                    fieldWithPath("location").type(STRING).description("거래 지역"),
+                    fieldWithPath("tradeType").type(STRING).description("거래 방식")
                 )
             )
         );

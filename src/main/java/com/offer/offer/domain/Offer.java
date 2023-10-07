@@ -39,6 +39,14 @@ public class Offer {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public Offer(Post post, Member offerer, Integer price, Boolean isSelected, String tradeType) {
+        this.post = post;
+        this.offerer = offerer;
+        this.price = price;
+        this.isSelected = isSelected;
+        this.tradeType = tradeType;
+    }
+
     public void selectOffer() {
         this.isSelected = true;
     }
