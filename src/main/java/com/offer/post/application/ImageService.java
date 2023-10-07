@@ -1,5 +1,6 @@
 package com.offer.post.application;
 
+import com.offer.post.application.response.ImageUploadResponse;
 import com.offer.post.domain.ImageFile;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,14 +22,14 @@ public class ImageService {
         this.storagePath = Paths.get(storagePath);
     }
 
-    public String saveImage(MultipartFile image) {
+    public ImageUploadResponse saveImage(MultipartFile image) {
         try {
             ImageFile imageFile = ImageFile.from(image);
 
             String imageFileInputName = imageFile.randomName();
             Path fileStorageLocation = resolvePath(imageFileInputName);
             Files.copy(imageFile.inputStream(), fileStorageLocation, StandardCopyOption.REPLACE_EXISTING);
-            return imageFileInputName;
+            return new ImageUploadResponse(imageFileInputName);
         } catch (IOException e) {
             log.error("이미지 업로드 에러", e);
             return null;

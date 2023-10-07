@@ -8,6 +8,7 @@ import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.presentation.AuthController;
 import com.offer.authentication.presentation.AuthenticationContext;
+import com.offer.post.application.ImageService;
 import com.offer.post.application.PostService;
 import com.offer.post.presentation.PostController;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +49,9 @@ public class DocumentationTest {
 
     @MockBean
     protected PostService postService;
+
+    @MockBean
+    protected ImageService imageService;
 
     protected OperationResponsePreprocessor getResponsePreprocessor() {
         return Preprocessors.preprocessResponse(prettyPrint());
