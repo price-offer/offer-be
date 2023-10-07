@@ -30,6 +30,7 @@ public class Post {
 
     @ManyToOne
     private Member seller;
+
     private String title;
     private int price;
     private String category;

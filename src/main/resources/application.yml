@@ -2,5 +2,8 @@ spring:
   profiles:
     include: secret
 
+file:
+  upload-dir: images
+
 server:
   port : 7070
