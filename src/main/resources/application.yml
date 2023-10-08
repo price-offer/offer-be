@@ -1,15 +1,22 @@
 spring:
   profiles:
     active: local
-    include: secret
 
 server:
   port : 7070
 
 --- # local
 spring:
+  config:
+    activate:
+      on-profile: local
   profiles:
-    - local
-  group:
-    local:
-      - secret-local
+    include: secret-local
+
+--- # prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+  profiles:
+    include: secret-prod
