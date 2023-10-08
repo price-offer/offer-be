@@ -1,5 +1,6 @@
 package com.offer.authentication.presentation;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -14,9 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.offer.DocumentationTest;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
+import java.util.HashMap;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.ResultActions;
@@ -91,6 +94,34 @@ class AuthControllerTest extends DocumentationTest {
                     fieldWithPath("profileImageUrl").type(STRING).description("프로필 이미지 url"),
                     fieldWithPath("accessToken").type(STRING).description("엑세스 토큰"),
                     fieldWithPath("newMember").type(BOOLEAN).description("신규 가입 유저 여부")
+                )
+            )
+        );
+    }
+
+    @DisplayName("멤버 아이디로 토큰 조회(개발용)")
+    @Test
+    void createToken() throws Exception {
+        String token = "jwt.token.here";
+        given(jwtTokenProvider.createToken(any()))
+            .willReturn(token);
+        HashMap<String, String> result = new HashMap<>();
+        result.put("token", token);
+
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/token/{memberId}", 1L)
+            )
+            .andDo(print())
+            .andExpectAll(
+                status().isOk(),
+                content().string(objectMapper.writeValueAsString(result)));
+
+        resultActions.andDo(
+            document("authentication/get-token",
+                getRequestPreprocessor(),
+                getResponsePreprocessor(),
+                responseFields(
+                    fieldWithPath("token").type(STRING).description("토큰")
                 )
             )
         );

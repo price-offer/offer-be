@@ -32,6 +32,17 @@ include::{snippets}/authentication/kakao-login/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/authentication/kakao-login/response-fields.adoc[]
 
+== 멤버 아이디로 토큰 조회(개발용)
+==== Example Curl
+include::{snippets}/authentication/get-token/curl-request.adoc[]
+==== Example Request
+include::{snippets}/authentication/get-token/http-request.adoc[]
+==== Example Response
+include::{snippets}/authentication/get-token/http-response.adoc[]
+==== Response Fields
+include::{snippets}/authentication/get-token/response-fields.adoc[]
+
+
 = 판매 게시글
 
 == 카테고리 조회

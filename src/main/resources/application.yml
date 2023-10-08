@@ -9,6 +9,11 @@ spring:
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
   h2:
     console:
       enabled: true
@@ -27,6 +32,13 @@ spring:
 server:
   port: 7070
 
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
 ---
 spring:
   config:

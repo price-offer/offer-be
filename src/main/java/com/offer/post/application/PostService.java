@@ -45,6 +45,7 @@ public class PostService {
     }
 
     public PostSummaries getPosts(PostReadParams params) {
+        List<Post> all = postRepository.findAll();
         return postQueryRepository.searchPost(params);
     }
 

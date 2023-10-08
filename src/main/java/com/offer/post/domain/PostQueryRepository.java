@@ -65,11 +65,11 @@ public class PostQueryRepository {
     }
 
     private BooleanExpression priceGoe(Integer minPrice) {
-        return minPrice != null ? post.price.loe(minPrice) : null;
+        return minPrice != null ? post.price.goe(minPrice) : null;
     }
 
     private BooleanExpression priceLoe(Integer maxPrice) {
-        return maxPrice != null ? post.price.goe(maxPrice) : null;
+        return maxPrice != null ? post.price.loe(maxPrice) : null;
     }
 
     private BooleanExpression priceBetween(Integer minPrice, Integer maxPrice) {

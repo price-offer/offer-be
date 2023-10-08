@@ -1,6 +1,7 @@
 package com.offer;
 
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,17 +15,22 @@ import com.offer.post.application.ImageService;
 import com.offer.post.application.PostService;
 import com.offer.post.presentation.ImageController;
 import com.offer.post.presentation.PostController;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @WebMvcTest({
     AuthController.class,
@@ -36,6 +42,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 public class DocumentationTest {
+
+    @Autowired
+    private WebApplicationContext context;
 
     @Autowired
     protected MockMvc mockMvc;
@@ -67,5 +76,17 @@ public class DocumentationTest {
 
     protected OperationRequestPreprocessor getRequestPreprocessor() {
         return Preprocessors.preprocessRequest(prettyPrint());
+    }
+
+    @BeforeEach
+    void setUp(RestDocumentationContextProvider restDocumentation) {
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+            .addFilters(new CharacterEncodingFilter("UTF-8", true))
+            .apply(documentationConfiguration(restDocumentation).uris()
+                .withScheme("https")
+                .withHost("offer-be.kro.kr")
+                .withPort(443))
+            .build();
     }
 }
