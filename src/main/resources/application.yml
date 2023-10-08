@@ -1,22 +1,30 @@
 spring:
   profiles:
-    active: local
-
+    group:
+      default: local,secret-local
+      prod: secret-prod
 server:
-  port : 7070
+  port: 7070
 
---- # local
+security:
+  jwt:
+    token:
+      secret-key: Z29uZy1jaGVjay1nb25nLWNoZWNrLWdvbmctY2hlY2stZ29uZy1jaGVjay1nb25nLWNoZWNrLWdvbmctY2hlY2stZ29uZy1jaGVjay1nb25nLWNoZWNrCg==
+      expire-time: 3600000
+
+---
 spring:
   config:
     activate:
       on-profile: local
-  profiles:
-    include: secret-local
 
---- # prod
+file:
+  upload-dir: images
+
+---
 spring:
   config:
     activate:
       on-profile: prod
-  profiles:
-    include: secret-prod
+file:
+  upload-dir: /home/ubuntu/images
