@@ -1,0 +1,21 @@
+spring:
+  sql:
+    init:
+      mode: never
+
+file:
+  upload-dir: images
+
+oauth2:
+  kakao:
+    client-id: test
+    client-secret: test
+    redirect-url: test
+    oauth-server-url: test
+    access-token-url: test
+
+security:
+  jwt:
+    token:
+      secret-key: Z29uZy1jaGVjay1nb25nLWNoZWNrLWdvbmctY2hlY2stZ29uZy1jaGVjay1nb25nLWNoZWNrLWdvbmctY2hlY2stZ29uZy1jaGVjay1nb25nLWNoZWNrCg==
+      expire-time: 3600000
