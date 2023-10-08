@@ -14,7 +14,7 @@ import com.offer.post.domain.sort.SortItem;
 import com.offer.post.domain.sort.SortItemRepository;
 import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ class PostServiceTest {
     @Autowired
     private SortItemRepository sortItemRepository;
 
-    @AfterEach
-    void tearDown() {
+    @BeforeEach
+    void setUp() {
         sortItemRepository.deleteAll();
         sortGroupRepository.deleteAll();
     }
