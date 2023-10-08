@@ -1,9 +1,15 @@
 spring:
   profiles:
+    active: local
     include: secret
-
-file:
-  upload-dir: images
 
 server:
   port : 7070
+
+--- # local
+spring:
+  profiles:
+    - local
+  group:
+    local:
+      - secret-local
