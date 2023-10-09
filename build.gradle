@@ -5,7 +5,7 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
 
     id 'jacoco'
-    id "org.sonarqube" version "3.3"
+    id "org.sonarqube" version "4.0.0.2929"
 }
 
 group = 'com'
@@ -127,7 +127,7 @@ jacoco {
 jacocoTestReport {
     dependsOn test
     reports {
-        html.required = false
+        html.required = true
 
         xml.required = true  // SonarCloud로 전송하기 위해 XML 리포트 생성
         xml.destination file("$buildDir/jacoco.xml")
