@@ -45,7 +45,6 @@ public class SwaggerConfig {
                 .apiInfo(Default_API_INFO)
                 .produces(DEFAULT_PRODUCES_AND_CONSUMES)
                 .consumes(DEFAULT_PRODUCES_AND_CONSUMES)
-
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .build();
