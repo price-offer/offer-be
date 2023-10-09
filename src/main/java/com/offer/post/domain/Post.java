@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,5 +60,10 @@ public class Post {
         this.location = location;
         this.tradeType = tradeType;
         this.productCondition = productCondition;
+    }
+
+    public boolean isWriter(Long memberId) {
+        Objects.requireNonNull(memberId);
+        return this.id.longValue() != memberId.longValue();
     }
 }
