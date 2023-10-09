@@ -265,3 +265,6 @@ gradle-app.setting
 
 ## API 문서는 빌드시 자동생성된다.
 /src/main/resources/static/docs/index.html
+
+# generated file
+src/main/generated/

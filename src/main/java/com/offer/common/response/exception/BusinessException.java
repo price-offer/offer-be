@@ -8,6 +8,9 @@ public class BusinessException extends RuntimeException {
 
     private ResponseMessage responseMessage;
 
+    private BusinessException() {
+    }
+
     public BusinessException(ResponseMessage responseMessage) {
         super(responseMessage.getMessage());
         this.responseMessage = responseMessage;

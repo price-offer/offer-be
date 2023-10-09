@@ -8,14 +8,19 @@ import com.offer.member.MemberRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.review.application.request.ReviewCreateRequest;
+import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
+import com.offer.review.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
@@ -43,5 +48,20 @@ public class ReviewService {
         );
 
         return CommonCreationResponse.of(review.getId(), review.getCreatedAt());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewInfoResponse> getReviews(Long memberId, Role role) {
+
+        var reviews = switch (role) {
+            case BUYER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, true);
+            case SELLER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, false);
+            case ALL -> reviewRepository.getAllByRevieweeId(memberId);
+        };
+
+        return reviews.stream()
+                .filter(Objects::nonNull)
+                .map(ReviewInfoResponse::from)
+                .collect(Collectors.toList());
     }
 }
