@@ -3,6 +3,9 @@ plugins {
     id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.2'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+
+    id 'jacoco'
+    id "org.sonarqube" version "4.0.0.2929"
 }
 
 group = 'com'
@@ -72,6 +75,7 @@ processResources.dependsOn('copySecret')
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 asciidoctor {
@@ -113,4 +117,86 @@ tasks.withType(JavaCompile) {
 
 clean.doLast {
     file(querydslDir).deleteDir()
+}
+
+jacoco {
+    toolVersion = '0.8.9'
+    // reportsDir = ${project.reporting.baseDir}/jacoco  //default
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+
+        xml.required = true  // SonarCloud로 전송하기 위해 XML 리포트 생성
+        xml.destination file("$buildDir/jacoco.xml")
+
+        csv.required = false // csv는 생성하지 않음
+    }
+
+    def Qdomains = []
+    for (qPattern in '**/QA'..'**/QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
+        Qdomains.add(qPattern + '*')
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Application*',
+                            '**/*Request*',
+                            '**/*Response*',
+                            '**/*Client*',
+                            '**/*Interceptor*',
+                            '**/*Exception*',
+                    ] + Qdomains)
+                })
+        )
+    }
+
+    // 코드 커버리지 기준을 만족해야지 build 성공
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    violationRules {
+        rule {
+            enabled = true // 이 rule을 적용할 것이다.
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+            }
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+            }
+
+            excludes = [
+                    '**.*Application*',
+                    '**.*Request*',
+                    '**.*Response*',
+                    '**.*OAuthClient*',
+                    '**.*Interceptor*',
+                    '**.*Exception*',
+            ] + Qdomains
+        }
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "price-offer_offer-be-2023"
+        property "sonar.organization", "price-offer-sonar-cloud-key"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.coverage.jacoco.xmlReportPaths', "$buildDir/jacoco.xml"
+    }
 }
