@@ -11,6 +11,7 @@ import com.offer.post.domain.PostRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
     public OffersResponse getOffersByPost(Long offererId, Long postId) {
         List<Offer> offersByPost = offerRepository.findAllByPostId(postId);
         if (offererId == null) {
@@ -32,6 +34,7 @@ public class OfferService {
         return OffersResponse.of(offersByPost, postId, offersByOfferer.size());
     }
 
+    @Transactional
     public Long createOffer(Long postId, OfferCreateRequest request, Long offererId) {
         Member offerer = memberRepository.getById(offererId);
         List<Offer> offersByOfferer = offerRepository.findAllByOffererIdAndPostId(offererId, postId);
