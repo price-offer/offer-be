@@ -27,7 +27,6 @@ spring:
       maximum-pool-size: 8
       minimum-idle: 5
       idle-timeout: 600000
-      validation-timeout: 5000
     username: sa
     password:
 
