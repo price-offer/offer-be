@@ -1,5 +1,6 @@
 package com.offer.post.application;
 
+import com.offer.common.response.CommonCreationResponse;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
@@ -38,10 +39,12 @@ public class PostService {
     private final PostQueryRepository postQueryRepository;
 
     @Transactional
-    public Long createPost(PostCreateRequest request, Long memberId) {
+    public CommonCreationResponse createPost(PostCreateRequest request, Long memberId) {
         Member member = memberRepository.getById(memberId);
         Post post = request.toEntity(member);
-        return postRepository.save(post).getId();
+        post = postRepository.save(post);
+
+        return CommonCreationResponse.of(post.getId(), post.getCreatedAt());
     }
 
     public PostSummaries getPosts(PostReadParams params) {
