@@ -2,6 +2,9 @@ package com.offer.offer.presentation;
 
 import com.offer.authentication.presentation.AuthenticationPrincipal;
 import com.offer.authentication.presentation.LoginMember;
+import com.offer.common.response.ApiResponse;
+import com.offer.common.response.CommonCreationResponse;
+import com.offer.common.response.ResponseMessage;
 import com.offer.offer.application.OfferService;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OffersResponse;
@@ -19,17 +22,34 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    @GetMapping("/api/posts/{postId}/offers")
-    public OffersResponse getOffersByPost(@PathVariable Long postId,
-        @AuthenticationPrincipal LoginMember loginMember) {
-        return offerService.getOffersByPost(loginMember.getId(), postId);
+    @GetMapping("/api/posts/{postId}/offers/me")  // TODO: refactor REST API
+    public ResponseEntity<ApiResponse> getOffersByPost(@PathVariable Long postId,
+                                                       @AuthenticationPrincipal LoginMember loginMember) {
+        OffersResponse response = offerService.getOffersByPost(loginMember.getId(), postId);
+
+        return ResponseEntity.ok(
+                ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
     }
 
     @PostMapping("/api/posts/{postId}/offers")
-    public ResponseEntity<Void> createOffer(@PathVariable Long postId,
-        @RequestBody OfferCreateRequest request,
-        @AuthenticationPrincipal LoginMember loginMember) {
-        offerService.createOffer(postId, request, loginMember.getId());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse> createOffer(@PathVariable Long postId,
+                                                   @RequestBody OfferCreateRequest request,
+                                                   @AuthenticationPrincipal LoginMember loginMember) {
+        CommonCreationResponse response = offerService.createOffer(postId, request, loginMember.getId());
+
+        return ResponseEntity.ok(
+                ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
+    @GetMapping("/api/posts/{postId}/offers")
+    public ResponseEntity<ApiResponse> getALlOffersByPost(@PathVariable Long postId,
+                                                          @AuthenticationPrincipal LoginMember loginMember) {
+        OffersResponse response = offerService.getAllOffersByPost(postId);
+
+        return ResponseEntity.ok(
+                ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
     }
 }
