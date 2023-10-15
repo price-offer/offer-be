@@ -17,7 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.offer.DocumentationTest;
+import com.offer.common.response.ApiResponse;
 import com.offer.common.response.CommonCreationResponse;
+import com.offer.common.response.ResponseMessage;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OfferResponse;
 import com.offer.offer.application.response.OffererResponse;
@@ -77,38 +79,44 @@ class OfferControllerTest extends DocumentationTest {
                 .offerCountOfCurrentMember(0)
                 .build();
 
+        ApiResponse<OffersResponse> httpResponse = ApiResponse.of(ResponseMessage.SUCCESS, response);
+
         given(offerService.getOffersByPost(any(), any()))
                 .willReturn(response);
 
         // when && then
         ResultActions resultActions = mockMvc.perform(
-                        get("/api/posts/{postId}/offers", 1L)
+                        get("/api/posts/{postId}/offers/me", 1L)
                                 .header("Authorization", "Bearer jwt.token.here")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpectAll(
                         status().isOk(),
-                        content().string(objectMapper.writeValueAsString(response)));
+                        content().string(objectMapper.writeValueAsString(httpResponse)));
 
         resultActions.andDo(
                 document("offers/get-offers-by-post",
                         getRequestPreprocessor(),
                         getResponsePreprocessor(),
                         responseFields(
-                                fieldWithPath("totalSize").type(NUMBER).description("전체 가격제안 개수"),
-                                fieldWithPath("postId").type(NUMBER).description("게시글 아이디"),
-                                fieldWithPath("offerCountOfCurrentMember").type(NUMBER).description("게시글에 대한 로그인 유저의 가격제안 횟수(비로그인 유저의 경우 0)"),
-                                fieldWithPath("maximumOfferCount").type(NUMBER).description("최대 가격제안 가능 횟수"),
-                                fieldWithPath("offers[].id").type(NUMBER).description("가격제안 아이디"),
-                                fieldWithPath("offers[].price").type(NUMBER).description("제안 가격"),
-                                fieldWithPath("offers[].offerer.id").type(NUMBER).description("가격제안자 아이디"),
-                                fieldWithPath("offers[].offerer.nickname").type(STRING).description("가격제안자 아이디"),
-                                fieldWithPath("offers[].offerer.location").type(STRING).description("가격제안자 거래위치"),
-                                fieldWithPath("offers[].offerer.tradeType").type(STRING).description("가격제안자 거래방식"),
-                                fieldWithPath("offers[].offerer.level").type(STRING).description("가격제안자 오퍼레벨"),
-                                fieldWithPath("offers[].offerer.profileImageUrl").type(STRING).description("가격제안자 프로필이미지"),
-                                fieldWithPath("offers[].createdAt").type(STRING).description("가격제안 생성 시간")
+                                // common filed of response
+                                fieldWithPath("code").type(NUMBER).description("응답코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메시지"),
+                                // body of response
+                                fieldWithPath("data.totalSize").type(NUMBER).description("전체 가격제안 개수"),
+                                fieldWithPath("data.postId").type(NUMBER).description("게시글 아이디"),
+                                fieldWithPath("data.offerCountOfCurrentMember").type(NUMBER).description("게시글에 대한 로그인 유저의 가격제안 횟수(비로그인 유저의 경우 0)"),
+                                fieldWithPath("data.maximumOfferCount").type(NUMBER).description("최대 가격제안 가능 횟수"),
+                                fieldWithPath("data.offers[].id").type(NUMBER).description("가격제안 아이디"),
+                                fieldWithPath("data.offers[].price").type(NUMBER).description("제안 가격"),
+                                fieldWithPath("data.offers[].offerer.id").type(NUMBER).description("가격제안자 아이디"),
+                                fieldWithPath("data.offers[].offerer.nickname").type(STRING).description("가격제안자 아이디"),
+                                fieldWithPath("data.offers[].offerer.location").type(STRING).description("가격제안자 거래위치"),
+                                fieldWithPath("data.offers[].offerer.tradeType").type(STRING).description("가격제안자 거래방식"),
+                                fieldWithPath("data.offers[].offerer.level").type(STRING).description("가격제안자 오퍼레벨"),
+                                fieldWithPath("data.offers[].offerer.profileImageUrl").type(STRING).description("가격제안자 프로필이미지"),
+                                fieldWithPath("data.offers[].createdAt").type(STRING).description("가격제안 생성 시간")
                         )
                 )
         );

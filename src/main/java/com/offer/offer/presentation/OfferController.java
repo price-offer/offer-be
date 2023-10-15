@@ -44,7 +44,7 @@ public class OfferController {
     }
 
     @GetMapping("/api/posts/{postId}/offers")
-    public ResponseEntity<ApiResponse> getALlOffersByPost(@PathVariable Long postId,
+    public ResponseEntity<ApiResponse> getAllOffersByPost(@PathVariable Long postId,
                                                           @AuthenticationPrincipal LoginMember loginMember) {
         OffersResponse response = offerService.getAllOffersByPost(postId);
 
