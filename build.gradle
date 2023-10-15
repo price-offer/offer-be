@@ -83,8 +83,8 @@ asciidoctor {
     configurations 'asciidoctorExtensions'
     inputs.dir snippetsDir
 
-    sources{
-        include("**/index.adoc","**/common/*.adoc")
+    sources {
+        include("**/index.adoc", "**/common/*.adoc")
     }
 
     baseDirFollowsSourceFile()
@@ -108,7 +108,7 @@ build {
 def querydslDir = "$buildDir/generated/querydsl"
 
 sourceSets {
-    main.java.srcDirs += [ querydslDir ]
+    main.java.srcDirs += [querydslDir]
 }
 
 tasks.withType(JavaCompile) {
@@ -129,10 +129,10 @@ jacocoTestReport {
     reports {
         html.required = true
 
-        xml.required = true  // SonarCloud로 전송하기 위해 XML 리포트 생성
-        xml.destination file("$buildDir/jacoco.xml")
+        xml.required = true
+//        xml.destination file("$buildDir/jacoco.xml")
 
-        csv.required = false // csv는 생성하지 않음
+        csv.required = false
     }
 
     def Qdomains = []
@@ -167,24 +167,26 @@ jacocoTestCoverageVerification {
 
     violationRules {
         rule {
-            enabled = true // 이 rule을 적용할 것이다.
+            enabled = true
             element = 'CLASS'
 
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
+                minimum = 0.00
             }
 
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
+                minimum = 0.00
             }
 
             excludes = [
                     '**.*Application*',
                     '**.*Request*',
                     '**.*Response*',
-                    '**.*OAuthClient*',
+                    '**.*Client*',
                     '**.*Interceptor*',
                     '**.*Exception*',
             ] + Qdomains
@@ -197,6 +199,6 @@ sonarqube {
         property "sonar.projectKey", "price-offer_offer-be-2023"
         property "sonar.organization", "price-offer-sonar-cloud-key"
         property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.jacoco.xmlReportPaths', "$buildDir/jacoco.xml"
+        property 'sonar.coverage.jacoco.xmlReportPaths', "$buildDir/reports/jacoco/test/jacocoTestRepoert.xml"
     }
 }
