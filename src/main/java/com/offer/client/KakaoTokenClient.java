@@ -1,8 +1,6 @@
 package com.offer.client;
 
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -18,10 +16,10 @@ public class KakaoTokenClient {
     private final WebClient.Builder webClientBuilder;
 
     public String inquireToken(String clientId, String clientSecret, String redirectUrl,
-        String authCode) {
+                               String authCode) {
         WebClient webClient = webClientBuilder.baseUrl("https://kauth.kakao.com/oauth/token")
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .build();
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "authorization_code");
@@ -32,10 +30,10 @@ public class KakaoTokenClient {
 
 
         return webClient.post()
-            .body(BodyInserters.fromFormData(formData))
-            .retrieve()
-            .bodyToMono(KakaoAccessTokenResponse.class)
-            .block()
-            .getAccessToken();
+                .body(BodyInserters.fromFormData(formData))
+                .retrieve()
+                .bodyToMono(KakaoAccessTokenResponse.class)
+                .block()
+                .getAccessToken();
     }
 }

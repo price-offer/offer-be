@@ -1,22 +1,19 @@
 package com.offer.authentication;
 
-import com.offer.client.KakaoAccessTokenResponse;
 import com.offer.client.KakaoSocialProfileClient;
 import com.offer.client.KakaoSocialProfileResponse;
 import com.offer.client.KakaoTokenClient;
 import com.offer.member.Member.OAuthType;
+
 import java.util.HashMap;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
 
 @Getter
 @Setter
