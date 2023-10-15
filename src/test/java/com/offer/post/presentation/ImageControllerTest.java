@@ -4,6 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestPartBody;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -25,32 +27,36 @@ class ImageControllerTest extends DocumentationTest {
     void uploadImage() throws Exception {
         // given
         given(imageService.saveImage(any()))
-            .willReturn(new ImageUploadResponse("image.jpg"));
+                .willReturn(new ImageUploadResponse("image.jpg"));
 
         MockMultipartFile image = new MockMultipartFile("image",
-            "test.jpg",
-            "images/jpg",
-            new byte[]{});
+                "test.jpg",
+                "images/jpg",
+                new byte[]{});
 
         // when
         ResultActions resultActions = mockMvc.perform(
-                multipart("/api/upload-image")
-                    .file(image)
-            )
-            .andDo(print())
-            .andExpectAll(
-                status().isOk()
-            );
+                        multipart("/api/upload-image")
+                                .file(image)
+                )
+                .andDo(print())
+                .andExpectAll(
+                        status().isOk()
+                );
 
         resultActions.andDo(
-            document("images/upload-image",
-                getRequestPreprocessor(),
-                getResponsePreprocessor(),
-                requestPartBody("image"),
-                responseFields(
-                    fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("저장된 Image Url")
+                document("images/upload-image",
+                        getRequestPreprocessor(),
+                        getResponsePreprocessor(),
+                        requestPartBody("image"),
+                        responseFields(
+                                // common filed of response
+                                fieldWithPath("code").type(NUMBER).description("응답코드"),
+                                fieldWithPath("message").type(STRING).description("응답 메시지"),
+                                // body of response
+                                fieldWithPath("data.imageUrl").type(JsonFieldType.STRING).description("저장된 Image Url")
+                        )
                 )
-            )
         );
     }
 }
