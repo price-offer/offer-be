@@ -14,6 +14,7 @@ import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.sort.SortType;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class PostController {
 
     private final PostService postService;
 
+    @Operation(summary = "게시글 생성")
     @PostMapping("/posts")
     public ResponseEntity<ApiResponse> createPost(@AuthenticationPrincipal LoginMember loginMember,
                                                   @RequestBody PostCreateRequest request) {
@@ -41,7 +43,7 @@ public class PostController {
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
-
+    @Operation(summary = "게시글 목록 조회")
     @GetMapping("/posts")
     public ResponseEntity<ApiResponse> showPosts(PostReadParams params) {
         PostSummaries response = postService.getPosts(params);
@@ -51,6 +53,7 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시글 단건 조회" )
     @GetMapping("/posts/{postId}")
     public ResponseEntity<ApiResponse> showPost(@AuthenticationPrincipal LoginMember loginMember,
                                                 @PathVariable Long postId) {
@@ -62,6 +65,7 @@ public class PostController {
     }
 
     // TODO: #14 추후 분리
+    @Operation(summary = "정렬 옵션 목록 조회")
     @GetMapping("/sorts")
     public ResponseEntity<ApiResponse> showSortItems(String type) {
         List<SortResponse> response = postService.getSortItems(SortType.from(type));
@@ -71,6 +75,7 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "카테고리 목록 조회")
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse> showCategories() {
         List<CategoryResponse> response = postService.getCategoryItems();
