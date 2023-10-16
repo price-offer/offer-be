@@ -8,6 +8,7 @@ import com.offer.common.response.ResponseMessage;
 import com.offer.offer.application.OfferService;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OffersResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class OfferController {
         );
     }
 
+    @Operation(summary = "가격제안 생성")
     @PostMapping("/api/posts/{postId}/offers")
     public ResponseEntity<ApiResponse> createOffer(@PathVariable Long postId,
                                                    @RequestBody OfferCreateRequest request,
@@ -43,6 +45,7 @@ public class OfferController {
         );
     }
 
+    @Operation(summary = "단건 게시글에 대한 가격제안 조회")
     @GetMapping("/api/posts/{postId}/offers")
     public ResponseEntity<ApiResponse> getAllOffersByPost(@PathVariable Long postId,
                                                           @AuthenticationPrincipal LoginMember loginMember) {
