@@ -30,7 +30,7 @@ public class ReviewService {
     @Transactional
     public CommonCreationResponse createReview(ReviewCreateRequest request, Long reviewerId) {
         Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new BusinessException(ResponseMessage.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ResponseMessage.POST_NOT_FOUND));
 
         Member reviewer = memberRepository.getById(reviewerId);
         Member reviewee = memberRepository.getById(request.getTargetMemberId());

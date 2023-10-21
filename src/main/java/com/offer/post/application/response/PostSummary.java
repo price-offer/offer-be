@@ -43,4 +43,16 @@ public class PostSummary {
             .createdAt(post.getCreatedAt())
             .build();
     }
+
+    public static PostSummary from(Post post, boolean isLiked) {
+        return PostSummary.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .price(post.getPrice())
+                .location(post.getLocation())
+                .thumbnailImageUrl(post.getThumbnailImageUrl())
+                .liked(isLiked)
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
 }

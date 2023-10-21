@@ -27,6 +27,6 @@
 
 ### Reference Documents
 
-- [API Document](https://github.com/price-offer/offer-be/wiki/API)
+- [API Document](http://35.213.43.216:32667/swagger-ui/index.html)
 - [Front-end Repo](https://github.com/price-offer/offer-fe)
 - [와이어프레임 및 디자인](https://www.figma.com/file/PhqIqgC8ZJ1ovQTqLQuKKD/Price-Offer?node-id=2760%3A4512)

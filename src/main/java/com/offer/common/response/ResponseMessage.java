@@ -19,8 +19,8 @@ public enum ResponseMessage {
     LOGIN_FAIL(4004, "email 또는 비밀번호가 일치하지 않습니다."),
     DUPLICATE_EMAIL(4005, "이미 존재하는 이메일입니다."),
 
-    // article
-    ARTICLE_NOT_FOUND(4006, "요청한 게시글을 찾을 수 없습니다."),
+    // post
+    POST_NOT_FOUND(4006, "요청한 게시글을 찾을 수 없습니다."),
     PRODUCT_STATUS_NOT_FOUND(4007, "요청한 상품 상태(중고상품, 새상품)가 올바르지 않습니다."),
     TRADE_STATUS_NOT_FOUND(4008, "요청한 거래 상태가 존재하지 않습니다."),
     TRADE_METHOD_NOT_FOUND(4009, "요청한 거래방식이 존재하지 않습니다."),
