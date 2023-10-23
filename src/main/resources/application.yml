@@ -52,6 +52,7 @@ spring:
 
 file:
   upload-dir: images
+  server-path: http://localhost:7070/images
 
 ---
 spring:
@@ -60,3 +61,4 @@ spring:
       on-profile: prod
 file:
   upload-dir: /home/ubuntu/images
+  server-path: https://offer-be.kro.kr/api/images/
