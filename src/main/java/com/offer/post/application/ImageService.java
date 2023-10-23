@@ -34,7 +34,6 @@ public class ImageService {
     public ImageUploadResponse saveImage(MultipartFile image) {
         try {
             ImageFile imageFile = ImageFile.from(image);
-
             String imageFileInputName = imageFile.randomName();
             Path fileStorageLocation = resolvePath(imageFileInputName);
             Files.copy(imageFile.inputStream(), fileStorageLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -52,11 +51,12 @@ public class ImageService {
     public ImageResponse getImage(String imageUrl) {
         try {
             Path fileStorageLocation = resolvePath(imageUrl);
+            log.info("fileStorageLocation = {}", fileStorageLocation.getFileName());
             File file = fileStorageLocation.toFile();
             ImageExtension imageExtension = ImageExtension.from(FilenameUtils.getExtension(file.getName()));
             byte[] image = IOUtils.toByteArray(new FileInputStream(file));
             return ImageResponse.of(image, imageExtension.getContentType());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("파일 조회 실패");
             throw new RuntimeException(e);
         }

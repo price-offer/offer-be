@@ -60,5 +60,5 @@ spring:
     activate:
       on-profile: prod
 file:
-  upload-dir: /home/ubuntu/images
+  upload-dir: /home/ubuntu/images/
   server-path: https://offer-be.kro.kr/images/
