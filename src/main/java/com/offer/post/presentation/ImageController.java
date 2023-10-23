@@ -8,6 +8,7 @@ import com.offer.post.application.response.ImageUploadResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class ImageController {
 
@@ -39,6 +41,7 @@ public class ImageController {
     @Operation(summary = "이미지 조회" , description = "")
     @GetMapping("/api/load-image/{path}")
     public ResponseEntity<byte[]> getImage(@PathVariable String path) {
+        log.info("/api/load-image/" + path);
         ImageResponse response = imageService.getImage(path);
         return ResponseEntity.ok()
             .cacheControl(CacheControl.maxAge(CACHE_CONTROL_MAX_AGE, TimeUnit.DAYS))
