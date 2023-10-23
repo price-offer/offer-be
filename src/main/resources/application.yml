@@ -61,4 +61,4 @@ spring:
       on-profile: prod
 file:
   upload-dir: /home/ubuntu/images
-  server-path: https://offer-be.kro.kr/api/images/
+  server-path: https://offer-be.kro.kr/images/

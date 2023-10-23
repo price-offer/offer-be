@@ -37,7 +37,7 @@ public class ImageController {
     }
 
     @Operation(summary = "이미지 조회" , description = "")
-    @GetMapping("/api/images/{path}")
+    @GetMapping("/api/load-image/{path}")
     public ResponseEntity<byte[]> getImage(@PathVariable String path) {
         ImageResponse response = imageService.getImage(path);
         return ResponseEntity.ok()
