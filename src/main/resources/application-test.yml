@@ -5,6 +5,7 @@ spring:
 
 file:
   upload-dir: images
+  server-path: http://localhost:7070/images
 
 oauth2:
   kakao:
