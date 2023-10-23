@@ -44,14 +44,9 @@ public class ImageService {
         }
     }
 
-    private Path resolvePath(final String imageUrl) {
-        return storagePath.resolve(imageUrl);
-    }
-
     public ImageResponse getImage(String imageUrl) {
         try {
             Path fileStorageLocation = resolvePath(imageUrl);
-            log.info("fileStorageLocation = {}", fileStorageLocation.getFileName());
             File file = fileStorageLocation.toFile();
             ImageExtension imageExtension = ImageExtension.from(FilenameUtils.getExtension(file.getName()));
             byte[] image = IOUtils.toByteArray(new FileInputStream(file));
@@ -60,5 +55,9 @@ public class ImageService {
             log.error("파일 조회 실패");
             throw new RuntimeException(e);
         }
+    }
+
+    private Path resolvePath(final String imageUrl) {
+        return storagePath.resolve(imageUrl);
     }
 }
