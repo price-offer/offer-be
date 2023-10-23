@@ -2,6 +2,7 @@ package com.offer.post.application.response;
 
 import com.offer.post.domain.Post;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class PostSummary {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
-    @Builder
+    @Builder(toBuilder = true)
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
         boolean liked, LocalDateTime createdAt) {
         this.id = id;
@@ -32,14 +33,19 @@ public class PostSummary {
         this.createdAt = createdAt;
     }
 
-    public static PostSummary from(Post post) {
+    public static PostSummary from(Post post, Set<Long> likePostIds) {
+        boolean liked = false;
+        if (likePostIds.contains(post.getId())) {
+            liked = true;
+        }
+
         return PostSummary.builder()
             .id(post.getId())
             .title(post.getTitle())
             .price(post.getPrice())
             .location(post.getLocation())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
-            .liked(false)  // TODO: 2023/09/24 NOT IMPLEMENTED
+            .liked(liked)  // TODO: 2023/09/24 NOT IMPLEMENTED
             .createdAt(post.getCreatedAt())
             .build();
     }

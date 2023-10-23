@@ -43,13 +43,15 @@ public class PostController {
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
+
     @Operation(summary = "게시글 목록 조회")
     @GetMapping("/posts")
-    public ResponseEntity<ApiResponse> showPosts(PostReadParams params) {
-        PostSummaries response = postService.getPosts(params);
+    public ResponseEntity<ApiResponse> showPosts(@AuthenticationPrincipal LoginMember loginMember,
+                                                  PostReadParams params) {
+        PostSummaries response = postService.getPosts(params, loginMember);
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 

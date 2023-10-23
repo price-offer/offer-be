@@ -1,5 +1,6 @@
 package com.offer.post.application;
 
+import com.offer.authentication.presentation.LoginMember;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
@@ -8,10 +9,8 @@ import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
-import com.offer.post.application.response.PostSummary;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.PostQueryRepository;
-import com.offer.post.domain.category.Category;
 import com.offer.post.domain.category.CategoryRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
@@ -47,8 +46,8 @@ public class PostService {
         return CommonCreationResponse.of(post.getId(), post.getCreatedAt());
     }
 
-    public PostSummaries getPosts(PostReadParams params) {
-        return postQueryRepository.searchPost(params);
+    public PostSummaries getPosts(PostReadParams params, LoginMember loginMember) {
+        return postQueryRepository.searchPost(params, loginMember.getId());
     }
 
     public PostDetail getPost(Long postId) {

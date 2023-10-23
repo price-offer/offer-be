@@ -8,7 +8,9 @@ import com.offer.post.application.response.PostSummary;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,8 +21,12 @@ import org.springframework.util.StringUtils;
 public class PostQueryRepository {
 
     private final JPAQueryFactory query;
+    private final LikeRepository likeRepository;
 
-    public PostSummaries searchPost(PostReadParams params) {
+    public PostSummaries searchPost(PostReadParams params, Long memberId) {
+
+        Set<Long> likePostIds = getLikePostId(memberId);
+
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (params.getLastId() != null) {
             booleanBuilder.and(post.id.lt(params.getLastId()));
@@ -39,7 +45,7 @@ public class PostQueryRepository {
             posts.remove(params.getLimit());
             return PostSummaries.builder()
                 .data(posts.stream()
-                    .map(PostSummary::from)
+                    .map(post -> PostSummary.from(post, likePostIds))
                     .collect(Collectors.toList()))
                 .hasNext(true)
                 .build();
@@ -47,10 +53,19 @@ public class PostQueryRepository {
 
         return PostSummaries.builder()
             .data(posts.stream()
-                .map(PostSummary::from)
+                .map(post -> PostSummary.from(post, likePostIds))
                 .collect(Collectors.toList()))
             .hasNext(false)
             .build();
+    }
+
+    private Set<Long> getLikePostId(Long memberId) {
+        if (memberId == null) {
+            return Collections.emptySet();
+        }
+        return likeRepository.findAllByMemberId(memberId).stream()
+            .map(like -> like.getPost().getId())
+            .collect(Collectors.toSet());
     }
 
     private BooleanExpression lastIdLt(Long lastId) {
