@@ -29,7 +29,7 @@ class ImageControllerTest extends DocumentationTest {
         given(imageService.saveImage(any()))
                 .willReturn(new ImageUploadResponse("image.jpg"));
 
-        MockMultipartFile image = new MockMultipartFile("image",
+        MockMultipartFile image = new MockMultipartFile("file",
                 "test.jpg",
                 "images/jpg",
                 new byte[]{});
@@ -48,7 +48,7 @@ class ImageControllerTest extends DocumentationTest {
                 document("images/upload-image",
                         getRequestPreprocessor(),
                         getResponsePreprocessor(),
-                        requestPartBody("image"),
+                        requestPartBody("file"),
                         responseFields(
                                 // common filed of response
                                 fieldWithPath("code").type(NUMBER).description("응답코드"),

@@ -28,8 +28,8 @@ public class ImageController {
 
     @Operation(summary = "이미지 업로드" , description = "multi-part 형식으로 이미지 전송 시 저장")
     @PostMapping("/api/upload-image")
-    public ResponseEntity<ApiResponse> uploadImage(@RequestPart MultipartFile image) {
-        ImageUploadResponse response = imageService.saveImage(image);
+    public ResponseEntity<ApiResponse> uploadImage(@RequestPart MultipartFile file) {
+        ImageUploadResponse response = imageService.saveImage(file);
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
