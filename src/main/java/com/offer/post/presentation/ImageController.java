@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class ImageController {
 
     @Operation(summary = "이미지 업로드" , description = "multi-part 형식으로 이미지 전송 시 저장")
     @PostMapping("/api/upload-image")
-    public ResponseEntity<ApiResponse> uploadImage(@RequestParam("image") MultipartFile image) {
+    public ResponseEntity<ApiResponse> uploadImage(@RequestPart MultipartFile image) {
         ImageUploadResponse response = imageService.saveImage(image);
 
         return ResponseEntity.ok(
