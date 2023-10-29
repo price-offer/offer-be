@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: price-offer/application-manifests
-          token: ${{ secrets.TRIGGER_ARGO_CD_GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_REPO_ACCESS }}
           path: application-manifests
 
       ## Trigger Argo Rollout
