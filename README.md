@@ -26,7 +26,7 @@
 - SonarCloud, JaCoCo
 
 ### GitOps Architecture
-![archi](https://github.com/price-offer/offer-be/assets/55920132/50713ce1-8d0a-44fe-8284-7df34805eb25)
+![gitops_archi](https://github.com/price-offer/offer-be/assets/55920132/cea3e530-582d-4d63-bf2d-c4793bafba9f)
 
 ### Reference Documents
 
