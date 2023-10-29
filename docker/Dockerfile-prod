@@ -21,4 +21,4 @@ WORKDIR /
 # TimeZone correction
 RUN echo "Asia/Seoul" > /etc/timezone
 
-ENTRYPOINT ["java","-jar","--spring.profiles.active=prod","/offer-dev-app.jar"]
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","/offer-dev-app.jar"]
