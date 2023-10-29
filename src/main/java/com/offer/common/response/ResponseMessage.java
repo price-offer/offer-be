@@ -61,7 +61,7 @@ public enum ResponseMessage {
     EXITED_MESSAGE_ROOM(4701, "나가기한 대화방이거나 없는 대화방입니다."),
     MESSAGE_PARTNER_EXITED_MESSAGE_ROOM(4702, "쪽지 상대가 대화방을 나갔습니다."),
     PERMISSION_DENIED(4703, "접근 권한이 없습니다."),
-    ALREADY_EXIST_MSG_ROOM(4704, "이미 리뷰를 남긴 사용자입니다."),
+    ALREADY_EXIST_MSG_ROOM(4704, "이미 존재하는 메시지 룸입니다."),
 
     ;
 
