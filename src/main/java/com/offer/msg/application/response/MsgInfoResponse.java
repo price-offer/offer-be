@@ -25,11 +25,13 @@ public class MsgInfoResponse {
         private final String imageUrl;
 
         private final String nickname;
+    }
 
-        public static PartnerBriefResponse from(Member member) {
-            return new PartnerBriefResponse(
-                    member.getId(), member.getProfileImageUrl(), member.getNickname()
-            );
-        }
+    public static MsgInfoResponse from(String content, Member member, LocalDateTime sendTime) {
+        return new MsgInfoResponse(
+                content,
+                new PartnerBriefResponse(member.getId(), member.getProfileImageUrl(), member.getNickname()),
+                sendTime
+        );
     }
 }
