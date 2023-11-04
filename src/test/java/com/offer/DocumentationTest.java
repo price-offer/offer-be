@@ -9,6 +9,7 @@ import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.presentation.AuthController;
 import com.offer.authentication.presentation.AuthenticationContext;
+import com.offer.member.MemberRepository;
 import com.offer.offer.application.OfferService;
 import com.offer.offer.presentation.OfferController;
 import com.offer.post.application.ImageService;
@@ -69,6 +70,9 @@ public class DocumentationTest {
 
     @MockBean
     protected OfferService offerService;
+
+    @MockBean
+    protected MemberRepository memberRepository;
 
     protected OperationResponsePreprocessor getResponsePreprocessor() {
         return Preprocessors.preprocessResponse(prettyPrint());
