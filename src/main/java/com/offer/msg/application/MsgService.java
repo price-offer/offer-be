@@ -49,9 +49,9 @@ public class MsgService {
                 });
 
         return msgs.stream()
-                .map(m -> new MsgInfoResponse(
+                .map(m -> MsgInfoResponse.from(
                         m.getContent(),
-                        MsgInfoResponse.PartnerBriefResponse.from(memberRepository.getById(m.getSenderId())),
+                        memberRepository.getById(m.getSenderId()),
                         m.getCreatedAt())
                 )
                 .sorted(Comparator.comparing(MsgInfoResponse::getSendTime))
