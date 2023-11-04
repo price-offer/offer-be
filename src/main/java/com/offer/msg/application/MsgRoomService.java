@@ -12,7 +12,6 @@ import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.domain.Offer;
 import com.offer.offer.domain.OfferRepository;
 import com.offer.post.domain.Post;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;

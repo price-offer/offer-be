@@ -10,7 +10,9 @@ import com.offer.msg.domain.Msg;
 import com.offer.msg.domain.MsgRepository;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +21,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class MsgService {
     private final MsgRoomRepository msgRoomRepository;
     private final MsgRepository msgRepository;
     private final MemberRepository memberRepository;
+
+    private final int DEFAULT_SLICE_SIZE;
+
+    public MsgService(MsgRoomRepository msgRoomRepository,
+                      MsgRepository msgRepository,
+                      MemberRepository memberRepository,
+                      @Value("${slice.default-size}") int DEFAULT_SLICE_SIZE) {
+        this.msgRoomRepository = msgRoomRepository;
+        this.msgRepository = msgRepository;
+        this.memberRepository = memberRepository;
+        this.DEFAULT_SLICE_SIZE = DEFAULT_SLICE_SIZE;
+    }
 
     @Transactional
     public CommonCreationResponse sendMsg(Long msgRoomId, MsgCreateRequest request, Long senderId) {
@@ -38,8 +51,10 @@ public class MsgService {
     }
 
     @Transactional(readOnly = true)
-    public List<MsgInfoResponse> getMsgs(Long msgRoomId) {
-        List<Msg> msgs = msgRepository.findAllByRoomId(msgRoomId);
+    public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId) {
+        PageRequest pageRequest = PageRequest.of(page, DEFAULT_SLICE_SIZE);
+
+        Slice<Msg> msgs = msgRepository.findSliceByRoomId(pageRequest, msgRoomId);
 
         msgs.stream()
                 .filter(m -> !m.isRead())

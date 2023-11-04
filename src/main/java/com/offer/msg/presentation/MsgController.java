@@ -61,8 +61,9 @@ public class MsgController {
     @Operation(summary = "특정 쪽지 room의 전체 쪽지 내용 조회")
     @GetMapping("/api/msgrooms/{msgRoomId}/msgs")
     public ResponseEntity<ApiResponse> getAllMsgs(@AuthenticationPrincipal LoginMember loginMember,
-                                                  @PathVariable Long msgRoomId) {
-        List<MsgInfoResponse> response = msgService.getMsgs(msgRoomId);
+                                                  @PathVariable Long msgRoomId,
+                                                  @RequestParam(required = true) int page) {
+        List<MsgInfoResponse> response = msgService.getMsgs(page, msgRoomId);
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
