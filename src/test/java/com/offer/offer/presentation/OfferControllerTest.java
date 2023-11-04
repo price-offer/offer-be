@@ -1,6 +1,7 @@
 package com.offer.offer.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -81,12 +82,13 @@ class OfferControllerTest extends DocumentationTest {
 
         ApiResponse<OffersResponse> httpResponse = ApiResponse.of(ResponseMessage.SUCCESS, response);
 
-        given(offerService.getAllOffersByPost(any(), any()))
+        given(offerService.getAllOffersByPost(anyInt(), any()))
                 .willReturn(response);
 
         // when && then
         ResultActions resultActions = mockMvc.perform(
-                        get("/api/posts/{postId}/offers/me", 1L)
+                        get("/api/posts/{postId}/offers", 1L)
+                                .param("page", "1")
                                 .header("Authorization", "Bearer jwt.token.here")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
