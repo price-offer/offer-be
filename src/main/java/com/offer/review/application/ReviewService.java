@@ -12,7 +12,7 @@ import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
-import lombok.RequiredArgsConstructor;
+import com.offer.utils.SliceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -68,7 +68,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public List<ReviewInfoResponse> getReviews(int page, Long memberId, Role role) {
-        PageRequest pageRequest = PageRequest.of(page, DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
 
         Slice<Review> reviews = switch (role) {
             case BUYER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, true);

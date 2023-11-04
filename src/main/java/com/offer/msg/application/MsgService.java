@@ -10,6 +10,7 @@ import com.offer.msg.domain.Msg;
 import com.offer.msg.domain.MsgRepository;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
+import com.offer.utils.SliceUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -52,7 +53,7 @@ public class MsgService {
 
     @Transactional(readOnly = true)
     public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId) {
-        PageRequest pageRequest = PageRequest.of(page, DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
 
         Slice<Msg> msgs = msgRepository.findSliceByRoomId(pageRequest, msgRoomId);
 

@@ -12,6 +12,7 @@ import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.domain.Offer;
 import com.offer.offer.domain.OfferRepository;
 import com.offer.post.domain.Post;
+import com.offer.utils.SliceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -64,7 +65,7 @@ public class MsgRoomService {
 
     @Transactional(readOnly = true)
     public List<MsgRoomInfoResponse> getMsgRooms(int page, Long memberId) {
-        PageRequest pageRequest = PageRequest.of(page, DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
 
         Slice<MsgRoom> msgRooms1 = msgRoomRepository.findSliceByMember1Id(pageRequest, memberId);
         Slice<MsgRoom> msgRooms2 = msgRoomRepository.findSliceByMember2Id(pageRequest, memberId);
