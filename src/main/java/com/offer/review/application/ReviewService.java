@@ -13,6 +13,10 @@ import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,19 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+
+    private final int DEFAULT_SLICE_SIZE;
+
+    @Autowired
+    public ReviewService(@Value("${slice.default-size}") final int DEFAULT_SLICE_SIZE,
+                         ReviewRepository reviewRepository,
+                         PostRepository postRepository,
+                         MemberRepository memberRepository) {
+        this.DEFAULT_SLICE_SIZE = DEFAULT_SLICE_SIZE;
+        this.reviewRepository = reviewRepository;
+        this.postRepository = postRepository;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public CommonCreationResponse createReview(ReviewCreateRequest request, Long reviewerId) {
@@ -51,12 +68,13 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewInfoResponse> getReviews(Long memberId, Role role) {
+    public List<ReviewInfoResponse> getReviews(int page, Long memberId, Role role) {
+        PageRequest pageRequest = PageRequest.of(page, DEFAULT_SLICE_SIZE);
 
-        var reviews = switch (role) {
-            case BUYER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, true);
-            case SELLER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, false);
-            case ALL -> reviewRepository.getAllByRevieweeId(memberId);
+        Slice<Review> reviews = switch (role) {
+            case BUYER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, true);
+            case SELLER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, false);
+            case ALL -> reviewRepository.findSliceByRevieweeId(pageRequest, memberId);
         };
 
         return reviews.stream()

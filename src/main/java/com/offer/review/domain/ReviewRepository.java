@@ -2,9 +2,9 @@ package com.offer.review.domain;
 
 import com.offer.member.Member;
 import com.offer.post.domain.Post;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Override
@@ -12,7 +12,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     boolean existsByReviewerAndPost(Member reviewer, Post post);
 
-    List<Review> getAllByRevieweeIdAndIsRevieweeBuyer(Long revieweeId, boolean IsRevieweeBuyer);
+    Slice<Review> findSliceByRevieweeIdAndIsRevieweeBuyer(PageRequest pageRequest, Long revieweeId, boolean IsRevieweeBuyer);
 
-    List<Review> getAllByRevieweeId(Long revieweeId);
+    Slice<Review> findSliceByRevieweeId(PageRequest pageRequest, Long revieweeId);
 }

@@ -34,9 +34,10 @@ public class ReviewController {
     @GetMapping("/reviews")
     public ResponseEntity<ApiResponse> getReviews(@AuthenticationPrincipal LoginMember loginMember,
                                                   @RequestParam(value = "memberId", required = true) Long memberId,
-                                                  @RequestParam(value = "role", required = false) String role) {
+                                                  @RequestParam(value = "role", required = false) String role,
+                                                  @RequestParam(required = true) int page) {
 
-        List<ReviewInfoResponse> response = reviewService.getReviews(memberId, Role.of(role));
+        List<ReviewInfoResponse> response = reviewService.getReviews(page, memberId, Role.of(role));
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
