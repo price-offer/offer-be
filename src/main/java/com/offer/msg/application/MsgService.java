@@ -3,6 +3,7 @@ package com.offer.msg.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.member.MemberRepository;
 import com.offer.msg.application.request.MsgCreateRequest;
 import com.offer.msg.application.response.MsgInfoResponse;
 import com.offer.msg.domain.Msg;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class MsgService {
     private final MsgRoomRepository msgRoomRepository;
     private final MsgRepository msgRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public CommonCreationResponse sendMsg(Long msgRoomId, MsgCreateRequest request, Long senderId) {
@@ -47,7 +49,11 @@ public class MsgService {
                 });
 
         return msgs.stream()
-                .map(m -> new MsgInfoResponse(m.getContent(), m.getCreatedAt()))
+                .map(m -> new MsgInfoResponse(
+                        m.getContent(),
+                        MsgInfoResponse.PartnerBriefResponse.from(memberRepository.getById(m.getSenderId())),
+                        m.getCreatedAt())
+                )
                 .sorted(Comparator.comparing(MsgInfoResponse::getSendTime))
                 .collect(Collectors.toList());
     }
