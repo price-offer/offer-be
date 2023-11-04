@@ -81,7 +81,7 @@ class OfferControllerTest extends DocumentationTest {
 
         ApiResponse<OffersResponse> httpResponse = ApiResponse.of(ResponseMessage.SUCCESS, response);
 
-        given(offerService.getOffersByPost(any(), any()))
+        given(offerService.getAllOffersByPost(any(), any()))
                 .willReturn(response);
 
         // when && then

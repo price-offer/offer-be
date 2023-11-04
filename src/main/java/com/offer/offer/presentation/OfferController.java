@@ -11,27 +11,13 @@ import com.offer.offer.application.response.OffersResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class OfferController {
 
     private final OfferService offerService;
-
-    @GetMapping("/api/posts/{postId}/offers/me")  // TODO: refactor REST API
-    public ResponseEntity<ApiResponse> getOffersByPost(@PathVariable Long postId,
-                                                       @AuthenticationPrincipal LoginMember loginMember) {
-        OffersResponse response = offerService.getOffersByPost(loginMember.getId(), postId);
-
-        return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
-        );
-    }
 
     @Operation(summary = "가격제안 생성")
     @PostMapping("/api/posts/{postId}/offers")
@@ -48,8 +34,9 @@ public class OfferController {
     @Operation(summary = "단건 게시글에 대한 가격제안 조회")
     @GetMapping("/api/posts/{postId}/offers")
     public ResponseEntity<ApiResponse> getAllOffersByPost(@PathVariable Long postId,
-                                                          @AuthenticationPrincipal LoginMember loginMember) {
-        OffersResponse response = offerService.getAllOffersByPost(postId);
+                                                          @AuthenticationPrincipal LoginMember loginMember,
+                                                          @RequestParam(required = true) int page) {
+        OffersResponse response = offerService.getAllOffersByPost(page, postId);
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
