@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;

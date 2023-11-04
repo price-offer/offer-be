@@ -1,8 +1,9 @@
 package com.offer.msg.domain;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MsgRoomRepository extends JpaRepository<MsgRoom, Long> {
@@ -11,7 +12,7 @@ public interface MsgRoomRepository extends JpaRepository<MsgRoom, Long> {
 
     Optional<MsgRoom> findByMember1IdAndMember2IdAndOfferId(Long member1Id, Long member2Id, Long offerId);
 
-    List<MsgRoom> getAllByMember1Id(Long member1Id);
+    Slice<MsgRoom> findSliceByMember1Id(PageRequest pageRequest, Long member1Id);
 
-    List<MsgRoom> getAllByMember2Id(Long member2Id);
+    Slice<MsgRoom> findSliceByMember2Id(PageRequest pageRequest, Long member2Id);
 }
