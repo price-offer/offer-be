@@ -3,6 +3,7 @@ package com.offer.msg.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.config.Properties;
 import com.offer.member.MemberRepository;
 import com.offer.msg.application.request.MsgCreateRequest;
 import com.offer.msg.application.response.MsgInfoResponse;
@@ -11,7 +12,7 @@ import com.offer.msg.domain.MsgRepository;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.utils.SliceUtils;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -22,22 +23,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MsgService {
     private final MsgRoomRepository msgRoomRepository;
     private final MsgRepository msgRepository;
     private final MemberRepository memberRepository;
-
-    private final int DEFAULT_SLICE_SIZE;
-
-    public MsgService(MsgRoomRepository msgRoomRepository,
-                      MsgRepository msgRepository,
-                      MemberRepository memberRepository,
-                      @Value("${slice.default-size}") int DEFAULT_SLICE_SIZE) {
-        this.msgRoomRepository = msgRoomRepository;
-        this.msgRepository = msgRepository;
-        this.memberRepository = memberRepository;
-        this.DEFAULT_SLICE_SIZE = DEFAULT_SLICE_SIZE;
-    }
 
     @Transactional
     public CommonCreationResponse sendMsg(Long msgRoomId, MsgCreateRequest request, Long senderId) {
@@ -53,7 +43,7 @@ public class MsgService {
 
     @Transactional(readOnly = true)
     public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId) {
-        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
         Slice<Msg> msgs = msgRepository.findSliceByRoomId(pageRequest, msgRoomId);
 

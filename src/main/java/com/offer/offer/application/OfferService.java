@@ -1,6 +1,7 @@
 package com.offer.offer.application;
 
 import com.offer.common.response.CommonCreationResponse;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.offer.application.request.OfferCreateRequest;
@@ -22,10 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class OfferService {
-
-    private static final int MAX_OFFER_COUNT = 2;
-    private final int DEFAULT_SLICE_SIZE = 20;
-
     private final PostRepository postRepository;
     private final OfferRepository offerRepository;
     private final MemberRepository memberRepository;
@@ -36,7 +33,7 @@ public class OfferService {
         List<Offer> offersByOfferer = offerRepository.findAllByOffererIdAndPostId(offererId, postId);
         int offerCountOfCurrentMember = offersByOfferer.size();
 
-        if (offerCountOfCurrentMember >= MAX_OFFER_COUNT) {
+        if (offerCountOfCurrentMember >= Properties.MAX_OFFER_COUNT) {
             throw new IllegalArgumentException(
                     "최대 가격제안 횟수 초과. offerCountOfCurrentMember = " + offerCountOfCurrentMember);
         }
@@ -57,7 +54,7 @@ public class OfferService {
 
     @Transactional(readOnly = true)
     public OffersResponse getAllOffersByPost(int page, Long postId) {
-        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
         Slice<Offer> offersByPost = offerRepository.findSliceByPostId(pageRequest, postId);
         return OffersResponse.of(offersByPost.stream().toList(), postId, 0);

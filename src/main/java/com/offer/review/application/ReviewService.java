@@ -3,6 +3,7 @@ package com.offer.review.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.domain.Post;
@@ -13,8 +14,7 @@ import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
 import com.offer.utils.SliceUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -25,23 +25,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-
-    private final int DEFAULT_SLICE_SIZE;
-
-    @Autowired
-    public ReviewService(@Value("${slice.default-size}") final int DEFAULT_SLICE_SIZE,
-                         ReviewRepository reviewRepository,
-                         PostRepository postRepository,
-                         MemberRepository memberRepository) {
-        this.DEFAULT_SLICE_SIZE = DEFAULT_SLICE_SIZE;
-        this.reviewRepository = reviewRepository;
-        this.postRepository = postRepository;
-        this.memberRepository = memberRepository;
-    }
 
     @Transactional
     public CommonCreationResponse createReview(ReviewCreateRequest request, Long reviewerId) {
@@ -68,7 +56,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public List<ReviewInfoResponse> getReviews(int page, Long memberId, Role role) {
-        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), DEFAULT_SLICE_SIZE);
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
         Slice<Review> reviews = switch (role) {
             case BUYER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, true);
