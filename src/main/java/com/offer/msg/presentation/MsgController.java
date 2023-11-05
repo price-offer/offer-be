@@ -37,8 +37,9 @@ public class MsgController {
 
     @Operation(summary = "쪽지 room 목록 조회")
     @GetMapping("/api/msgrooms")
-    public ResponseEntity<ApiResponse> getMsgRooms(@AuthenticationPrincipal LoginMember loginMember) {
-        List<MsgRoomInfoResponse> response = msgRoomService.getMsgRooms(loginMember.getId());
+    public ResponseEntity<ApiResponse> getMsgRooms(@AuthenticationPrincipal LoginMember loginMember,
+                                                   @RequestParam(required = true) int page) {
+        List<MsgRoomInfoResponse> response = msgRoomService.getMsgRooms(page, loginMember.getId());
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
@@ -60,8 +61,9 @@ public class MsgController {
     @Operation(summary = "특정 쪽지 room의 전체 쪽지 내용 조회")
     @GetMapping("/api/msgrooms/{msgRoomId}/msgs")
     public ResponseEntity<ApiResponse> getAllMsgs(@AuthenticationPrincipal LoginMember loginMember,
-                                                  @PathVariable Long msgRoomId) {
-        List<MsgInfoResponse> response = msgService.getMsgs(msgRoomId);
+                                                  @PathVariable Long msgRoomId,
+                                                  @RequestParam(required = true) int page) {
+        List<MsgInfoResponse> response = msgService.getMsgs(page, msgRoomId);
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)

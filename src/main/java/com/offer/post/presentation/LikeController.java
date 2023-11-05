@@ -33,9 +33,10 @@ public class LikeController {
 
     @Operation(summary = "내가 좋아한 모든 게시물")
     @GetMapping("/posts/likes")
-    public ResponseEntity<ApiResponse> getAll(@AuthenticationPrincipal LoginMember loginMember) {
+    public ResponseEntity<ApiResponse> getAll(@AuthenticationPrincipal LoginMember loginMember,
+                                              @RequestParam(required = true) int page) {
 
-        List<PostSummary> response = likeService.findLikePosts(loginMember.getId());
+        List<PostSummary> response = likeService.findLikePosts(page, loginMember.getId());
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)

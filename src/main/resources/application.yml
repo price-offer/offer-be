@@ -37,6 +37,9 @@ spring:
 server:
   port: 7070
 
+slice:
+  default-size: 20
+
 logging:
   level:
     org:

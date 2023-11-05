@@ -2,6 +2,7 @@ package com.offer.post.application;
 
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.application.request.ToggleLikeRequest;
@@ -10,7 +11,10 @@ import com.offer.post.domain.Like;
 import com.offer.post.domain.LikeRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
+import com.offer.utils.SliceUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +48,10 @@ public class LikeService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostSummary> findLikePosts(Long memberId) {
-        List<Like> likes = likeRepository.findAllByMemberId(memberId);
+    public List<PostSummary> findLikePosts(int page, Long memberId) {
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
+
+        Slice<Like> likes = likeRepository.findSliceByMemberId(pageRequest, memberId);
 
         return likes.stream()
                 .map(l -> PostSummary.from(l.getPost(), true))

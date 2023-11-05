@@ -3,6 +3,7 @@ package com.offer.review.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.domain.Post;
@@ -12,7 +13,10 @@ import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
+import com.offer.utils.SliceUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,12 +55,13 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewInfoResponse> getReviews(Long memberId, Role role) {
+    public List<ReviewInfoResponse> getReviews(int page, Long memberId, Role role) {
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
-        var reviews = switch (role) {
-            case BUYER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, true);
-            case SELLER -> reviewRepository.getAllByRevieweeIdAndIsRevieweeBuyer(memberId, false);
-            case ALL -> reviewRepository.getAllByRevieweeId(memberId);
+        Slice<Review> reviews = switch (role) {
+            case BUYER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, true);
+            case SELLER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, false);
+            case ALL -> reviewRepository.findSliceByRevieweeId(pageRequest, memberId);
         };
 
         return reviews.stream()

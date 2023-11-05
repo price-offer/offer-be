@@ -3,6 +3,7 @@ package com.offer.msg.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.msg.application.request.MsgRoomCreateRequest;
@@ -12,7 +13,10 @@ import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.domain.Offer;
 import com.offer.offer.domain.OfferRepository;
 import com.offer.post.domain.Post;
+import com.offer.utils.SliceUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +52,13 @@ public class MsgRoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<MsgRoomInfoResponse> getMsgRooms(Long memberId) {
-        List<MsgRoom> msgRooms1 = msgRoomRepository.getAllByMember1Id(memberId);
-        List<MsgRoom> msgRooms2 = msgRoomRepository.getAllByMember2Id(memberId);
+    public List<MsgRoomInfoResponse> getMsgRooms(int page, Long memberId) {
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
-        List<MsgRoomInfoResponse> response = new ArrayList<>(msgRooms1.size() + msgRooms2.size());
+        Slice<MsgRoom> msgRooms1 = msgRoomRepository.findSliceByMember1Id(pageRequest, memberId);
+        Slice<MsgRoom> msgRooms2 = msgRoomRepository.findSliceByMember2Id(pageRequest, memberId);
+
+        List<MsgRoomInfoResponse> response = new ArrayList<>(msgRooms1.getNumber() + msgRooms2.getNumber());
 
         for (MsgRoom msgRoom : msgRooms1) {  // TODO: refactor
             Member partner = msgRoom.getMember2();

@@ -1,6 +1,7 @@
 package com.offer.offer.application;
 
 import com.offer.common.response.CommonCreationResponse;
+import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.offer.application.request.OfferCreateRequest;
@@ -12,30 +13,19 @@ import com.offer.post.domain.PostRepository;
 
 import java.util.List;
 
+import com.offer.utils.SliceUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class OfferService {
-
-    private static final int MAX_OFFER_COUNT = 2;
-
     private final PostRepository postRepository;
     private final OfferRepository offerRepository;
     private final MemberRepository memberRepository;
-
-    @Transactional(readOnly = true)
-    public OffersResponse getOffersByPost(Long offererId, Long postId) {
-        List<Offer> offersByPost = offerRepository.findAllByPostId(postId);
-        if (offererId == null) {
-            return OffersResponse.of(offersByPost, postId, 0);
-        }
-
-        List<Offer> offersByOfferer = offerRepository.findAllByOffererIdAndPostId(offererId, postId);
-        return OffersResponse.of(offersByPost, postId, offersByOfferer.size());
-    }
 
     @Transactional
     public CommonCreationResponse createOffer(Long postId, OfferCreateRequest request, Long offererId) {
@@ -43,7 +33,7 @@ public class OfferService {
         List<Offer> offersByOfferer = offerRepository.findAllByOffererIdAndPostId(offererId, postId);
         int offerCountOfCurrentMember = offersByOfferer.size();
 
-        if (offerCountOfCurrentMember >= MAX_OFFER_COUNT) {
+        if (offerCountOfCurrentMember >= Properties.MAX_OFFER_COUNT) {
             throw new IllegalArgumentException(
                     "최대 가격제안 횟수 초과. offerCountOfCurrentMember = " + offerCountOfCurrentMember);
         }
@@ -63,9 +53,11 @@ public class OfferService {
     }
 
     @Transactional(readOnly = true)
-    public OffersResponse getAllOffersByPost(Long postId) {
-        List<Offer> offersByPost = offerRepository.findAllByPostId(postId);
-        return OffersResponse.of(offersByPost, postId, 0);
+    public OffersResponse getAllOffersByPost(int page, Long postId) {
+        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
+
+        Slice<Offer> offersByPost = offerRepository.findSliceByPostId(pageRequest, postId);
+        return OffersResponse.of(offersByPost.stream().toList(), postId, 0);
     }
 
 }
