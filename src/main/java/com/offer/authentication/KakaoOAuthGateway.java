@@ -25,7 +25,6 @@ public class KakaoOAuthGateway {
     private static final String OAUTH_LOGIN_URL_SUFFIX = "?client_id=%s&redirect_uri=%s&response_type=code";
 
     private String clientId;
-    private String clientSecret;
     private String redirectUrl;
     private String oauthServerUrl;
 
@@ -44,11 +43,10 @@ public class KakaoOAuthGateway {
         HashMap<String, String> request = new HashMap<>();
         request.put("grant_type", "authorization_code");
         request.put("client_id", clientId);
-        request.put("client_secret", clientSecret);
         request.put("redirect_uri", redirectUrl);
         request.put("code", authCode);
 
-        String token = kakaoTokenClient.inquireToken(clientId, clientSecret, redirectUrl, authCode);
+        String token = kakaoTokenClient.inquireToken(clientId, redirectUrl, authCode);
         KakaoSocialProfileResponse profileResponse = socialProfileClient.inquireProfile(token);
 
         return new SocialProfile(OAuthType.KAKAO, profileResponse.getId(), profileResponse.getProfileImageUrl());

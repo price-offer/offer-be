@@ -15,8 +15,7 @@ public class KakaoTokenClient {
 
     private final WebClient.Builder webClientBuilder;
 
-    public String inquireToken(String clientId, String clientSecret, String redirectUrl,
-                               String authCode) {
+    public String inquireToken(String clientId, String redirectUrl, String authCode) {
         WebClient webClient = webClientBuilder.baseUrl("https://kauth.kakao.com/oauth/token")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .build();
@@ -24,7 +23,6 @@ public class KakaoTokenClient {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "authorization_code");
         formData.add("client_id", clientId);
-        formData.add("client_secret", clientSecret);
         formData.add("redirect_uri", redirectUrl);
         formData.add("code", authCode);
 
