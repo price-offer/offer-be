@@ -37,3 +37,48 @@ values (13000, now(), now(), 1, 'GAME', '젤다 게임팩 판매중', '동작구
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
 values (14000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (15000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (16000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (17000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (18000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (19000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (20000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (21000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (22000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (23000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (24000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (25000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (26000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (27000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (28000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type)
+values (29000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING');
