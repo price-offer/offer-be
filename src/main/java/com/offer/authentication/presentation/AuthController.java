@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final OAuthService oAuthService;
@@ -35,6 +37,7 @@ public class AuthController {
     @Operation(summary = "로그인 (카카오 인가코드로)")
     @GetMapping("login/kakao")
     public OAuthLoginResponse kakaoLogin(@RequestParam String code) {
+        log.info("auth code = {}", code);
         return oAuthService.kakaoLogin(code);
     }
 
