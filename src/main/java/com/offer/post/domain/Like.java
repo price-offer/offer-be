@@ -10,6 +10,7 @@ import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "favorite")
 @Getter
 @ToString
 public class Like {
