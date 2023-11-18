@@ -29,6 +29,12 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
 
+    @Operation(summary = "카카오 로그인 페이지 url 조회")
+    @GetMapping("authorization/kakao-url")
+    public OAuthLoginUrlResponse showKakaoLoginUrl() {
+        return oAuthService.getKakaoLoginUrl();
+    }
+
     @Operation(summary = "로그인 (카카오 인가코드로)")
     @GetMapping("login/kakao")
     public ResponseEntity<ApiResponse<OAuthLoginResponse>> kakaoLogin(@RequestParam String code) {
