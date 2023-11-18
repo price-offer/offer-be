@@ -9,7 +9,9 @@ import com.offer.review.application.ReviewService;
 import com.offer.review.application.request.ReviewCreateRequest;
 import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.domain.Role;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Operation(summary = "리뷰 생성", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/reviews")
     public ResponseEntity<ApiResponse<CommonCreationResponse>> createReview(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
@@ -34,6 +37,7 @@ public class ReviewController {
         );
     }
 
+    @Operation(summary = "리뷰 조회", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/reviews")
     public ResponseEntity<ApiResponse<List<ReviewInfoResponse>>> getReviews(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,

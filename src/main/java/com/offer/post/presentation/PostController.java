@@ -35,7 +35,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @Operation(summary = "게시글 생성")
+    @Operation(summary = "게시글 생성", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/posts")
     public ResponseEntity<ApiResponse<CommonCreationResponse>> createPost(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
@@ -48,7 +48,7 @@ public class PostController {
         );
     }
 
-    @Operation(summary = "게시글 목록 조회", security = {@SecurityRequirement(name = "bearer-key")})
+    @Operation(summary = "게시글 목록 조회", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/posts")
     public ResponseEntity<ApiResponse<PostSummaries>> showPosts(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,

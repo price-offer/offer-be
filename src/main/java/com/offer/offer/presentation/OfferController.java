@@ -10,6 +10,7 @@ import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OffersResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    @Operation(summary = "가격제안 생성")
+    @Operation(summary = "가격제안 생성", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/api/posts/{postId}/offers")
     public ResponseEntity<ApiResponse<CommonCreationResponse>> createOffer(
         @PathVariable Long postId, @RequestBody OfferCreateRequest request,

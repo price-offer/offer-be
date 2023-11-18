@@ -9,6 +9,7 @@ import com.offer.post.application.request.ToggleLikeRequest;
 import com.offer.post.application.response.PostSummary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import java.util.List;
 public class LikeController {
     private final LikeService likeService;
 
-    @Operation(summary = "좋아요 상태 변환")
+    @Operation(summary = "좋아요 상태 변환", security = {@SecurityRequirement(name = "jwt")})
     @PutMapping("/posts/likes")
     public ResponseEntity<ApiResponse> toggle(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
@@ -34,7 +35,7 @@ public class LikeController {
         );
     }
 
-    @Operation(summary = "내가 좋아한 모든 게시물")
+    @Operation(summary = "내가 좋아한 모든 게시물", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/posts/likes")
     public ResponseEntity<ApiResponse<List<PostSummary>>> getAll(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
