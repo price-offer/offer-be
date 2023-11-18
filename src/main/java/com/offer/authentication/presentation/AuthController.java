@@ -4,6 +4,8 @@ import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
+import com.offer.common.response.ApiResponse;
+import com.offer.common.response.ResponseMessage;
 import com.offer.member.MemberRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.HashMap;
@@ -27,18 +29,13 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
 
-    @Operation(summary = "카카오 로그인 페이지 url 조회")
-    @GetMapping("authorization/kakao-url")
-    public OAuthLoginUrlResponse showKakaoLoginUrl() {
-        return oAuthService.getKakaoLoginUrl();
-    }
-
-    // kakao redirect-url 경로와 일치 해야함.
     @Operation(summary = "로그인 (카카오 인가코드로)")
     @GetMapping("login/kakao")
-    public OAuthLoginResponse kakaoLogin(@RequestParam String code) {
+    public ResponseEntity<ApiResponse<OAuthLoginResponse>> kakaoLogin(@RequestParam String code) {
         log.info("auth code = {}", code);
-        return oAuthService.kakaoLogin(code);
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, oAuthService.kakaoLogin(code))
+        );
     }
 
     /**

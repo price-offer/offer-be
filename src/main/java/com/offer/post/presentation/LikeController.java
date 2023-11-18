@@ -8,6 +8,7 @@ import com.offer.post.application.LikeService;
 import com.offer.post.application.request.ToggleLikeRequest;
 import com.offer.post.application.response.PostSummary;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +23,27 @@ public class LikeController {
 
     @Operation(summary = "좋아요 상태 변환")
     @PutMapping("/posts/likes")
-    public ResponseEntity<ApiResponse> toggle(@AuthenticationPrincipal LoginMember loginMember,
-                                              @RequestBody ToggleLikeRequest request) {
+    public ResponseEntity<ApiResponse> toggle(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @RequestBody ToggleLikeRequest request) {
+
         likeService.toggleStatus(request, loginMember.getId());
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS)
+            ApiResponse.of(ResponseMessage.SUCCESS)
         );
     }
 
     @Operation(summary = "내가 좋아한 모든 게시물")
     @GetMapping("/posts/likes")
-    public ResponseEntity<ApiResponse> getAll(@AuthenticationPrincipal LoginMember loginMember,
-                                              @RequestParam(required = true) int page) {
+    public ResponseEntity<ApiResponse<List<PostSummary>>> getAll(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @RequestParam(required = true) int page) {
 
         List<PostSummary> response = likeService.findLikePosts(page, loginMember.getId());
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 }

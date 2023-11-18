@@ -9,6 +9,7 @@ import com.offer.offer.application.OfferService;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OffersResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +22,24 @@ public class OfferController {
 
     @Operation(summary = "가격제안 생성")
     @PostMapping("/api/posts/{postId}/offers")
-    public ResponseEntity<ApiResponse> createOffer(@PathVariable Long postId,
-                                                   @RequestBody OfferCreateRequest request,
-                                                   @AuthenticationPrincipal LoginMember loginMember) {
-        CommonCreationResponse response = offerService.createOffer(postId, request, loginMember.getId());
+    public ResponseEntity<ApiResponse<CommonCreationResponse>> createOffer(
+        @PathVariable Long postId, @RequestBody OfferCreateRequest request,
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember) {
+
+        CommonCreationResponse response = offerService.createOffer(postId, request,
+            loginMember.getId());
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 
     @Operation(summary = "단건 게시글에 대한 가격제안 조회")
     @GetMapping("/api/posts/{postId}/offers")
-    public ResponseEntity<ApiResponse> getAllOffersByPost(@PathVariable Long postId,
-                                                          @AuthenticationPrincipal LoginMember loginMember,
-                                                          @RequestParam(required = true) int page) {
+    public ResponseEntity<ApiResponse<OffersResponse>> getAllOffersByPost(@PathVariable Long postId,
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @RequestParam(required = true) int page) {
+
         OffersResponse response = offerService.getAllOffersByPost(page, postId);
 
         return ResponseEntity.ok(

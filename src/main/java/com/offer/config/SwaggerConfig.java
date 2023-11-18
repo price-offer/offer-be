@@ -3,7 +3,9 @@ package com.offer.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,11 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         Server server = new Server();
         server.setUrl("https://offer-be.kro.kr");
-        return new OpenAPI().servers(List.of(server));
+        return new OpenAPI()
+            .servers(List.of(server))
+            .components(new Components()
+                .addSecuritySchemes("bearer-key",
+                    new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))
+            );
     }
 }

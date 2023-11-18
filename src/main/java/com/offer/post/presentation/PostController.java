@@ -15,6 +15,8 @@ import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.sort.SortType;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -35,19 +37,23 @@ public class PostController {
 
     @Operation(summary = "게시글 생성")
     @PostMapping("/posts")
-    public ResponseEntity<ApiResponse> createPost(@AuthenticationPrincipal LoginMember loginMember,
-                                                  @RequestBody PostCreateRequest request) {
+    public ResponseEntity<ApiResponse<CommonCreationResponse>> createPost(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @RequestBody PostCreateRequest request) {
+
         CommonCreationResponse response = postService.createPost(request, loginMember.getId());
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 
-    @Operation(summary = "게시글 목록 조회")
+    @Operation(summary = "게시글 목록 조회", security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping("/posts")
-    public ResponseEntity<ApiResponse> showPosts(@AuthenticationPrincipal LoginMember loginMember,
-                                                  PostReadParams params) {
+    public ResponseEntity<ApiResponse<PostSummaries>> showPosts(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        PostReadParams params) {
+
         PostSummaries response = postService.getPosts(params, loginMember);
 
         return ResponseEntity.ok(
@@ -55,21 +61,23 @@ public class PostController {
         );
     }
 
-    @Operation(summary = "게시글 단건 조회" )
+    @Operation(summary = "게시글 단건 조회")
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<ApiResponse> showPost(@AuthenticationPrincipal LoginMember loginMember,
-                                                @PathVariable Long postId) {
+    public ResponseEntity<ApiResponse<PostDetail>> showPost(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @PathVariable Long postId) {
+
         PostDetail response = postService.getPost(postId);
 
         return ResponseEntity.ok(
-                ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 
     // TODO: #14 추후 분리
     @Operation(summary = "정렬 옵션 목록 조회")
     @GetMapping("/sorts")
-    public ResponseEntity<ApiResponse> showSortItems(String type) {
+    public ResponseEntity<ApiResponse<List<SortResponse>>> showSortItems(String type) {
         List<SortResponse> response = postService.getSortItems(SortType.from(type));
 
         return ResponseEntity.ok(
@@ -79,7 +87,7 @@ public class PostController {
 
     @Operation(summary = "카테고리 목록 조회")
     @GetMapping("/categories")
-    public ResponseEntity<ApiResponse> showCategories() {
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> showCategories() {
         List<CategoryResponse> response = postService.getCategoryItems();
 
         return ResponseEntity.ok(
