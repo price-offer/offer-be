@@ -25,7 +25,7 @@ public class SwaggerConfig {
         return new OpenAPI()
             .servers(List.of(server))
             .components(new Components()
-                .addSecuritySchemes("bearer-key",
+                .addSecuritySchemes("jwt",
                     new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))
             );
     }
