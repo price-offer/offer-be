@@ -44,7 +44,7 @@ public class PostQueryRepository {
         if (posts.size() > params.getLimit()) {
             posts.remove(params.getLimit());
             return PostSummaries.builder()
-                .data(posts.stream()
+                .posts(posts.stream()
                     .map(post -> PostSummary.from(post, likePostIds))
                     .collect(Collectors.toList()))
                 .hasNext(true)
@@ -52,7 +52,7 @@ public class PostQueryRepository {
         }
 
         return PostSummaries.builder()
-            .data(posts.stream()
+            .posts(posts.stream()
                 .map(post -> PostSummary.from(post, likePostIds))
                 .collect(Collectors.toList()))
             .hasNext(false)

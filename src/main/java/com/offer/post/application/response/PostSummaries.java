@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class PostSummaries {
 
-    private List<PostSummary> data;
+    private List<PostSummary> posts;
     private boolean hasNext;
 
     @Builder
-    public PostSummaries(List<PostSummary> data, boolean hasNext) {
-        this.data = data;
+    public PostSummaries(List<PostSummary> posts, boolean hasNext) {
+        this.posts = posts;
         this.hasNext = hasNext;
     }
 }

@@ -128,7 +128,7 @@ class PostControllerTest extends DocumentationTest {
                 .build();
 
         PostSummaries response = PostSummaries.builder()
-                .data(List.of(postSummary1, postSummary2))
+                .posts(List.of(postSummary1, postSummary2))
                 .hasNext(true)
                 .build();
 
@@ -171,13 +171,13 @@ class PostControllerTest extends DocumentationTest {
                                 fieldWithPath("code").type(NUMBER).description("응답코드"),
                                 fieldWithPath("message").type(STRING).description("응답 메시지"),
                                 // body of response
-                                fieldWithPath("data.data[].id").type(NUMBER).description("게시글 아이디"),
-                                fieldWithPath("data.data[].title").type(STRING).description("게시글 제목"),
-                                fieldWithPath("data.data[].price").type(NUMBER).description("시작 가격"),
-                                fieldWithPath("data.data[].location").type(STRING).description("판매자 거래 위치"),
-                                fieldWithPath("data.data[].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
-                                fieldWithPath("data.data[].liked").type(BOOLEAN).description("사용자 좋아요 여부"),
-                                fieldWithPath("data.data[].createdAt").type(STRING).description("게시글 생성 시간"),
+                                fieldWithPath("data.posts[].id").type(NUMBER).description("게시글 아이디"),
+                                fieldWithPath("data.posts[].title").type(STRING).description("게시글 제목"),
+                                fieldWithPath("data.posts[].price").type(NUMBER).description("시작 가격"),
+                                fieldWithPath("data.posts[].location").type(STRING).description("판매자 거래 위치"),
+                                fieldWithPath("data.posts[].thumbnailImageUrl").type(STRING).description("썸네일 이미지 url"),
+                                fieldWithPath("data.posts[].liked").type(BOOLEAN).description("사용자 좋아요 여부"),
+                                fieldWithPath("data.posts[].createdAt").type(STRING).description("게시글 생성 시간"),
                                 fieldWithPath("data.hasNext").type(BOOLEAN).description("다음 페이지 존재 여부")
                         )
                 )
