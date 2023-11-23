@@ -9,6 +9,8 @@ import com.offer.common.response.ApiResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.member.MemberRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +47,10 @@ public class AuthController {
         );
     }
 
-    @Operation(summary = "회원정보 조회(토큰으로)")
+    @Operation(summary = "회원정보 조회(토큰으로)", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("member/access-token/me")
-    public ResponseEntity<ApiResponse<MemberResponse>> getMember(@AuthenticationPrincipal LoginMember loginMember) {
+    public ResponseEntity<ApiResponse<MemberResponse>> getMember(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember) {
         log.info("getMember = {}", loginMember);
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, oAuthService.getMember(loginMember.getId()))
@@ -67,10 +70,12 @@ public class AuthController {
 
     /**
      * 회원 삭제 (개발용)
-     * */
-    @Operation(summary = "회원 삭제(개발용)")
+     */
+    @Operation(summary = "회원 삭제(개발용)", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/delete")
-    public ResponseEntity<Void> deleteMember(@AuthenticationPrincipal LoginMember loginMember) {
+    public ResponseEntity<Void> deleteMember(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember) {
+
         Long id = loginMember.getId();
         if (id == null) {
             throw new IllegalArgumentException("id is null");
