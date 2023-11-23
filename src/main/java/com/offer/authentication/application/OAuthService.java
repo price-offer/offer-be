@@ -3,6 +3,7 @@ package com.offer.authentication.application;
 import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.KakaoOAuthGateway;
 import com.offer.authentication.SocialProfile;
+import com.offer.authentication.application.response.MemberResponse;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
 import com.offer.member.Member;
@@ -62,5 +63,17 @@ public class OAuthService {
             .nickname(nickname)
             .profileImageUrl(socialProfile.getProfileImageUrl())
             .build());
+    }
+
+    public MemberResponse getMember(Long memberId) {
+        if (memberId == null) {
+            throw new IllegalArgumentException("memberId is null");
+        }
+        Member member = memberRepository.getById(memberId);
+        return MemberResponse.builder()
+            .id(member.getId())
+            .profileImageUrl(member.getProfileImageUrl())
+            .nickname(member.getNickname())
+            .build();
     }
 }

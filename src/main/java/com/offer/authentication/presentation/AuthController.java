@@ -2,6 +2,7 @@ package com.offer.authentication.presentation;
 
 import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.application.OAuthService;
+import com.offer.authentication.application.response.MemberResponse;
 import com.offer.authentication.application.response.OAuthLoginResponse;
 import com.offer.authentication.application.response.OAuthLoginUrlResponse;
 import com.offer.common.response.ApiResponse;
@@ -41,6 +42,15 @@ public class AuthController {
         log.info("auth code = {}", code);
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, oAuthService.kakaoLogin(code))
+        );
+    }
+
+    @Operation(summary = "회원정보 조회(토큰으로)")
+    @GetMapping("member/access-token/me")
+    public ResponseEntity<ApiResponse<MemberResponse>> getMember(@AuthenticationPrincipal LoginMember loginMember) {
+        log.info("getMember = {}", loginMember);
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, oAuthService.getMember(loginMember.getId()))
         );
     }
 
