@@ -73,4 +73,8 @@ public class Post {
         Objects.requireNonNull(memberId);
         return this.id.longValue() != memberId.longValue();
     }
+
+    public void updateTradeStatus(TradeStatus tradeStatus) {
+        this.tradeStatus = tradeStatus;
+    }
 }

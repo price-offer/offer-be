@@ -91,6 +91,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok(ApiResponse.of(400, e.getMessage()));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> handleGlobalException(Exception e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.ok(ApiResponse.of(500, e.getMessage()));
+    }
+
     private ResponseEntity createErrorResponse(ResponseMessage responseMessage) {
         return ResponseEntity.ok(ApiResponse.of(responseMessage));
     }

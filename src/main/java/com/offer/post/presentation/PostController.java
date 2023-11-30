@@ -8,10 +8,12 @@ import com.offer.common.response.ResponseMessage;
 import com.offer.post.application.PostService;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.request.PostReadParams;
+import com.offer.post.application.request.TradeStatusUpdateRequest;
 import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.SortResponse;
+import com.offer.post.domain.TradeStatus;
 import com.offer.post.domain.sort.SortType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +74,19 @@ public class PostController {
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
+    @Operation(summary = "게시글 판매 상태 업데이트", security = {@SecurityRequirement(name = "jwt")})
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<ApiResponse<Long>> updateTradeStatus(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @PathVariable Long postId, TradeStatusUpdateRequest request) {
+
+        Long updatedPostId = postService.updateTradeStatus(postId, request, loginMember.getId());
+
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, updatedPostId)
         );
     }
 

@@ -6,11 +6,13 @@ import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.request.PostReadParams;
+import com.offer.post.application.request.TradeStatusUpdateRequest;
 import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.SortResponse;
 import com.offer.post.domain.PostQueryRepository;
+import com.offer.post.domain.TradeStatus;
 import com.offer.post.domain.category.CategoryRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
@@ -26,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
@@ -46,15 +47,18 @@ public class PostService {
         return CommonCreationResponse.of(post.getId(), post.getCreatedAt());
     }
 
+    @Transactional(readOnly = true)
     public PostSummaries getPosts(PostReadParams params, LoginMember loginMember) {
         return postQueryRepository.searchPost(params, loginMember.getId());
     }
 
+    @Transactional(readOnly = true)
     public PostDetail getPost(Long postId) {
         Post post = postRepository.getById(postId);
         return PostDetail.from(post);
     }
 
+    @Transactional(readOnly = true)
     public List<SortResponse> getSortItems(SortType type) {
         SortGroup sortGroup = sortGroupRepository.findBySortType(type);
         List<SortItem> sortItems = sortGroup.getSortItems();
@@ -63,9 +67,24 @@ public class PostService {
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<CategoryResponse> getCategoryItems() {
         return categoryRepository.findAll().stream()
             .map(CategoryResponse::from)
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Long updateTradeStatus(Long postId, TradeStatusUpdateRequest request, Long memberId) {
+        Post post = postRepository.getById(postId);
+        if (!post.getSeller().getId().equals(memberId)) {
+            throw new IllegalArgumentException("토큰 정보가 없거나 게시글 작성자가 아닙니다.");
+        }
+        TradeStatus ts = TradeStatus.from(request.getTradeStatus().toUpperCase());
+        if (ts == TradeStatus.UNKNOWN) {
+            throw new IllegalArgumentException("Illegal trade status code = " + request.getTradeStatus());
+        }
+        post.updateTradeStatus(ts);
+        return post.getId();
     }
 }
