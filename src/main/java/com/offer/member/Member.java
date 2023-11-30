@@ -51,6 +51,14 @@ public class Member {
     @CreatedDate
     private LocalDateTime createdDate;
 
+    public void changeProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public enum OAuthType {
         KAKAO
     }

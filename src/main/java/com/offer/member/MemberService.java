@@ -1,12 +1,15 @@
 package com.offer.member;
 
 import com.offer.authentication.application.response.MemberResponse;
+import com.offer.member.request.MemberUpdateRequest;
 import com.offer.post.domain.LikeRepository;
 import com.offer.post.domain.PostRepository;
 import com.offer.post.domain.TradeStatus;
 import com.offer.review.domain.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +44,20 @@ public class MemberService {
             .reviewCount(review)
             .likeProductCount(like)
             .build();
+    }
+
+    @Transactional
+    public Long updateMember(Long memberId, MemberUpdateRequest request) {
+        Member member = memberRepository.getById(memberId);
+        String profileImageUrl = request.getProfileImageUrl();
+        String nickname = request.getNickname();
+        if (StringUtils.hasText(profileImageUrl)) {
+            member.changeProfileImageUrl(profileImageUrl);
+        }
+        if (StringUtils.hasText(nickname)) {
+            throw new IllegalArgumentException("닉네임이 비어있음");
+        }
+        member.changeNickname(nickname);
+        return member.getId();
     }
 }
