@@ -48,7 +48,7 @@ public class PostController {
         );
     }
 
-    @Operation(summary = "게시글 목록 조회", security = {@SecurityRequirement(name = "jwt")})
+    @Operation(summary = "게시글 목록 조회")
     @GetMapping("/posts")
     public ResponseEntity<ApiResponse<PostSummaries>> showPosts(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
