@@ -16,4 +16,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Slice<Like> findSliceByMemberId(PageRequest pageRequest, Long memberId);
 
     List<Like> findAllByMemberId(Long memberId);  // TODO: remove from PostQueryRepository
+
+    int countByMemberId(Long memberId);
 }

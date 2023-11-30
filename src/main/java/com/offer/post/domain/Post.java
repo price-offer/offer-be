@@ -3,6 +3,8 @@ package com.offer.post.domain;
 import com.offer.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,6 +44,9 @@ public class Post {
     private String tradeType;
     private String productCondition;
 
+    @Enumerated(value = EnumType.STRING)
+    private TradeStatus tradeStatus;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -50,7 +55,8 @@ public class Post {
 
     @Builder
     public Post(Member seller, String title, int price, String category, String description,
-        String thumbnailImageUrl, String location, String tradeType, String productCondition) {
+        String thumbnailImageUrl, String location, String tradeType, String productCondition,
+        TradeStatus tradeStatus) {
         this.seller = seller;
         this.title = title;
         this.price = price;
@@ -60,6 +66,7 @@ public class Post {
         this.location = location;
         this.tradeType = tradeType;
         this.productCondition = productCondition;
+        this.tradeStatus = tradeStatus;
     }
 
     public boolean isWriter(Long memberId) {

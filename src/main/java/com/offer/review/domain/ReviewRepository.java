@@ -15,4 +15,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Slice<Review> findSliceByRevieweeIdAndIsRevieweeBuyer(PageRequest pageRequest, Long revieweeId, boolean IsRevieweeBuyer);
 
     Slice<Review> findSliceByRevieweeId(PageRequest pageRequest, Long revieweeId);
+
+    int countByRevieweeIdOrReviewerId(Long revieweeId, Long reviewerId);
 }

@@ -47,16 +47,6 @@ public class AuthController {
         );
     }
 
-    @Operation(summary = "회원정보 조회(토큰으로)", security = {@SecurityRequirement(name = "jwt")})
-    @GetMapping("member/access-token/me")
-    public ResponseEntity<ApiResponse<MemberResponse>> getMember(
-        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember) {
-        log.info("getMember = {}", loginMember);
-        return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, oAuthService.getMember(loginMember.getId()))
-        );
-    }
-
     /**
      * 토큰 조회(개발용)
      * */

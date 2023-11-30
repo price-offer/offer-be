@@ -2,6 +2,7 @@ package com.offer.post.application.request;
 
 import com.offer.member.Member;
 import com.offer.post.domain.Post;
+import com.offer.post.domain.TradeStatus;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +48,7 @@ public class PostCreateRequest {
             .tradeType(tradeType)
             .thumbnailImageUrl(thumbnailImageUrl)
             .description(description)
+            .tradeStatus(TradeStatus.SELLING)
             .build();
     }
 }

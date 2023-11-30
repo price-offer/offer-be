@@ -64,16 +64,4 @@ public class OAuthService {
             .profileImageUrl(socialProfile.getProfileImageUrl())
             .build());
     }
-
-    public MemberResponse getMember(Long memberId) {
-        if (memberId == null) {
-            throw new IllegalArgumentException("memberId is null");
-        }
-        Member member = memberRepository.getById(memberId);
-        return MemberResponse.builder()
-            .id(member.getId())
-            .profileImageUrl(member.getProfileImageUrl())
-            .nickname(member.getNickname())
-            .build();
-    }
 }

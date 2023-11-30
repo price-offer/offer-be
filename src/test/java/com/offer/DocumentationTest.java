@@ -9,7 +9,9 @@ import com.offer.authentication.JwtTokenProvider;
 import com.offer.authentication.application.OAuthService;
 import com.offer.authentication.presentation.AuthController;
 import com.offer.authentication.presentation.AuthenticationContext;
+import com.offer.member.MemberController;
 import com.offer.member.MemberRepository;
+import com.offer.member.MemberService;
 import com.offer.offer.application.OfferService;
 import com.offer.offer.presentation.OfferController;
 import com.offer.post.application.ImageService;
@@ -37,7 +39,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
     AuthController.class,
     PostController.class,
     ImageController.class,
-    OfferController.class
+    OfferController.class,
+    MemberController.class
 })
 @Import(MockMvcConfig.class)
 @AutoConfigureRestDocs
@@ -73,6 +76,9 @@ public class DocumentationTest {
 
     @MockBean
     protected MemberRepository memberRepository;
+
+    @MockBean
+    protected MemberService memberService;
 
     protected OperationResponsePreprocessor getResponsePreprocessor() {
         return Preprocessors.preprocessResponse(prettyPrint());
