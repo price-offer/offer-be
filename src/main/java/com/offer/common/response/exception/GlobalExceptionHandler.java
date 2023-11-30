@@ -85,6 +85,12 @@ public class GlobalExceptionHandler {
         return createErrorResponse(responseMessage);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.ok(ApiResponse.of(400, e.getMessage()));
+    }
+
     private ResponseEntity createErrorResponse(ResponseMessage responseMessage) {
         return ResponseEntity.ok(ApiResponse.of(responseMessage));
     }

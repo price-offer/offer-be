@@ -21,4 +21,8 @@ public class ApiResponse<T> {
     public static ApiResponse of(ResponseMessage responseMessage) {
         return new ApiResponse(responseMessage.getCode(), responseMessage.getMessage(), null);
     }
+
+    public static ApiResponse of(int code, String message) {
+        return new ApiResponse(code, message, null);
+    }
 }
