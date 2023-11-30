@@ -1,5 +1,6 @@
 package com.offer.member;
 
+import com.offer.authentication.application.response.MemberProfileResponse;
 import com.offer.authentication.application.response.MemberResponse;
 import com.offer.member.request.MemberUpdateRequest;
 import com.offer.post.domain.LikeRepository;
@@ -38,6 +39,7 @@ public class MemberService {
         return MemberResponse.builder()
             .id(member.getId())
             .profileImageUrl(member.getProfileImageUrl())
+            .offerLevel(member.getOfferLevel())
             .nickname(member.getNickname())
             .sellingProductCount(selling)
             .soldProductCount(sold)
@@ -59,5 +61,24 @@ public class MemberService {
         }
         member.changeNickname(nickname);
         return member.getId();
+    }
+
+    public MemberProfileResponse getMemberProfile(Long memberId) {
+        if (memberId == null) {
+            throw new IllegalArgumentException("memberId is null");
+        }
+        Member member = memberRepository.getById(memberId);
+        int selling = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SELLING);
+        int sold = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SOLD);
+        int review = reviewRepository.countByRevieweeIdOrReviewerId(memberId, memberId);
+        return MemberProfileResponse.builder()
+            .id(member.getId())
+            .nickname(member.getNickname())
+            .profileImageUrl(member.getProfileImageUrl())
+            .offerLevel(member.getOfferLevel())
+            .reviewCount(review)
+            .sellingProductCount(selling)
+            .soldProductCount(sold)
+            .build();
     }
 }

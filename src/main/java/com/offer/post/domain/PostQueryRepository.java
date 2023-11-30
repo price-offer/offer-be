@@ -2,6 +2,8 @@ package com.offer.post.domain;
 
 import static com.offer.post.domain.QPost.post;
 
+import com.offer.member.Member;
+import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
@@ -22,10 +24,14 @@ public class PostQueryRepository {
 
     private final JPAQueryFactory query;
     private final LikeRepository likeRepository;
+    private final MemberRepository memberRepository;
 
-    public PostSummaries searchPost(PostReadParams params, Long memberId) {
+    public PostSummaries searchPost(PostReadParams params, Long loginMemberId) {
+        Long sellerId = params.getSellerId();
+        Member seller = sellerId != null && memberRepository.existsById(sellerId) ?
+            memberRepository.getById(sellerId) : null;
 
-        Set<Long> likePostIds = getLikePostId(memberId);
+        Set<Long> likePostIds = getLikePostId(loginMemberId);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (params.getLastId() != null) {
@@ -35,7 +41,9 @@ public class PostQueryRepository {
         List<Post> posts = query.selectFrom(post)
             .where(lastIdLt(params.getLastId()),
                 categoryEq(params.getCategory()),
-                priceBetween(params.getMinPrice(), params.getMaxPrice())
+                priceBetween(params.getMinPrice(), params.getMaxPrice()),
+                sellerEq(seller),
+                tradeStatus(TradeStatus.from(params.getTradeStatus()))
             )
             .orderBy(post.id.desc())
             .limit(params.getLimit() + 1)
@@ -45,7 +53,10 @@ public class PostQueryRepository {
             posts.remove(params.getLimit());
             return PostSummaries.builder()
                 .posts(posts.stream()
-                    .map(post -> PostSummary.from(post, likePostIds))
+                    .map(post -> {
+                        int likeCount = likeRepository.countByPost(post);
+                        return PostSummary.from(post, likePostIds, likeCount);
+                    })
                     .collect(Collectors.toList()))
                 .hasNext(true)
                 .build();
@@ -53,7 +64,10 @@ public class PostQueryRepository {
 
         return PostSummaries.builder()
             .posts(posts.stream()
-                .map(post -> PostSummary.from(post, likePostIds))
+                .map(post -> {
+                    int likeCount = likeRepository.countByPost(post);
+                    return PostSummary.from(post, likePostIds, likeCount);
+                })
                 .collect(Collectors.toList()))
             .hasNext(false)
             .build();
@@ -81,6 +95,14 @@ public class PostQueryRepository {
 
     private BooleanExpression priceGoe(Integer minPrice) {
         return minPrice != null ? post.price.goe(minPrice) : null;
+    }
+
+    private BooleanExpression sellerEq(Member seller) {
+        return seller != null ? post.seller.eq(seller) : null;
+    }
+
+    private BooleanExpression tradeStatus(TradeStatus tradeStatus) {
+        return tradeStatus != TradeStatus.UNKNOWN ? post.tradeStatus.eq(tradeStatus) : null;
     }
 
     private BooleanExpression priceLoe(Integer maxPrice) {

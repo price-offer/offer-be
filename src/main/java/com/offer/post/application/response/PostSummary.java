@@ -1,6 +1,7 @@
 package com.offer.post.application.response;
 
 import com.offer.post.domain.Post;
+import com.offer.post.domain.TradeStatus;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.Builder;
@@ -18,22 +19,26 @@ public class PostSummary {
     private String location;
     private String thumbnailImageUrl;
     private boolean liked;
+    private TradeStatus tradeStatus;
+    private int likeCount;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Builder(toBuilder = true)
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
-        boolean liked, LocalDateTime createdAt) {
+        boolean liked, TradeStatus tradeStatus, int likeCount, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.location = location;
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.liked = liked;
+        this.tradeStatus = tradeStatus;
+        this.likeCount = likeCount;
         this.createdAt = createdAt;
     }
 
-    public static PostSummary from(Post post, Set<Long> likePostIds) {
+    public static PostSummary from(Post post, Set<Long> likePostIds, int likeCount) {
         boolean liked = false;
         if (likePostIds.contains(post.getId())) {
             liked = true;
@@ -46,6 +51,8 @@ public class PostSummary {
             .location(post.getLocation())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
             .liked(liked)  // TODO: 2023/09/24 NOT IMPLEMENTED
+            .tradeStatus(post.getTradeStatus())
+            .likeCount(likeCount)
             .createdAt(post.getCreatedAt())
             .build();
     }
@@ -58,6 +65,7 @@ public class PostSummary {
                 .location(post.getLocation())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
                 .liked(isLiked)
+                .tradeStatus(post.getTradeStatus())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

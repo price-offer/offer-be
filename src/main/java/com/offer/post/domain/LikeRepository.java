@@ -18,4 +18,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     List<Like> findAllByMemberId(Long memberId);  // TODO: remove from PostQueryRepository
 
     int countByMemberId(Long memberId);
+
+    int countByPost(Post post);
 }

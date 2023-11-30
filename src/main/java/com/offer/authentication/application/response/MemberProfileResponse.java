@@ -2,11 +2,13 @@ package com.offer.authentication.application.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+/**
+ * 타 사용자 프로필 조회
+ * */
 @Getter
-@NoArgsConstructor
-public class MemberResponse {
+public class MemberProfileResponse {
+
     private Long id;
     private String nickname;
     private String profileImageUrl;
@@ -14,12 +16,10 @@ public class MemberResponse {
     private long sellingProductCount;
     private long soldProductCount;
     private long reviewCount;
-    private long likeProductCount;
 
     @Builder
-    public MemberResponse(Long id, String nickname, String profileImageUrl,
-        long offerLevel, long sellingProductCount,
-        long soldProductCount, long reviewCount, long likeProductCount) {
+    public MemberProfileResponse(Long id, String nickname, String profileImageUrl,
+        long offerLevel, long sellingProductCount, long soldProductCount, long reviewCount) {
         this.id = id;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
@@ -27,6 +27,5 @@ public class MemberResponse {
         this.sellingProductCount = sellingProductCount;
         this.soldProductCount = soldProductCount;
         this.reviewCount = reviewCount;
-        this.likeProductCount = likeProductCount;
     }
 }

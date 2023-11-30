@@ -12,6 +12,8 @@ public class PostReadParams {
     private String sort;
     private String tradeType;
     private String category;
+    private Long sellerId;
+    private String tradeStatus;
     private int minPrice = 0;
     private int maxPrice = Integer.MAX_VALUE;
     private Long lastId;
