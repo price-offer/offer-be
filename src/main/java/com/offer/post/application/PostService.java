@@ -108,4 +108,18 @@ public class PostService {
         post.update(request);
         return PostDetail.from(post);
     }
+
+    @Transactional
+    public Long deletePost(Long postId, Long memberId) {
+        Member member = memberRepository.getById(memberId);
+        Post post = postRepository.getById(postId);
+
+        if (!post.getSeller().equals(member)) {
+            throw new IllegalArgumentException(
+                "판매자와 토큰값이 일치하지 않음. memberId = " + member + " SellerId = " + post.getSeller()
+                    .getId());
+        }
+        postRepository.delete(post);
+        return postId;
+    }
 }
