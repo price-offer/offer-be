@@ -7,6 +7,7 @@ import com.offer.authentication.presentation.LoginMember;
 import com.offer.common.response.ApiResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.member.request.MemberUpdateRequest;
+import com.offer.member.request.NicknameQueryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,8 +34,8 @@ public class MemberController {
 
     @Operation(summary = "닉네임 중복 조회")
     @PostMapping("/nickname-duplicate")
-    public ResponseEntity<ApiResponse<Map<String, Boolean>>> getNicknameDuplication(String nickname) {
-        boolean exists = memberService.hasNickname(nickname);
+    public ResponseEntity<ApiResponse<Map<String, Boolean>>> getNicknameDuplication(@RequestBody NicknameQueryRequest request) {
+        boolean exists = memberService.hasNickname(request.getNickname());
         HashMap<String, Boolean> result = new HashMap<>();
         result.put("duplicate", exists);
         return ResponseEntity.ok(
@@ -63,7 +65,7 @@ public class MemberController {
     @PutMapping("/member/{memberId}")
     public ResponseEntity<ApiResponse<Long>> updateMember(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @PathVariable Long memberId, MemberUpdateRequest request) {
+        @PathVariable Long memberId, @RequestBody MemberUpdateRequest request) {
         log.info("getMember = {}", loginMember);
         if (loginMember.getId() == null) {
             throw new IllegalArgumentException("잘못된 토큰");

@@ -56,7 +56,7 @@ public class MemberService {
         if (StringUtils.hasText(profileImageUrl)) {
             member.changeProfileImageUrl(profileImageUrl);
         }
-        if (StringUtils.hasText(nickname)) {
+        if (!StringUtils.hasText(nickname)) {
             throw new IllegalArgumentException("닉네임이 비어있음");
         }
         member.changeNickname(nickname);
