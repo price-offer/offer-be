@@ -2,6 +2,7 @@ package com.offer.post.application;
 
 import com.offer.post.application.response.ImageResponse;
 import com.offer.post.application.response.ImageUploadResponse;
+import com.offer.post.application.response.ImagesUploadResponse;
 import com.offer.post.domain.ImageExtension;
 import com.offer.post.domain.ImageFile;
 import java.io.File;
@@ -11,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -31,16 +34,15 @@ public class ImageService {
         this.imagePathPrefix = imagePathPrefix;
     }
 
-    public ImageUploadResponse saveImage(MultipartFile image) {
+    public ImageUploadResponse saveImage(MultipartFile file) {
         try {
-            ImageFile imageFile = ImageFile.from(image);
+            ImageFile imageFile = ImageFile.from(file);
             String imageFileInputName = imageFile.randomName();
             Path fileStorageLocation = resolvePath(imageFileInputName);
             Files.copy(imageFile.inputStream(), fileStorageLocation, StandardCopyOption.REPLACE_EXISTING);
             return new ImageUploadResponse(imagePathPrefix + imageFileInputName);
         } catch (IOException e) {
-            log.error("이미지 업로드 에러", e);
-            return null;
+            throw new IllegalArgumentException("이미지 업로드 에러. message = " + e.getMessage());
         }
     }
 
@@ -59,5 +61,21 @@ public class ImageService {
 
     private Path resolvePath(final String imageUrl) {
         return storagePath.resolve(imageUrl);
+    }
+
+    public ImagesUploadResponse saveImages(List<MultipartFile> files) {
+        try {
+            List<String> result = new ArrayList<>();
+            for (MultipartFile file : files) {
+                ImageFile imageFile = ImageFile.from(file);
+                String imageFileInputName = imageFile.randomName();
+                Path fileStorageLocation = resolvePath(imageFileInputName);
+                Files.copy(imageFile.inputStream(), fileStorageLocation, StandardCopyOption.REPLACE_EXISTING);
+                result.add(imagePathPrefix + imageFileInputName);
+            }
+            return new ImagesUploadResponse(result);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("이미지 업로드 에러. message = " + e.getMessage());
+        }
     }
 }

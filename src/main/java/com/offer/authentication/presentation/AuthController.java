@@ -8,6 +8,7 @@ import com.offer.authentication.application.response.OAuthLoginUrlResponse;
 import com.offer.common.response.ApiResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.member.MemberRepository;
+import com.offer.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,7 +31,7 @@ public class AuthController {
 
     private final OAuthService oAuthService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Operation(summary = "카카오 로그인 페이지 url 조회")
     @GetMapping("authorization/kakao-url")
@@ -67,10 +68,7 @@ public class AuthController {
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember) {
 
         Long id = loginMember.getId();
-        if (id == null) {
-            throw new IllegalArgumentException("id is null");
-        }
-        memberRepository.deleteById(id);
+        memberService.deleteMember(id);
         return ResponseEntity.ok().build();
     }
 }

@@ -8,6 +8,7 @@ import com.offer.common.response.ResponseMessage;
 import com.offer.post.application.PostService;
 import com.offer.post.application.request.PostCreateRequest;
 import com.offer.post.application.request.PostReadParams;
+import com.offer.post.application.request.PostUpdateRequest;
 import com.offer.post.application.request.TradeStatusUpdateRequest;
 import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
@@ -50,6 +51,20 @@ public class PostController {
         );
     }
 
+    @Operation(summary = "게시글 수정", security = {@SecurityRequirement(name = "jwt")})
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<ApiResponse<PostDetail>> updatePost(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @PathVariable Long postId,
+        @RequestBody PostUpdateRequest request) {
+
+        PostDetail response = postService.updatePost(postId, request, loginMember.getId());
+
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
     @Operation(summary = "게시글 목록 조회")
     @GetMapping("/posts")
     public ResponseEntity<ApiResponse<PostSummaries>> showPosts(
@@ -77,7 +92,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 판매 상태 업데이트", security = {@SecurityRequirement(name = "jwt")})
-    @PutMapping("/posts/{postId}")
+    @PutMapping("/posts/trade-status/{postId}")
     public ResponseEntity<ApiResponse<Long>> updateTradeStatus(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long postId, TradeStatusUpdateRequest request) {

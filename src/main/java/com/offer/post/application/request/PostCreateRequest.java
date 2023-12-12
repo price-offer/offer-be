@@ -2,7 +2,9 @@ package com.offer.post.application.request;
 
 import com.offer.member.Member;
 import com.offer.post.domain.Post;
+import com.offer.post.domain.ProductCondition;
 import com.offer.post.domain.TradeStatus;
+import com.offer.post.domain.TradeType;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,8 +46,8 @@ public class PostCreateRequest {
             .category(category)
             .price(price)
             .location(location)
-            .productCondition(productCondition)
-            .tradeType(tradeType)
+            .productCondition(ProductCondition.from(productCondition))
+            .tradeType(TradeType.from(tradeType))
             .thumbnailImageUrl(thumbnailImageUrl)
             .description(description)
             .tradeStatus(TradeStatus.SELLING)

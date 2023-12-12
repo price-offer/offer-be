@@ -4,9 +4,12 @@ import com.offer.authentication.application.response.MemberProfileResponse;
 import com.offer.authentication.application.response.MemberResponse;
 import com.offer.member.request.MemberUpdateRequest;
 import com.offer.post.domain.LikeRepository;
+import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.post.domain.TradeStatus;
 import com.offer.review.domain.ReviewRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,5 +83,12 @@ public class MemberService {
             .sellingProductCount(selling)
             .soldProductCount(sold)
             .build();
+    }
+
+    public void deleteMember(Long memberId) {
+        Member member = memberRepository.getById(memberId);
+        List<Post> posts = postRepository.findAllBySeller(member);
+        postRepository.deleteAllById(posts.stream().map(Post::getId).collect(Collectors.toList()));
+        memberRepository.deleteById(memberId);
     }
 }
