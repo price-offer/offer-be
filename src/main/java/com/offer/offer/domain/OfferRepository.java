@@ -1,5 +1,7 @@
 package com.offer.offer.domain;
 
+import com.offer.member.Member;
+import com.offer.post.domain.Post;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -11,4 +13,6 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAllByOffererIdAndPostId(Long offererId, Long postId);
 
     Slice<Offer> findSliceByPostId(PageRequest pageRequest, Long postId);
+
+    List<Offer> findAllByOfferer(Member offerer);
 }

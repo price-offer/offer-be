@@ -1,19 +1,24 @@
 package com.offer.offer.application;
 
+import com.offer.authentication.presentation.LoginMember;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.offer.application.request.OfferCreateRequest;
+import com.offer.offer.application.response.OfferSummaries;
+import com.offer.offer.application.response.OfferSummary;
 import com.offer.offer.application.response.OffersResponse;
 import com.offer.offer.domain.Offer;
 import com.offer.offer.domain.OfferRepository;
+import com.offer.post.application.request.OfferReadParams;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 
 import java.util.List;
 
 import com.offer.utils.SliceUtils;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -60,4 +65,30 @@ public class OfferService {
         return OffersResponse.of(offersByPost.stream().toList(), postId, 0);
     }
 
+    public OfferSummaries getAllOffersByMember(OfferReadParams params, LoginMember loginMember) {
+        if (loginMember.getId() == null) {
+            throw new IllegalArgumentException("잘못된 토큰입니다");
+        }
+
+        Member offerer = memberRepository.getById(loginMember.getId());
+        List<Offer> offers = offerRepository.findAllByOfferer(offerer);
+
+        if (offers.size() > params.getLimit()) {
+            offers.remove(params.getLimit());
+            return OfferSummaries.builder()
+                .offers(offers.stream()
+                    .map(OfferSummary::from)
+                    .collect(Collectors.toList()))
+                .hasNext(true)
+                .build();
+        }
+
+
+        return OfferSummaries.builder()
+            .offers(offers.stream()
+                .map(OfferSummary::from)
+                .collect(Collectors.toList()))
+            .hasNext(false)
+            .build();
+    }
 }

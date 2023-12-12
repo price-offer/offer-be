@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryResponse {
 
+    private String code;
     private String name;
-    private String exposureTitle;
 
     @Builder
-    public CategoryResponse(String name, String exposureTitle) {
+    public CategoryResponse(String code, String name) {
+        this.code = code;
         this.name = name;
-        this.exposureTitle = exposureTitle;
     }
 
     public static CategoryResponse from(Category category) {
         return CategoryResponse.builder()
-            .name(category.getName())
-            .exposureTitle(category.getExposureTitle())
+            .code(category.getName())
+            .name(category.getExposureTitle())
             .build();
     }
 }

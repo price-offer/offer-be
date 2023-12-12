@@ -13,7 +13,6 @@ import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.SortResponse;
-import com.offer.post.domain.TradeStatus;
 import com.offer.post.domain.sort.SortType;
 
 import io.swagger.v3.oas.annotations.Operation;

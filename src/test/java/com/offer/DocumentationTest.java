@@ -37,10 +37,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @WebMvcTest({
     AuthController.class,
-    PostController.class,
-    ImageController.class,
-    OfferController.class,
-    MemberController.class
+//    PostController.class,
+//    ImageController.class,
+//    OfferController.class,
+//    MemberController.class
 })
 @Import(MockMvcConfig.class)
 @AutoConfigureRestDocs

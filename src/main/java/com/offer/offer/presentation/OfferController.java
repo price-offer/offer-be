@@ -7,7 +7,10 @@ import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.offer.application.OfferService;
 import com.offer.offer.application.request.OfferCreateRequest;
+import com.offer.offer.application.response.OfferSummaries;
 import com.offer.offer.application.response.OffersResponse;
+import com.offer.post.application.request.OfferReadParams;
+import com.offer.post.application.response.PostSummaries;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,6 +48,18 @@ public class OfferController {
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
+    @Operation(summary = "내 가격제안 조회", security = {@SecurityRequirement(name = "jwt")})
+    @GetMapping("/api/posts/offers")
+    public ResponseEntity<ApiResponse<OfferSummaries>> showMyOfferPosts(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        OfferReadParams params) {
+
+        OfferSummaries response = offerService.getAllOffersByMember(params, loginMember);
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
 }

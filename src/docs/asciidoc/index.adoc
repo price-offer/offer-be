@@ -20,129 +20,129 @@ include::{snippets}/authentication/kakao-login-url/http-response.adoc[]
 ==== Response Fields
 include::{snippets}/authentication/kakao-login-url/response-fields.adoc[]
 
-== 카카오 로그인
-==== Example Curl
-include::{snippets}/authentication/kakao-login/curl-request.adoc[]
-==== Example Request
-include::{snippets}/authentication/kakao-login/http-request.adoc[]
-==== Request Query Parameters
-include::{snippets}/authentication/kakao-login/query-parameters.adoc[]
-==== Example Response
-include::{snippets}/authentication/kakao-login/http-response.adoc[]
-==== Response Fields
-include::{snippets}/authentication/kakao-login/response-fields.adoc[]
-
-== 멤버 아이디로 토큰 조회(개발용)
-==== Example Curl
-include::{snippets}/authentication/get-token/curl-request.adoc[]
-==== Example Request
-include::{snippets}/authentication/get-token/http-request.adoc[]
-==== Example Response
-include::{snippets}/authentication/get-token/http-response.adoc[]
-==== Response Fields
-include::{snippets}/authentication/get-token/response-fields.adoc[]
-
-
-= 판매 게시글
-
-== 카테고리 조회
-
-==== Example Curl
-include::{snippets}/posts/read-category-items/curl-request.adoc[]
-==== Example Request
-include::{snippets}/posts/read-category-items/http-request.adoc[]
-==== Example Response
-include::{snippets}/posts/read-category-items/http-response.adoc[]
-==== Response Fields
-include::{snippets}/posts/read-category-items/response-fields.adoc[]
-
-
-== 정렬 옵션 조회
-==== Example Curl
-include::{snippets}/posts/read-sortItems/curl-request.adoc[]
-==== Example Request
-include::{snippets}/posts/read-sortItems/http-request.adoc[]
-==== Request Query Parameters
-include::{snippets}/posts/read-sortItems/query-parameters.adoc[]
-
-// TODO: #14 ENUM과 연동하여 자동 생성될 수 있는 방법 찾아보기
-|===
-| 코드 | 설명
-
-| `POST`
-| 게시글 조회 시 정렬 옵션 (대소문자 구분 x)
-| `OFFER`
-| 가격제안 조회 시 정렬 옵션 (대소문자 구분 x)
-
-|===
-
-==== Example Response
-include::{snippets}/posts/read-sortItems/http-response.adoc[]
-==== Response Fields
-include::{snippets}/posts/read-sortItems/response-fields.adoc[]
-
-== 판매 게시글 생성
-==== Example Curl
-include::{snippets}/posts/create-post/curl-request.adoc[]
-==== Example Request
-include::{snippets}/posts/create-post/http-request.adoc[]
-==== Request Fields
-include::{snippets}/posts/create-post/request-fields.adoc[]
-==== Example Response
-include::{snippets}/posts/create-post/http-response.adoc[]
-
-== 판매 게시글 목록 조회 (검색 페이지)
-==== Example Curl
-include::{snippets}/posts/get-posts/curl-request.adoc[]
-==== Example Request
-include::{snippets}/posts/get-posts/http-request.adoc[]
-==== Request Query Parameters
-include::{snippets}/posts/get-posts/query-parameters.adoc[]
-==== Example Response
-include::{snippets}/posts/get-posts/http-response.adoc[]
-==== Response Fields
-include::{snippets}/posts/get-posts/response-fields.adoc[]
-
-== 판매 게시글 단건 조회
-==== Example Curl
-include::{snippets}/posts/get-single-post/curl-request.adoc[]
-==== Example Request
-include::{snippets}/posts/get-single-post/http-request.adoc[]
-==== Example Response
-include::{snippets}/posts/get-single-post/http-response.adoc[]
-==== Response Fields
-include::{snippets}/posts/get-single-post/response-fields.adoc[]
-
-== 이미지 업로드
-==== Example Curl
-include::{snippets}/images/upload-image/curl-request.adoc[]
-==== Example Request
-include::{snippets}/images/upload-image/http-request.adoc[]
-==== Example Response
-include::{snippets}/images/upload-image/http-response.adoc[]
-==== Response Fields
-include::{snippets}/images/upload-image/response-fields.adoc[]
-
-
-= 가격제안
-
-== 가격제안 생성
-==== Example Curl
-include::{snippets}/offers/create-offer/curl-request.adoc[]
-==== Example Request
-include::{snippets}/offers/create-offer/http-request.adoc[]
-==== Request Fields
-include::{snippets}/offers/create-offer/request-fields.adoc[]
-==== Example Response
-include::{snippets}/offers/create-offer/http-response.adoc[]
-
-== 게시글에 대한 가격제안 목록 조회
-==== Example Curl
-include::{snippets}/offers/get-offers-by-post/curl-request.adoc[]
-==== Example Request
-include::{snippets}/offers/get-offers-by-post/http-request.adoc[]
-==== Example Response
-include::{snippets}/offers/get-offers-by-post/http-response.adoc[]
-==== Response Fields
-include::{snippets}/offers/get-offers-by-post/response-fields.adoc[]
+// == 카카오 로그인
+// ==== Example Curl
+// include::{snippets}/authentication/kakao-login/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/authentication/kakao-login/http-request.adoc[]
+// ==== Request Query Parameters
+// include::{snippets}/authentication/kakao-login/query-parameters.adoc[]
+// ==== Example Response
+// include::{snippets}/authentication/kakao-login/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/authentication/kakao-login/response-fields.adoc[]
+//
+// == 멤버 아이디로 토큰 조회(개발용)
+// ==== Example Curl
+// include::{snippets}/authentication/get-token/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/authentication/get-token/http-request.adoc[]
+// ==== Example Response
+// include::{snippets}/authentication/get-token/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/authentication/get-token/response-fields.adoc[]
+//
+//
+// = 판매 게시글
+//
+// == 카테고리 조회
+//
+// ==== Example Curl
+// include::{snippets}/posts/read-category-items/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/posts/read-category-items/http-request.adoc[]
+// ==== Example Response
+// include::{snippets}/posts/read-category-items/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/posts/read-category-items/response-fields.adoc[]
+//
+//
+// == 정렬 옵션 조회
+// ==== Example Curl
+// include::{snippets}/posts/read-sortItems/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/posts/read-sortItems/http-request.adoc[]
+// ==== Request Query Parameters
+// include::{snippets}/posts/read-sortItems/query-parameters.adoc[]
+//
+// // TODO: #14 ENUM과 연동하여 자동 생성될 수 있는 방법 찾아보기
+// |===
+// | 코드 | 설명
+//
+// | `POST`
+// | 게시글 조회 시 정렬 옵션 (대소문자 구분 x)
+// | `OFFER`
+// | 가격제안 조회 시 정렬 옵션 (대소문자 구분 x)
+//
+// |===
+//
+// ==== Example Response
+// include::{snippets}/posts/read-sortItems/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/posts/read-sortItems/response-fields.adoc[]
+//
+// == 판매 게시글 생성
+// ==== Example Curl
+// include::{snippets}/posts/create-post/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/posts/create-post/http-request.adoc[]
+// ==== Request Fields
+// include::{snippets}/posts/create-post/request-fields.adoc[]
+// ==== Example Response
+// include::{snippets}/posts/create-post/http-response.adoc[]
+//
+// == 판매 게시글 목록 조회 (검색 페이지)
+// ==== Example Curl
+// include::{snippets}/posts/get-posts/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/posts/get-posts/http-request.adoc[]
+// ==== Request Query Parameters
+// include::{snippets}/posts/get-posts/query-parameters.adoc[]
+// ==== Example Response
+// include::{snippets}/posts/get-posts/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/posts/get-posts/response-fields.adoc[]
+//
+// == 판매 게시글 단건 조회
+// ==== Example Curl
+// include::{snippets}/posts/get-single-post/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/posts/get-single-post/http-request.adoc[]
+// ==== Example Response
+// include::{snippets}/posts/get-single-post/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/posts/get-single-post/response-fields.adoc[]
+//
+// == 이미지 업로드
+// ==== Example Curl
+// include::{snippets}/images/upload-image/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/images/upload-image/http-request.adoc[]
+// ==== Example Response
+// include::{snippets}/images/upload-image/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/images/upload-image/response-fields.adoc[]
+//
+//
+// = 가격제안
+//
+// == 가격제안 생성
+// ==== Example Curl
+// include::{snippets}/offers/create-offer/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/offers/create-offer/http-request.adoc[]
+// ==== Request Fields
+// include::{snippets}/offers/create-offer/request-fields.adoc[]
+// ==== Example Response
+// include::{snippets}/offers/create-offer/http-response.adoc[]
+//
+// == 게시글에 대한 가격제안 목록 조회
+// ==== Example Curl
+// include::{snippets}/offers/get-offers-by-post/curl-request.adoc[]
+// ==== Example Request
+// include::{snippets}/offers/get-offers-by-post/http-request.adoc[]
+// ==== Example Response
+// include::{snippets}/offers/get-offers-by-post/http-response.adoc[]
+// ==== Response Fields
+// include::{snippets}/offers/get-offers-by-post/response-fields.adoc[]
 

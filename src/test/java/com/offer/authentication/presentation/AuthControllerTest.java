@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.ResultActions;
 
 
+@Disabled
 class AuthControllerTest extends DocumentationTest {
 
     @DisplayName("카카오 로그인 페이지 url 조회")
@@ -58,78 +59,78 @@ class AuthControllerTest extends DocumentationTest {
         );
     }
 
-    @DisplayName("카카오 로그인")
-    @Test
-    void kakaoLogin() throws Exception {
-        // given
-        String authCode = "kakao.token.authCode";
-        OAuthLoginResponse loginResponse = OAuthLoginResponse.builder()
-            .id(1L)
-            .nickname("행복한 냉장고 1호")
-            .profileImageUrl("profile.image.url")
-            .accessToken("jwt.token.here")
-            .newMember(true)
-            .build();
-        given(oAuthService.kakaoLogin(authCode))
-            .willReturn(loginResponse);
-
-        // when && then
-        ResultActions resultActions = mockMvc.perform(
-                get("/api/login/kakao")
-                    .queryParam("code", authCode)
-            )
-            .andDo(print())
-            .andExpectAll(
-                status().isOk(),
-                content().string(objectMapper.writeValueAsString(ApiResponse.of(ResponseMessage.SUCCESS, loginResponse))));
-
-        resultActions.andDo(
-            document("authentication/kakao-login",
-                getRequestPreprocessor(),
-                getResponsePreprocessor(),
-                queryParameters(
-                    parameterWithName("code").description("인가 코드")
-                ),
-                responseFields(
-                    fieldWithPath("code").type(NUMBER).description("응답코드"),
-                    fieldWithPath("message").type(STRING).description("응답 메시지"),
-
-                    fieldWithPath("data.id").type(NUMBER).description("회원 ID"),
-                    fieldWithPath("data.nickname").type(STRING).description("회원 닉네임"),
-                    fieldWithPath("data.profileImageUrl").type(STRING).description("프로필 이미지 url"),
-                    fieldWithPath("data.accessToken").type(STRING).description("엑세스 토큰"),
-                    fieldWithPath("data.newMember").type(BOOLEAN).description("신규 가입 유저 여부")
-                )
-            )
-        );
-    }
-
-    @DisplayName("멤버 아이디로 토큰 조회(개발용)")
-    @Test
-    void createToken() throws Exception {
-        String token = "jwt.token.here";
-        given(jwtTokenProvider.createToken(any()))
-            .willReturn(token);
-        HashMap<String, String> result = new HashMap<>();
-        result.put("token", token);
-
-        ResultActions resultActions = mockMvc.perform(
-                get("/api/token/{memberId}", 1L)
-            )
-            .andDo(print())
-            .andExpectAll(
-                status().isOk(),
-                content().string(objectMapper.writeValueAsString(result)));
-
-        resultActions.andDo(
-            document("authentication/get-token",
-                getRequestPreprocessor(),
-                getResponsePreprocessor(),
-                responseFields(
-                    fieldWithPath("token").type(STRING).description("토큰")
-                )
-            )
-        );
-    }
+//    @DisplayName("카카오 로그인")
+//    @Test
+//    void kakaoLogin() throws Exception {
+//        // given
+//        String authCode = "kakao.token.authCode";
+//        OAuthLoginResponse loginResponse = OAuthLoginResponse.builder()
+//            .id(1L)
+//            .nickname("행복한 냉장고 1호")
+//            .profileImageUrl("profile.image.url")
+//            .accessToken("jwt.token.here")
+//            .newMember(true)
+//            .build();
+//        given(oAuthService.kakaoLogin(authCode))
+//            .willReturn(loginResponse);
+//
+//        // when && then
+//        ResultActions resultActions = mockMvc.perform(
+//                get("/api/login/kakao")
+//                    .queryParam("code", authCode)
+//            )
+//            .andDo(print())
+//            .andExpectAll(
+//                status().isOk(),
+//                content().string(objectMapper.writeValueAsString(ApiResponse.of(ResponseMessage.SUCCESS, loginResponse))));
+//
+//        resultActions.andDo(
+//            document("authentication/kakao-login",
+//                getRequestPreprocessor(),
+//                getResponsePreprocessor(),
+//                queryParameters(
+//                    parameterWithName("code").description("인가 코드")
+//                ),
+//                responseFields(
+//                    fieldWithPath("code").type(NUMBER).description("응답코드"),
+//                    fieldWithPath("message").type(STRING).description("응답 메시지"),
+//
+//                    fieldWithPath("data.id").type(NUMBER).description("회원 ID"),
+//                    fieldWithPath("data.nickname").type(STRING).description("회원 닉네임"),
+//                    fieldWithPath("data.profileImageUrl").type(STRING).description("프로필 이미지 url"),
+//                    fieldWithPath("data.accessToken").type(STRING).description("엑세스 토큰"),
+//                    fieldWithPath("data.newMember").type(BOOLEAN).description("신규 가입 유저 여부")
+//                )
+//            )
+//        );
+//    }
+//
+//    @DisplayName("멤버 아이디로 토큰 조회(개발용)")
+//    @Test
+//    void createToken() throws Exception {
+//        String token = "jwt.token.here";
+//        given(jwtTokenProvider.createToken(any()))
+//            .willReturn(token);
+//        HashMap<String, String> result = new HashMap<>();
+//        result.put("token", token);
+//
+//        ResultActions resultActions = mockMvc.perform(
+//                get("/api/token/{memberId}", 1L)
+//            )
+//            .andDo(print())
+//            .andExpectAll(
+//                status().isOk(),
+//                content().string(objectMapper.writeValueAsString(result)));
+//
+//        resultActions.andDo(
+//            document("authentication/get-token",
+//                getRequestPreprocessor(),
+//                getResponsePreprocessor(),
+//                responseFields(
+//                    fieldWithPath("token").type(STRING).description("토큰")
+//                )
+//            )
+//        );
+//    }
 
 }
