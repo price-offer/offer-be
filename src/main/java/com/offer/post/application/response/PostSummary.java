@@ -2,8 +2,10 @@ package com.offer.post.application.response;
 
 import com.offer.post.domain.Post;
 import com.offer.post.domain.TradeStatus;
+
 import java.time.LocalDateTime;
 import java.util.Set;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +25,13 @@ public class PostSummary {
     private int likeCount;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
+    private SellerDetail seller;
+    private CategoryResponse category;
 
     @Builder(toBuilder = true)
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
-        boolean liked, TradeStatus tradeStatus, int likeCount, LocalDateTime createdAt) {
+                       boolean liked, TradeStatus tradeStatus, int likeCount, LocalDateTime createdAt,
+                       SellerDetail seller, CategoryResponse category) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -36,6 +41,8 @@ public class PostSummary {
         this.tradeStatus = tradeStatus;
         this.likeCount = likeCount;
         this.createdAt = createdAt;
+        this.seller = seller;
+        this.category = category;
     }
 
     public static PostSummary from(Post post, Set<Long> likePostIds, int likeCount) {
@@ -45,16 +52,16 @@ public class PostSummary {
         }
 
         return PostSummary.builder()
-            .id(post.getId())
-            .title(post.getTitle())
-            .price(post.getPrice())
-            .location(post.getLocation())
-            .thumbnailImageUrl(post.getThumbnailImageUrl())
-            .liked(liked)  // TODO: 2023/09/24 NOT IMPLEMENTED
-            .tradeStatus(post.getTradeStatus())
-            .likeCount(likeCount)
-            .createdAt(post.getCreatedAt())
-            .build();
+                .id(post.getId())
+                .title(post.getTitle())
+                .price(post.getPrice())
+                .location(post.getLocation())
+                .thumbnailImageUrl(post.getThumbnailImageUrl())
+                .liked(liked)  // TODO: 2023/09/24 NOT IMPLEMENTED
+                .tradeStatus(post.getTradeStatus())
+                .likeCount(likeCount)
+                .createdAt(post.getCreatedAt())
+                .build();
     }
 
     public static PostSummary from(Post post, boolean isLiked) {
@@ -67,6 +74,7 @@ public class PostSummary {
                 .liked(isLiked)
                 .tradeStatus(post.getTradeStatus())
                 .createdAt(post.getCreatedAt())
+                .seller(SellerDetail.from(post.getSeller()))
                 .build();
     }
 }
