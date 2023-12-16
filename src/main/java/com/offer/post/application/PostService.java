@@ -63,7 +63,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostDetail getPost(Long postId) {
         Post post = postRepository.getById(postId);
-        return PostDetail.from(post);
+        return PostDetail.from(post, categoryRepository.findByName(post.getCategory()));
     }
 
     @Transactional(readOnly = true)
@@ -106,7 +106,7 @@ public class PostService {
                     .getId());
         }
         post.update(request);
-        return PostDetail.from(post);
+        return PostDetail.from(post, categoryRepository.findByName(post.getCategory()));
     }
 
     @Transactional
