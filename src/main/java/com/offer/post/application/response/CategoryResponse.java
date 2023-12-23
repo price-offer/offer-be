@@ -11,17 +11,20 @@ public class CategoryResponse {
 
     private String code;
     private String name;
+    private String imageUrl;
 
     @Builder
-    public CategoryResponse(String code, String name) {
+    public CategoryResponse(String code, String name, String imageUrl) {
         this.code = code;
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public static CategoryResponse from(Category category) {
         return CategoryResponse.builder()
-            .code(category.getName())
-            .name(category.getExposureTitle())
+            .code(category.getCode())
+            .name(category.getName())
+            .imageUrl(category.getImageUrl())
             .build();
     }
 }

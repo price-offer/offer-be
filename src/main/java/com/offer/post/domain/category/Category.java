@@ -19,8 +19,11 @@ public class Category {
     private Long id;
 
     @Column(unique = true)
+    private String code;
+
     private String name;
 
-    @Column(name = "exposure_title")
-    private String exposureTitle;
+    @Column(name = "image_url")
+    private String imageUrl;
+
 }
