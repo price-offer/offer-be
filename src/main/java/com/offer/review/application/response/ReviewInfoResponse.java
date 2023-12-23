@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class ReviewInfoResponse {
 
     private final String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime createdDate;
 
     @Getter
@@ -56,6 +57,7 @@ public class ReviewInfoResponse {
                         review.getPost().getId(), review.getPost().getTitle()
                 ))
                 .content(review.getContent())
+                .createdDate(review.getCreatedAt())
                 .build();
     }
 }

@@ -7,6 +7,8 @@ import com.offer.member.MemberRepository;
 import com.offer.post.application.request.PostReadParams;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
+import com.offer.review.application.response.ReviewInfoResponse;
+import com.offer.review.domain.ReviewRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,6 +27,7 @@ public class PostQueryRepository {
     private final JPAQueryFactory query;
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
 
     public PostSummaries searchPost(PostReadParams params, Long loginMemberId) {
         Long sellerId = params.getSellerId();
@@ -55,7 +58,10 @@ public class PostQueryRepository {
                 .posts(posts.stream()
                     .map(post -> {
                         int likeCount = likeRepository.countByPost(post);
-                        return PostSummary.from(post, likePostIds, likeCount);
+                        ReviewInfoResponse review = reviewRepository.findByPost(post)
+                            .map(ReviewInfoResponse::from)
+                            .orElse(null);
+                        return PostSummary.from(post, likePostIds, likeCount, review);
                     })
                     .collect(Collectors.toList()))
                 .hasNext(true)
@@ -66,7 +72,10 @@ public class PostQueryRepository {
             .posts(posts.stream()
                 .map(post -> {
                     int likeCount = likeRepository.countByPost(post);
-                    return PostSummary.from(post, likePostIds, likeCount);
+                    ReviewInfoResponse review = reviewRepository.findByPost(post)
+                        .map(ReviewInfoResponse::from)
+                        .orElse(null);
+                    return PostSummary.from(post, likePostIds, likeCount, review);
                 })
                 .collect(Collectors.toList()))
             .hasNext(false)

@@ -1,6 +1,9 @@
 insert into member(offer_level, oauth_id, oauth_type, nickname, profile_image_url, created_date)
 values (1, 2036674018, 'KAKAO', '빼어난 가전제품 3호', 'http://k.kakaocdn.net/dn/ia9Y5/btrXSxAKtaj/1yZZWN0bhuA627JBHiN2ck/img_640x640.jpg', now());
 
+insert into member(offer_level, oauth_id, oauth_type, nickname, profile_image_url, created_date)
+values (1, 2026674018, 'KAKAO', '지친 어썸오 1호', 'http://k.kakaocdn.net/dn/ia9Y5/btrXSxAKtaj/1yZZWN0bhuA627JBHiN2ck/img_640x640.jpg', now());
+
 insert into category(code, name, image_url) values ('MEN_FASHION', '남성패션/잡화', 'https://offer-be.kro.kr/images/7e0099c4-e75d-4636-88c1-d412676bb0b9.png');
 insert into category(code, name, image_url) values ('WOMEN_FASHION', '여성패션/잡화', 'https://offer-be.kro.kr/images/ef4e0e85-ef6b-452f-9968-dc57db57a76b.png');
 insert into category(code, name, image_url) values ('GAME', '게임', 'https://offer-be.kro.kr/images/c688952b-f585-4df1-8187-d836c0280492.png');

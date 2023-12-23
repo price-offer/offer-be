@@ -1,11 +1,11 @@
 package com.offer.post.application.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.TradeStatus;
 
+import com.offer.review.application.response.ReviewInfoResponse;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -31,11 +31,14 @@ public class PostSummary {
     private LocalDateTime createdAt;
     private SellerDetail seller;
     private CategoryResponse category;
+    private ReviewInfoResponse review;
+    private boolean hasReview;
 
     @Builder(toBuilder = true)
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
                        boolean liked, TradeStatus tradeStatus, int likeCount, LocalDateTime createdAt,
-                       SellerDetail seller, CategoryResponse category) {
+                       SellerDetail seller, CategoryResponse category, ReviewInfoResponse review,
+        boolean hasReview) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -47,9 +50,12 @@ public class PostSummary {
         this.createdAt = createdAt;
         this.seller = seller;
         this.category = category;
+        this.review = review;
+        this.hasReview = hasReview;
     }
 
-    public static PostSummary from(Post post, Set<Long> likePostIds, int likeCount) {
+    public static PostSummary from(Post post, Set<Long> likePostIds, int likeCount,
+        ReviewInfoResponse review) {
         boolean liked = false;
         if (likePostIds.contains(post.getId())) {
             liked = true;
@@ -61,10 +67,12 @@ public class PostSummary {
                 .price(post.getPrice())
                 .location(post.getLocation())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
-                .liked(liked)  // TODO: 2023/09/24 NOT IMPLEMENTED
+                .liked(liked)
                 .tradeStatus(post.getTradeStatus())
                 .likeCount(likeCount)
                 .createdAt(post.getCreatedAt())
+                .review(review)
+                .hasReview(review != null)
                 .build();
     }
 
