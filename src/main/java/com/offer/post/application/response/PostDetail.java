@@ -30,11 +30,14 @@ public class PostDetail {
     private LocalDateTime createdAt;
     private SellerDetail seller;
     private CategoryResponse category;
+    private boolean liked;
+    private int totalLikeCount;
 
     @Builder
     public PostDetail(Long id, String title, String description, String thumbnailImageUrl, List<String> imageUrls, int price,
                       String location, TradeType tradeType, TradeStatus tradeStatus, ProductCondition productCondition, LocalDateTime createdAt,
-                      SellerDetail seller, CategoryResponse category) {
+                      SellerDetail seller, CategoryResponse category, boolean liked,
+        int totalLikeCount) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -48,9 +51,11 @@ public class PostDetail {
         this.createdAt = createdAt;
         this.seller = seller;
         this.category = category;
+        this.liked = liked;
+        this.totalLikeCount = totalLikeCount;
     }
 
-    public static PostDetail from(Post post, Category category) {
+    public static PostDetail from(Post post, Category category, boolean liked, int totalLikeCount) {
         return PostDetail.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -65,6 +70,8 @@ public class PostDetail {
                 .createdAt(post.getCreatedAt())
                 .seller(SellerDetail.from(post.getSeller()))
                 .category(CategoryResponse.from(category))
+                .liked(liked)
+                .totalLikeCount(totalLikeCount)
                 .build();
     }
 }

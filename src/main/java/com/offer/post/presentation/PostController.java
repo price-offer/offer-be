@@ -56,15 +56,15 @@ public class PostController {
 
     @Operation(summary = "게시글 수정", security = {@SecurityRequirement(name = "jwt")})
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<ApiResponse<PostDetail>> updatePost(
+    public ResponseEntity<ApiResponse<Long>> updatePost(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long postId,
         @RequestBody PostUpdateRequest request) {
 
-        PostDetail response = postService.updatePost(postId, request, loginMember.getId());
+        Long updatedPostId = postService.updatePost(postId, request, loginMember.getId());
 
         return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, updatedPostId)
         );
     }
 
@@ -101,7 +101,7 @@ public class PostController {
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long postId) {
 
-        PostDetail response = postService.getPost(postId);
+        PostDetail response = postService.getPost(postId, loginMember.getId());
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)
@@ -112,7 +112,7 @@ public class PostController {
     @PutMapping("/posts/trade-status/{postId}")
     public ResponseEntity<ApiResponse<Long>> updateTradeStatus(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @PathVariable Long postId, TradeStatusUpdateRequest request) {
+        @PathVariable Long postId, @RequestBody TradeStatusUpdateRequest request) {
 
         Long updatedPostId = postService.updateTradeStatus(postId, request, loginMember.getId());
 

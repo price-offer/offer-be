@@ -12,9 +12,12 @@ import com.offer.post.application.response.CategoryResponse;
 import com.offer.post.application.response.PostDetail;
 import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.SortResponse;
+import com.offer.post.domain.Like;
+import com.offer.post.domain.LikeRepository;
 import com.offer.post.domain.PostImage;
 import com.offer.post.domain.PostQueryRepository;
 import com.offer.post.domain.TradeStatus;
+import com.offer.post.domain.category.Category;
 import com.offer.post.domain.category.CategoryRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
@@ -24,6 +27,7 @@ import com.offer.post.domain.sort.SortItem;
 import com.offer.post.domain.sort.SortItemRepository;
 import com.offer.post.domain.sort.SortType;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,7 @@ public class PostService {
     private final SortGroupRepository sortGroupRepository;
     private final CategoryRepository categoryRepository;
     private final PostQueryRepository postQueryRepository;
+    private final LikeRepository likeRepository;
 
     @Transactional
     public CommonCreationResponse createPost(PostCreateRequest request, Long memberId) {
@@ -61,9 +66,19 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostDetail getPost(Long postId) {
+    public PostDetail getPost(Long postId, Long memberId) {
         Post post = postRepository.getById(postId);
-        return PostDetail.from(post, categoryRepository.findByName(post.getCategory()));
+        int totalLikeCount = likeRepository.countByPost(post);
+
+        boolean liked = false;
+        if (memberId != null) {
+            List<Like> likes = likeRepository.findAllByMemberId(memberId);
+            liked = likes.stream()
+                .anyMatch(like -> Objects.equals(like.getMember().getId(), memberId));
+        }
+
+        Category byName = categoryRepository.findByCode(post.getCategory());
+        return PostDetail.from(post, byName, liked, totalLikeCount);
     }
 
     @Transactional(readOnly = true)
@@ -97,7 +112,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostDetail updatePost(Long postId, PostUpdateRequest request, Long memberId) {
+    public Long updatePost(Long postId, PostUpdateRequest request, Long memberId) {
         Member member = memberRepository.getById(memberId);
         Post post = postRepository.getById(postId);
         if (!post.getSeller().equals(member)) {
@@ -106,7 +121,7 @@ public class PostService {
                     .getId());
         }
         post.update(request);
-        return PostDetail.from(post, categoryRepository.findByName(post.getCategory()));
+        return postId;
     }
 
     @Transactional

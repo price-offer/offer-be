@@ -1,5 +1,8 @@
 package com.offer.post.application.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.TradeStatus;
 
@@ -13,6 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @NoArgsConstructor
+@JsonInclude(Include.NON_NULL)
 public class PostSummary {
 
     private Long id;
