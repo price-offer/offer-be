@@ -15,8 +15,8 @@ public class MsgRoomCreateRequest {
 
     public MsgRoom toEntity(Member member1, Member member2, Offer offer) {
         return MsgRoom.builder()
-                .member1(member1)
-                .member2(member2)
+                .seller(member1)
+                .offerer(member2)
                 .offer(offer)
                 .build();
     }

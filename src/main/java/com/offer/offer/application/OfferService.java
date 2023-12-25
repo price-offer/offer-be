@@ -5,6 +5,10 @@ import com.offer.common.response.CommonCreationResponse;
 import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
+import com.offer.msg.domain.Msg;
+import com.offer.msg.domain.MsgRepository;
+import com.offer.msg.domain.MsgRoom;
+import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OfferSummaries;
 import com.offer.offer.application.response.OfferSummary;
@@ -15,9 +19,13 @@ import com.offer.post.application.request.OfferReadParams;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 
+import com.offer.review.application.response.ReviewInfoResponse;
+import com.offer.review.domain.Review;
+import com.offer.review.domain.ReviewRepository;
 import java.util.List;
 
 import com.offer.utils.SliceUtils;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +39,9 @@ public class OfferService {
     private final PostRepository postRepository;
     private final OfferRepository offerRepository;
     private final MemberRepository memberRepository;
+    private final MsgRoomRepository msgRoomRepository;
+    private final MsgRepository msgRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public CommonCreationResponse createOffer(Long postId, OfferCreateRequest request, Long offererId) {
@@ -53,6 +64,7 @@ public class OfferService {
         Post post = postRepository.getById(postId);
 
         Offer offer = request.toEntity(offerer, post);
+        offerRepository.save(offer);
 
         return CommonCreationResponse.of(offer.getId(), offer.getCreatedAt());
     }
@@ -65,6 +77,7 @@ public class OfferService {
         return OffersResponse.of(offersByPost.stream().toList(), postId, 0);
     }
 
+    @Transactional(readOnly = true)
     public OfferSummaries getAllOffersByMember(OfferReadParams params, LoginMember loginMember) {
         if (loginMember.getId() == null) {
             throw new IllegalArgumentException("잘못된 토큰입니다");
@@ -77,7 +90,7 @@ public class OfferService {
             offers.remove(params.getLimit());
             return OfferSummaries.builder()
                 .offers(offers.stream()
-                    .map(OfferSummary::from)
+                    .map(this::getOfferSummary)
                     .collect(Collectors.toList()))
                 .hasNext(true)
                 .build();
@@ -86,9 +99,30 @@ public class OfferService {
 
         return OfferSummaries.builder()
             .offers(offers.stream()
-                .map(OfferSummary::from)
+                .map(this::getOfferSummary)
                 .collect(Collectors.toList()))
             .hasNext(false)
             .build();
+    }
+
+    private OfferSummary getOfferSummary(Offer offer) {
+        // 내가 보낸 offer에 대한 내가 보낸 후기
+        Optional<MsgRoom> msgRoom = msgRoomRepository.findByOffererAndOffer(
+            offer.getOfferer(), offer);
+
+        if (msgRoom.isEmpty()) {
+            return OfferSummary.from(offer);
+        }
+
+        MsgRoom room = msgRoom.get();
+        Member seller = room.getSeller();
+        List<Msg> messages = msgRepository.findAllByRoomAndSenderId(room, seller.getId());
+
+        boolean reviewAvailable = !messages.isEmpty();
+        ReviewInfoResponse review = reviewRepository.findByPostAndReviewer(offer.getPost(), offer.getOfferer())
+            .map(ReviewInfoResponse::from)
+            .orElse(null);
+
+        return OfferSummary.from(offer, reviewAvailable, review);
     }
 }

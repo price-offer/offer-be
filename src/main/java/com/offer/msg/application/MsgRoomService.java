@@ -55,13 +55,13 @@ public class MsgRoomService {
     public List<MsgRoomInfoResponse> getMsgRooms(int page, Long memberId) {
         PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
-        Slice<MsgRoom> msgRooms1 = msgRoomRepository.findSliceByMember1Id(pageRequest, memberId);
-        Slice<MsgRoom> msgRooms2 = msgRoomRepository.findSliceByMember2Id(pageRequest, memberId);
+        Slice<MsgRoom> msgRooms1 = msgRoomRepository.findSliceBySellerId(pageRequest, memberId);
+        Slice<MsgRoom> msgRooms2 = msgRoomRepository.findSliceByOffererId(pageRequest, memberId);
 
         List<MsgRoomInfoResponse> response = new ArrayList<>(msgRooms1.getNumber() + msgRooms2.getNumber());
 
         for (MsgRoom msgRoom : msgRooms1) {  // TODO: refactor
-            Member partner = msgRoom.getMember2();
+            Member partner = msgRoom.getOfferer();
             String lastContent = "tmp_lastContent";
             int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
             LocalDateTime lastSendTime = LocalDateTime.now();
@@ -75,7 +75,7 @@ public class MsgRoomService {
         }
 
         for (MsgRoom msgRoom : msgRooms2) {
-            Member partner = msgRoom.getMember1();
+            Member partner = msgRoom.getSeller();
             String lastContent = "tmp_lastContent";
             int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
             LocalDateTime lastSendTime = LocalDateTime.now();
@@ -94,9 +94,9 @@ public class MsgRoomService {
     @Transactional(propagation = Propagation.MANDATORY)
     public void validateAlreadyExistRoom(Long member1Id, Long member2Id, Long offerId) {
         Optional<MsgRoom> opt1 = msgRoomRepository
-                .findByMember1IdAndMember2IdAndOfferId(member1Id, member2Id, offerId);
+                .findBySellerIdAndOffererIdAndOfferId(member1Id, member2Id, offerId);
         Optional<MsgRoom> opt2 = msgRoomRepository
-                .findByMember1IdAndMember2IdAndOfferId(member2Id, member1Id, offerId);
+                .findBySellerIdAndOffererIdAndOfferId(member2Id, member1Id, offerId);
 
         if (opt1.isEmpty() && opt2.isEmpty()) return;
 

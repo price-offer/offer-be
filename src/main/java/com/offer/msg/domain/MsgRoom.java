@@ -19,8 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Table(indexes = {
-        @Index(name = "msg_room_idx1", columnList = "member1_id, member2_id, offer_id"),
-        @Index(name = "msg_room_idx2", columnList = "member2_id, member1_id, offer_id")
+        @Index(name = "msg_room_idx1", columnList = "seller_id, offerer_id, offer_id")
 })
 public class MsgRoom {
     @Id
@@ -28,14 +27,14 @@ public class MsgRoom {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member1_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "seller_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member member1;
+    private Member seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member2_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "offerer_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member member2;
+    private Member offerer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -45,9 +44,9 @@ public class MsgRoom {
     private LocalDateTime createdAt;
 
     @Builder
-    public MsgRoom(Member member1, Member member2, Offer offer) {
-        this.member1 = member1;
-        this.member2 = member2;
+    public MsgRoom(Member seller, Member offerer, Offer offer) {
+        this.seller = seller;
+        this.offerer = offerer;
         this.offer = offer; // nullable
     }
 }
