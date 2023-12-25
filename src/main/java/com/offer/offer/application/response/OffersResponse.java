@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 public class OffersResponse {
 
-    private int totalSize;
     private Long postId;
     private List<OfferResponse> offers;
     private Integer offerCountOfCurrentMember;
@@ -18,9 +17,7 @@ public class OffersResponse {
     private final Integer maximumOfferCount = 2;
 
     @Builder
-    public OffersResponse(int totalSize, Long postId, List<OfferResponse> offers,
-        Integer offerCountOfCurrentMember) {
-        this.totalSize = totalSize;
+    public OffersResponse(Long postId, List<OfferResponse> offers, Integer offerCountOfCurrentMember) {
         this.postId = postId;
         this.offers = offers;
         this.offerCountOfCurrentMember = offerCountOfCurrentMember;
@@ -28,7 +25,6 @@ public class OffersResponse {
 
     public static OffersResponse of(List<Offer> offers, Long postId, Integer offerCountOfCurrentMember) {
         return new OffersResponse(
-            offers.size(),
             postId,
             offers.stream()
                 .map(OfferResponse::from)

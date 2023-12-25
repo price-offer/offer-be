@@ -70,11 +70,21 @@ public class OfferService {
     }
 
     @Transactional(readOnly = true)
-    public OffersResponse getAllOffersByPost(int page, Long postId) {
-        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
+    public OffersResponse getAllOffersByPost(Long postId, Long memberId, String sort) {
+        Post post = postRepository.getById(postId);
+        List<Offer> offersByPost = offerRepository.findAllByPostOrderByIdDesc(post);
 
-        Slice<Offer> offersByPost = offerRepository.findSliceByPostId(pageRequest, postId);
-        return OffersResponse.of(offersByPost.stream().toList(), postId, 0);
+        if (sort != null && sort.equals("PRICE_DESC")) {
+            offersByPost = offerRepository.findAllByPostOrderByPriceDesc(post);
+        }
+
+        int offerCount = 0;
+        if (memberId != null) {
+            Member member = memberRepository.getById(memberId);
+            offerCount = offerRepository.countByPostAndOfferer(post, member);
+        }
+
+        return OffersResponse.of(offersByPost.stream().toList(), postId, offerCount);
     }
 
     @Transactional(readOnly = true)

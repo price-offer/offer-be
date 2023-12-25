@@ -12,7 +12,10 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findAllByOffererIdAndPostId(Long offererId, Long postId);
 
-    Slice<Offer> findSliceByPostId(PageRequest pageRequest, Long postId);
+    List<Offer> findAllByPostOrderByIdDesc(Post post);
+    List<Offer> findAllByPostOrderByPriceDesc(Post post);
 
     List<Offer> findAllByOfferer(Member offerer);
+
+    int countByPostAndOfferer(Post post, Member offerer);
 }

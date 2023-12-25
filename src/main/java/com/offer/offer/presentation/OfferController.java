@@ -42,9 +42,9 @@ public class OfferController {
     @GetMapping("/api/posts/{postId}/offers")
     public ResponseEntity<ApiResponse<OffersResponse>> getAllOffersByPost(@PathVariable Long postId,
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @RequestParam(required = true) int page) {
+        @RequestParam(required = false) String sort) {
 
-        OffersResponse response = offerService.getAllOffersByPost(page, postId);
+        OffersResponse response = offerService.getAllOffersByPost(postId, loginMember.getId(), sort);
 
         return ResponseEntity.ok(
                 ApiResponse.of(ResponseMessage.SUCCESS, response)
