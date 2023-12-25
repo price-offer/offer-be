@@ -58,9 +58,7 @@ public class PostQueryRepository {
                 .posts(posts.stream()
                     .map(post -> {
                         int likeCount = likeRepository.countByPost(post);
-                        ReviewInfoResponse review = reviewRepository.findByPost(post)
-                            .map(ReviewInfoResponse::from)
-                            .orElse(null);
+                        ReviewInfoResponse review = getReviewInfoResponse(post, seller);
                         return PostSummary.from(post, likePostIds, likeCount, review);
                     })
                     .collect(Collectors.toList()))
@@ -72,14 +70,23 @@ public class PostQueryRepository {
             .posts(posts.stream()
                 .map(post -> {
                     int likeCount = likeRepository.countByPost(post);
-                    ReviewInfoResponse review = reviewRepository.findByPost(post)
-                        .map(ReviewInfoResponse::from)
-                        .orElse(null);
+                    ReviewInfoResponse review = getReviewInfoResponse(post, seller);
                     return PostSummary.from(post, likePostIds, likeCount, review);
                 })
                 .collect(Collectors.toList()))
             .hasNext(false)
             .build();
+    }
+
+    private ReviewInfoResponse getReviewInfoResponse(Post post, Member seller) {
+        if (seller == null) {
+            return null;
+        }
+
+        ReviewInfoResponse review = reviewRepository.findByPostAndReviewer(post, seller)
+            .map(ReviewInfoResponse::from)
+            .orElse(null);
+        return review;
     }
 
     private Set<Long> getLikePostId(Long memberId) {
