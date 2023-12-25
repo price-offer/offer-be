@@ -20,10 +20,10 @@ insert into category(code, name, image_url) values ('OTHER', '기타 중고물�
 insert into sort_group(sort_type) values ('POST');
 insert into sort_group(sort_type) values ('OFFER');
 
-insert into sort_item(sort_group_id, exposure_title, name) values (1, '높은 가격순', 'PRICE_DESC');
-insert into sort_item(sort_group_id, exposure_title, name) values (1, '최신순', 'CREATED_DATE_DESC');
-insert into sort_item(sort_group_id, exposure_title, name) values (2, '높은 가격순', 'PRICE_DESC');
-insert into sort_item(sort_group_id, exposure_title, name) values (2, '최신순', 'CREATED_DATE_DESC');
+insert into sort_item(sort_group_id, name, code) values (1, '높은 가격순', 'PRICE_DESC');
+insert into sort_item(sort_group_id, name, code) values (1, '최신순', 'CREATED_DATE_DESC');
+insert into sort_item(sort_group_id, name, code) values (2, '높은 가격순', 'PRICE_DESC');
+insert into sort_item(sort_group_id, name, code) values (2, '최신순', 'CREATED_DATE_DESC');
 
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)

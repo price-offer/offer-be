@@ -7,9 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,19 +20,19 @@ public class SortItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "name")
     private String name;
-
-    @Column(name = "exposure_title")
-    private String exposureTitle;
 
     @ManyToOne
     @JoinColumn(name = "sort_group_id")
     private SortGroup sortGroup;
 
-    public SortItem(String name, String exposureTitle) {
+    public SortItem(String code, String name) {
+        this.code = code;
         this.name = name;
-        this.exposureTitle = exposureTitle;
     }
 
     public void setSortGroup(SortGroup sortGroup) {

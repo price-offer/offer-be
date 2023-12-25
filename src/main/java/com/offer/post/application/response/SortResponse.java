@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SortResponse {
 
+    private String code;
     private String name;
-    private String exposureTitle;
 
     @Builder
-    public SortResponse(String name, String exposureTitle) {
+    public SortResponse(String code, String name) {
+        this.code = code;
         this.name = name;
-        this.exposureTitle = exposureTitle;
     }
 
     public static SortResponse from(SortItem sortItem) {
         return SortResponse.builder()
+            .code(sortItem.getCode())
             .name(sortItem.getName())
-            .exposureTitle(sortItem.getExposureTitle())
             .build();
     }
 }
