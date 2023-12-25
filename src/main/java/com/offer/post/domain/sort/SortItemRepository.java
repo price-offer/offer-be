@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SortItemRepository extends JpaRepository<SortItem, Long> {
 
-    SortItem findByName(String name);
+    SortItem findByCode(String code);
 }

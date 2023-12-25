@@ -87,12 +87,12 @@ class PostServiceTest {
         sortItemRepository.save(sortItem2);
 
         SortResponse recentItem = SortResponse.builder()
-                .name("RECENT_CREATED")
-                .exposureTitle("최신순")
+                .code("RECENT_CREATED")
+                .name("최신순")
                 .build();
         SortResponse lowPrice = SortResponse.builder()
-                .name("LOW_PRICE")
-                .exposureTitle("낮은 가격순")
+                .code("LOW_PRICE")
+                .name("낮은 가격순")
                 .build();
         List<SortResponse> expect = List.of(recentItem, lowPrice);
 

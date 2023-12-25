@@ -22,7 +22,7 @@ class SortItemRepositoryTest {
         SortItem saved = sut.save(new SortItem("RECENT_CREATED", "최신순"));
 
         // when
-        SortItem found = sut.findByName(name);
+        SortItem found = sut.findByCode(name);
 
         // then
         assertThat(found).isEqualTo(saved);
