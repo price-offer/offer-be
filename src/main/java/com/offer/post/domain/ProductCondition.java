@@ -1,11 +1,18 @@
 package com.offer.post.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum ProductCondition {
-    NEW,
-    SECONDHAND
-    ;
+    NEW("새상품"),
+    SECONDHAND("중고상품");
+
+    private final String description;
+
+    ProductCondition(String description) {
+        this.description = description;
+    }
 
     public static ProductCondition from(String name) {
         return Arrays.stream(values())

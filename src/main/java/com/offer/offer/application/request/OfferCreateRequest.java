@@ -3,6 +3,7 @@ package com.offer.offer.application.request;
 import com.offer.member.Member;
 import com.offer.offer.domain.Offer;
 import com.offer.post.domain.Post;
+import com.offer.post.domain.TradeType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,6 @@ public class OfferCreateRequest {
     }
 
     public Offer toEntity(Member offerer, Post post) {
-        return new Offer(post, offerer, this.price, false, this.tradeType);
+        return new Offer(post, offerer, this.price, false, TradeType.from(this.tradeType));
     }
 }

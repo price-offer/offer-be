@@ -1,6 +1,7 @@
 package com.offer.offer.application.response;
 
 import com.offer.offer.domain.Offer;
+import com.offer.post.application.response.EnumResponse;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +30,9 @@ public class OfferResponse {
                 offer.getOfferer().getNickname(),
                 offer.getPost().getLocation(),
                 String.valueOf(offer.getOfferer().getOfferLevel()),
-                offer.getTradeType(), offer.getOfferer().getProfileImageUrl()),
+                new EnumResponse(offer.getTradeType().name(),
+                    offer.getTradeType().getDescription()),
+                offer.getOfferer().getProfileImageUrl()),
             offer.getPrice(),
             offer.getCreatedAt()
         );

@@ -1,7 +1,9 @@
 package com.offer.post.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum TradeType {
     FACE_TO_FACE("직거래"),
     SHIPPING("택배거래"),

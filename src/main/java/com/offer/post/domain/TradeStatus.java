@@ -5,10 +5,15 @@ import lombok.Getter;
 
 @Getter
 public enum TradeStatus {
-    SELLING,
-    SOLD,
-    UNKNOWN
-    ;
+    SELLING("판매중"),
+    SOLD("판매완료"),
+    UNKNOWN("");
+
+    private final String description;
+
+    TradeStatus(String description) {
+        this.description = description;
+    }
 
     public static TradeStatus from(String name) {
         if (name == null) {

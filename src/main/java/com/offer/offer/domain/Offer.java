@@ -2,8 +2,11 @@ package com.offer.offer.domain;
 
 import com.offer.member.Member;
 import com.offer.post.domain.Post;
+import com.offer.post.domain.TradeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,12 +41,14 @@ public class Offer {
 
     private Integer price;
     private Boolean isSelected;
-    private String tradeType;
+
+    @Enumerated(EnumType.STRING)
+    private TradeType tradeType;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Offer(Post post, Member offerer, Integer price, Boolean isSelected, String tradeType) {
+    public Offer(Post post, Member offerer, Integer price, Boolean isSelected, TradeType tradeType) {
         this.post = post;
         this.offerer = offerer;
         this.price = price;

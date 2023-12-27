@@ -2,8 +2,6 @@ package com.offer.post.application.response;
 
 import com.offer.post.domain.Post;
 import com.offer.post.domain.ProductCondition;
-import com.offer.post.domain.TradeStatus;
-import com.offer.post.domain.TradeType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,9 +21,9 @@ public class PostDetail {
     private List<String> imageUrls;
     private int price;
     private String location;
-    private TradeType tradeType;
-    private TradeStatus tradeStatus;
-    private ProductCondition productCondition;
+    private EnumResponse tradeType;
+    private EnumResponse tradeStatus;
+    private EnumResponse productCondition;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private SellerDetail seller;
@@ -35,7 +33,7 @@ public class PostDetail {
 
     @Builder
     public PostDetail(Long id, String title, String description, String thumbnailImageUrl, List<String> imageUrls, int price,
-                      String location, TradeType tradeType, TradeStatus tradeStatus, ProductCondition productCondition, LocalDateTime createdAt,
+                      String location, EnumResponse tradeType, EnumResponse tradeStatus, EnumResponse productCondition, LocalDateTime createdAt,
                       SellerDetail seller, CategoryResponse category, boolean liked,
         int totalLikeCount) {
         this.id = id;
@@ -62,11 +60,11 @@ public class PostDetail {
                 .description(post.getDescription())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
                 .imageUrls(post.getImageUrls())
-                .tradeStatus(post.getTradeStatus())
+                .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
                 .price(post.getPrice())
                 .location(post.getLocation())
-                .tradeType(post.getTradeType())
-                .productCondition(post.getProductCondition())
+                .tradeType(new EnumResponse(post.getTradeType().name(), post.getTradeType().getDescription()))
+                .productCondition(new EnumResponse(post.getProductCondition().name(), post.getProductCondition().getDescription()))
                 .createdAt(post.getCreatedAt())
                 .seller(SellerDetail.from(post.getSeller()))
                 .category(CategoryResponse.from(category))

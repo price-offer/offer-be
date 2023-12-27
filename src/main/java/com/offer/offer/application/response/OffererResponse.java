@@ -1,5 +1,6 @@
 package com.offer.offer.application.response;
 
+import com.offer.post.application.response.EnumResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,12 +11,12 @@ public class OffererResponse {
     private String nickname;
     private String location;
     private String level;
-    private String tradeType;
+    private EnumResponse tradeType;
     private String profileImageUrl;
 
     @Builder
     public OffererResponse(Long id, String nickname, String location, String level,
-        String tradeType, String profileImageUrl) {
+        EnumResponse tradeType, String profileImageUrl) {
         this.id = id;
         this.nickname = nickname;
         this.location = location;

@@ -1,6 +1,7 @@
 package com.offer.offer.application.response;
 
 import com.offer.offer.domain.Offer;
+import com.offer.post.application.response.EnumResponse;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.TradeStatus;
 import com.offer.review.application.response.ReviewInfoResponse;
@@ -18,7 +19,7 @@ public class OfferSummary {
     private Long postId;
     private int offerPrice;
     private String thumbnailImageUrl;
-    private TradeStatus tradeStatus;
+    private EnumResponse tradeStatus;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private boolean reviewAvailable;
@@ -27,7 +28,7 @@ public class OfferSummary {
 
     @Builder
     public OfferSummary(Long offerId, Long postId, int offerPrice, String thumbnailImageUrl,
-        TradeStatus tradeStatus, LocalDateTime createdAt, boolean reviewAvailable,
+        EnumResponse tradeStatus, LocalDateTime createdAt, boolean reviewAvailable,
         boolean hasReview, ReviewInfoResponse review) {
         this.offerId = offerId;
         this.postId = postId;
@@ -47,7 +48,7 @@ public class OfferSummary {
             .postId(post.getId())
             .offerPrice(offer.getPrice())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
-            .tradeStatus(post.getTradeStatus())
+            .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
             .createdAt(offer.getCreatedAt())
             .build();
     }
@@ -59,7 +60,7 @@ public class OfferSummary {
             .postId(post.getId())
             .offerPrice(offer.getPrice())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
-            .tradeStatus(post.getTradeStatus())
+            .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
             .createdAt(offer.getCreatedAt())
             .reviewAvailable(reviewAvailable)
             .hasReview(review != null)

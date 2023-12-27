@@ -25,7 +25,7 @@ public class PostSummary {
     private String location;
     private String thumbnailImageUrl;
     private boolean liked;
-    private TradeStatus tradeStatus;
+    private EnumResponse tradeStatus;
     private int likeCount;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
@@ -36,7 +36,7 @@ public class PostSummary {
 
     @Builder(toBuilder = true)
     public PostSummary(Long id, String title, int price, String location, String thumbnailImageUrl,
-                       boolean liked, TradeStatus tradeStatus, int likeCount, LocalDateTime createdAt,
+                       boolean liked, EnumResponse tradeStatus, int likeCount, LocalDateTime createdAt,
                        SellerDetail seller, CategoryResponse category, ReviewInfoResponse review,
         boolean hasReview) {
         this.id = id;
@@ -68,7 +68,7 @@ public class PostSummary {
                 .location(post.getLocation())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
                 .liked(liked)
-                .tradeStatus(post.getTradeStatus())
+                .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
                 .likeCount(likeCount)
                 .createdAt(post.getCreatedAt())
                 .review(review)
@@ -84,7 +84,7 @@ public class PostSummary {
                 .location(post.getLocation())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
                 .liked(isLiked)
-                .tradeStatus(post.getTradeStatus())
+                .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
                 .createdAt(post.getCreatedAt())
                 .seller(SellerDetail.from(post.getSeller()))
                 .build();
