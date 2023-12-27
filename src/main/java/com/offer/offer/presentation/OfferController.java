@@ -9,8 +9,7 @@ import com.offer.offer.application.OfferService;
 import com.offer.offer.application.request.OfferCreateRequest;
 import com.offer.offer.application.response.OfferSummaries;
 import com.offer.offer.application.response.OffersResponse;
-import com.offer.post.application.request.OfferReadParams;
-import com.offer.post.application.response.PostSummaries;
+import com.offer.post.application.request.SortPageReadParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -55,7 +54,7 @@ public class OfferController {
     @GetMapping("/api/posts/offers")
     public ResponseEntity<ApiResponse<OfferSummaries>> showMyOfferPosts(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        OfferReadParams params) {
+        SortPageReadParam params) {
 
         OfferSummaries response = offerService.getAllOffersByMember(params, loginMember);
         return ResponseEntity.ok(

@@ -76,7 +76,7 @@ public class PostSummary {
                 .build();
     }
 
-    public static PostSummary from(Post post, boolean isLiked) {
+    public static PostSummary from(Post post, boolean isLiked, int likeCount) {
         return PostSummary.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -84,6 +84,7 @@ public class PostSummary {
                 .location(post.getLocation())
                 .thumbnailImageUrl(post.getThumbnailImageUrl())
                 .liked(isLiked)
+                .likeCount(likeCount)
                 .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
                 .createdAt(post.getCreatedAt())
                 .seller(SellerDetail.from(post.getSeller()))

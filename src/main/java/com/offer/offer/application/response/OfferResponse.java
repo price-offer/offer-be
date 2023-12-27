@@ -29,7 +29,7 @@ public class OfferResponse {
             new OffererResponse(offer.getOfferer().getId(),
                 offer.getOfferer().getNickname(),
                 offer.getPost().getLocation(),
-                String.valueOf(offer.getOfferer().getOfferLevel()),
+                offer.getOfferer().getOfferLevel(),
                 new EnumResponse(offer.getTradeType().name(),
                     offer.getTradeType().getDescription()),
                 offer.getOfferer().getProfileImageUrl()),

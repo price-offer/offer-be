@@ -27,7 +27,7 @@ insert into sort_item(sort_group_id, name, code) values (2, '최신순', 'CREATE
 
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
-values (10000, now(), now(), 1, 'MEN_FASHION', '남성 청바지 팔아요~~', '동작구 사당동', 'SECONDHAND', 'https://picsum.photos/200', '남성 청바지 팝니다.', 'FACE_TO_FACE', 'SELLING');
+values (30000, now(), now(), 1, 'MEN_FASHION', '남성 청바지 팔아요~~', '동작구 사당동', 'SECONDHAND', 'https://picsum.photos/200', '남성 청바지 팝니다.', 'FACE_TO_FACE', 'SELLING');
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (11000, now(), now(), 1, 'MEN_FASHION', '후드티 팔아요~~', '동작구 사당동', 'SECONDHAND', 'https://picsum.photos/200', '후드티 판매', 'FACE_TO_FACE', 'SELLING');

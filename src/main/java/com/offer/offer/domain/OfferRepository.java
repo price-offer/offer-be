@@ -4,8 +4,6 @@ import com.offer.member.Member;
 import com.offer.post.domain.Post;
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OfferRepository extends JpaRepository<Offer, Long> {
@@ -17,5 +15,11 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findAllByOfferer(Member offerer);
 
+    List<Offer> findAllByOffererOrderByIdDesc(Member offerer);
+
     int countByPostAndOfferer(Post post, Member offerer);
+
+    List<Offer> findAllByOffererOrderByPriceDesc(Member offerer);
+
+    List<Offer> findAllByOffererOrderByPriceAsc(Member offerer);
 }

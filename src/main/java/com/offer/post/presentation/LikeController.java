@@ -5,7 +5,9 @@ import com.offer.authentication.presentation.LoginMember;
 import com.offer.common.response.ApiResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.post.application.LikeService;
+import com.offer.post.application.request.SortPageReadParam;
 import com.offer.post.application.request.ToggleLikeRequest;
+import com.offer.post.application.response.PostSummaries;
 import com.offer.post.application.response.PostSummary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,11 +39,11 @@ public class LikeController {
 
     @Operation(summary = "내가 좋아한 모든 게시물", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/posts/likes")
-    public ResponseEntity<ApiResponse<List<PostSummary>>> getAll(
+    public ResponseEntity<ApiResponse<PostSummaries>> getAll(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @RequestParam(required = true) int page) {
+        SortPageReadParam params) {
 
-        List<PostSummary> response = likeService.findLikePosts(page, loginMember.getId());
+        PostSummaries response = likeService.findLikePosts(params, loginMember.getId());
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)

@@ -10,12 +10,12 @@ public class OffererResponse {
     private Long id;
     private String nickname;
     private String location;
-    private String level;
+    private int level;
     private EnumResponse tradeType;
     private String profileImageUrl;
 
     @Builder
-    public OffererResponse(Long id, String nickname, String location, String level,
+    public OffererResponse(Long id, String nickname, String location, int level,
         EnumResponse tradeType, String profileImageUrl) {
         this.id = id;
         this.nickname = nickname;

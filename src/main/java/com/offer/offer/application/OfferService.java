@@ -15,21 +15,17 @@ import com.offer.offer.application.response.OfferSummary;
 import com.offer.offer.application.response.OffersResponse;
 import com.offer.offer.domain.Offer;
 import com.offer.offer.domain.OfferRepository;
-import com.offer.post.application.request.OfferReadParams;
+import com.offer.post.application.request.SortPageReadParam;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 
 import com.offer.review.application.response.ReviewInfoResponse;
-import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import java.util.List;
 
-import com.offer.utils.SliceUtils;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,13 +84,21 @@ public class OfferService {
     }
 
     @Transactional(readOnly = true)
-    public OfferSummaries getAllOffersByMember(OfferReadParams params, LoginMember loginMember) {
+    public OfferSummaries getAllOffersByMember(SortPageReadParam params, LoginMember loginMember) {
         if (loginMember.getId() == null) {
             throw new IllegalArgumentException("잘못된 토큰입니다");
         }
 
         Member offerer = memberRepository.getById(loginMember.getId());
-        List<Offer> offers = offerRepository.findAllByOfferer(offerer);
+        List<Offer> offers = offerRepository.findAllByOffererOrderByIdDesc(offerer);
+
+        if (params.getSort() != null && params.getSort().equals("PRICE_DESC")) {
+            offers = offerRepository.findAllByOffererOrderByPriceDesc(offerer);
+        }
+
+        if (params.getSort() != null && params.getSort().equals("PRICE_ASC")) {
+            offers = offerRepository.findAllByOffererOrderByPriceAsc(offerer);
+        }
 
         if (offers.size() > params.getLimit()) {
             offers.remove(params.getLimit());

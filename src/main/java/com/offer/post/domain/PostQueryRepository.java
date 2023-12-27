@@ -35,6 +35,7 @@ public class PostQueryRepository {
             memberRepository.getById(sellerId) : null;
 
         Set<Long> likePostIds = getLikePostId(loginMemberId);
+        boolean priceDesc = "PRICE_DESC".equals(params.getSort());
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (params.getLastId() != null) {
@@ -48,7 +49,7 @@ public class PostQueryRepository {
                 sellerEq(seller),
                 tradeStatus(TradeStatus.from(params.getTradeStatus()))
             )
-            .orderBy(post.id.desc())
+            .orderBy(priceDesc ? post.price.desc() : post.id.desc())
             .limit(params.getLimit() + 1)
             .fetch();
 
