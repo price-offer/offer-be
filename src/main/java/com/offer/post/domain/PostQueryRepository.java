@@ -10,6 +10,7 @@ import com.offer.post.application.response.PostSummary;
 import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.domain.ReviewRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Collections;
@@ -35,7 +36,6 @@ public class PostQueryRepository {
             memberRepository.getById(sellerId) : null;
 
         Set<Long> likePostIds = getLikePostId(loginMemberId);
-        boolean priceDesc = "PRICE_DESC".equals(params.getSort());
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (params.getLastId() != null) {
@@ -49,7 +49,7 @@ public class PostQueryRepository {
                 sellerEq(seller),
                 tradeStatus(TradeStatus.from(params.getTradeStatus()))
             )
-            .orderBy(priceDesc ? post.price.desc() : post.id.desc())
+            .orderBy(order(params.getSort()))
             .limit(params.getLimit() + 1)
             .fetch();
 
@@ -79,13 +79,23 @@ public class PostQueryRepository {
             .build();
     }
 
+    private OrderSpecifier<?> order(String sort) {
+        if (sort == null || sort.equals("CREATED_DATE_DESC")) {
+            return post.id.desc();
+        }
+        if (sort.equals("PRICE_DESC")) {
+            return post.price.desc();
+        }
+        return post.price.asc();
+    }
+
     private ReviewInfoResponse getReviewInfoResponse(Post post, Member seller) {
         if (seller == null) {
             return null;
         }
 
         ReviewInfoResponse review = reviewRepository.findByPostAndReviewer(post, seller)
-            .map(ReviewInfoResponse::from)
+            .map(it -> ReviewInfoResponse.buildReviewInfoResponse(it, seller))
             .orElse(null);
         return review;
     }

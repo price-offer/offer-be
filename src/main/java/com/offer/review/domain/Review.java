@@ -39,7 +39,7 @@ public class Review {
 
     private String content;
 
-    private boolean isRevieweeBuyer;
+    private boolean revieweeIsBuyer;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -49,12 +49,12 @@ public class Review {
 
     @Builder
     public Review(Member reviewee, Member reviewer, Post post, int score,
-                  String content, boolean isRevieweeBuyer) {
+                  String content, boolean revieweeIsBuyer) {
         this.reviewee = reviewee;
         this.reviewer = reviewer;
         this.post = post;
         this.score = score;
         this.content = content;
-        this.isRevieweeBuyer = isRevieweeBuyer;
+        this.revieweeIsBuyer = revieweeIsBuyer;
     }
 }

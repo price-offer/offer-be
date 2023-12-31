@@ -3,7 +3,6 @@ package com.offer.offer.application.response;
 import com.offer.offer.domain.Offer;
 import com.offer.post.application.response.EnumResponse;
 import com.offer.post.domain.Post;
-import com.offer.post.domain.TradeStatus;
 import com.offer.review.application.response.ReviewInfoResponse;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -17,6 +16,8 @@ public class OfferSummary {
 
     private Long offerId;
     private Long postId;
+    private String sellerNickname;
+    private String title;
     private int offerPrice;
     private String thumbnailImageUrl;
     private EnumResponse tradeStatus;
@@ -27,11 +28,13 @@ public class OfferSummary {
     private ReviewInfoResponse review;
 
     @Builder
-    public OfferSummary(Long offerId, Long postId, int offerPrice, String thumbnailImageUrl,
+    public OfferSummary(Long offerId, Long postId, String sellerNickname, String title, int offerPrice, String thumbnailImageUrl,
         EnumResponse tradeStatus, LocalDateTime createdAt, boolean reviewAvailable,
         boolean hasReview, ReviewInfoResponse review) {
         this.offerId = offerId;
         this.postId = postId;
+        this.sellerNickname = sellerNickname;
+        this.title = title;
         this.offerPrice = offerPrice;
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.tradeStatus = tradeStatus;
@@ -46,6 +49,8 @@ public class OfferSummary {
         return OfferSummary.builder()
             .offerId(offer.getId())
             .postId(post.getId())
+            .title(post.getTitle())
+            .sellerNickname(post.getSeller().getNickname())
             .offerPrice(offer.getPrice())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
             .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))
@@ -58,6 +63,8 @@ public class OfferSummary {
         return OfferSummary.builder()
             .offerId(offer.getId())
             .postId(post.getId())
+            .title(post.getTitle())
+            .sellerNickname(post.getSeller().getNickname())
             .offerPrice(offer.getPrice())
             .thumbnailImageUrl(post.getThumbnailImageUrl())
             .tradeStatus(new EnumResponse(post.getTradeStatus().name(), post.getTradeStatus().getDescription()))

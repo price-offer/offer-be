@@ -1,6 +1,6 @@
 package com.offer.review.application.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.offer.member.Member;
 import com.offer.review.domain.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ReviewInfoResponse {
     private final Long id;
 
-    private final ReviewerBriefResponse reviewer;
+    private final ReviewTargetMemberResponse reviewTargetMember;
 
     private final int score;
 
@@ -28,7 +28,7 @@ public class ReviewInfoResponse {
 
     @Getter
     @RequiredArgsConstructor
-    public static class ReviewerBriefResponse {
+    public static class ReviewTargetMemberResponse {
         private final Long id;
 
         private final String profileImageUrl;
@@ -44,13 +44,22 @@ public class ReviewInfoResponse {
         private final String title;
     }
 
-    public static ReviewInfoResponse from(Review review) {
+    public static ReviewInfoResponse buildReviewInfoResponse(Review review, Member member) {
+        // 내가 reviewer인 경우 reviewee, 내가 reviewee인 경우 reviewer
+        Member reviewer = review.getReviewer();
+        if (member.getId().equals(reviewer.getId())) {
+            return ReviewInfoResponse.from(review, review.getReviewee());
+        }
+        return ReviewInfoResponse.from(review, review.getReviewer());
+    }
+
+    private static ReviewInfoResponse from(Review review, Member targetMember) {
         return ReviewInfoResponse.builder()
                 .id(review.getId())
-                .reviewer(new ReviewerBriefResponse(
-                        review.getReviewer().getId(),
-                        review.getReviewer().getProfileImageUrl(),
-                        review.getReviewer().getNickname())
+                .reviewTargetMember(new ReviewTargetMemberResponse(
+                    targetMember.getId(),
+                    targetMember.getProfileImageUrl(),
+                    targetMember.getNickname())
                 )
                 .score(review.getScore())
                 .post(new PostBriefResponse(

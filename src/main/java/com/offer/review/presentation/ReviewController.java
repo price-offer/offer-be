@@ -8,6 +8,7 @@ import com.offer.common.response.ResponseMessage;
 import com.offer.review.application.ReviewService;
 import com.offer.review.application.request.ReviewCreateRequest;
 import com.offer.review.application.response.ReviewInfoResponse;
+import com.offer.review.application.response.ReviewInfoResponses;
 import com.offer.review.domain.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,13 +40,15 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 조회", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/reviews")
-    public ResponseEntity<ApiResponse<List<ReviewInfoResponse>>> getReviews(
+    public ResponseEntity<ApiResponse<ReviewInfoResponses>> getReviews(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @RequestParam(value = "memberId", required = true) Long memberId,
-        @RequestParam(value = "role", required = false) String role,
-        @RequestParam(required = true) int page) {
+        @RequestParam Long memberId,
+        @RequestParam(defaultValue = "ALL") String role,
+        @RequestParam(defaultValue = "1") Long lastId,
+        @RequestParam(defaultValue = "10") int limit
+        ) {
 
-        List<ReviewInfoResponse> response = reviewService.getReviews(page, memberId, Role.of(role));
+        ReviewInfoResponses response = reviewService.getReviews(memberId, Role.of(role), lastId, limit);
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)

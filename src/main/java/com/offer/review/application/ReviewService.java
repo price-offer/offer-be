@@ -10,11 +10,15 @@ import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.review.application.request.ReviewCreateRequest;
 import com.offer.review.application.response.ReviewInfoResponse;
+import com.offer.review.application.response.ReviewInfoResponse.ReviewTargetMemberResponse;
+import com.offer.review.application.response.ReviewInfoResponses;
 import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
 import com.offer.utils.SliceUtils;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.spi.Limit;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -55,18 +59,37 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewInfoResponse> getReviews(int page, Long memberId, Role role) {
-        PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
+    public ReviewInfoResponses getReviews(Long memberId, Role role, Long lastId, int limit) {
 
-        Slice<Review> reviews = switch (role) {
-            case BUYER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, true);
-            case SELLER -> reviewRepository.findSliceByRevieweeIdAndIsRevieweeBuyer(pageRequest, memberId, false);
-            case ALL -> reviewRepository.findSliceByRevieweeId(pageRequest, memberId);
-        };
+        Member member = memberRepository.getById(memberId);
 
-        return reviews.stream()
-                .filter(Objects::nonNull)
-                .map(ReviewInfoResponse::from)
-                .collect(Collectors.toList());
+        List<Review> result = new ArrayList<>();
+
+        if (role == Role.ALL) {
+            result = reviewRepository.findTop10ByReviewerOrRevieweeAndIdGreaterThanEqual(member, member, lastId);
+        }
+        if (role == Role.SELLER) {
+            result = reviewRepository.findTop10ByReviewerAndRevieweeIsBuyerAndIdGreaterThanEqual(member, true, lastId);
+        }
+        if (role == Role.BUYER) {
+            result = reviewRepository.findTop10ByRevieweeAndRevieweeIsBuyerAndIdGreaterThanEqual(member, false, lastId);
+        }
+
+        if (result.size() > limit) {
+            result.remove(limit);
+            return ReviewInfoResponses.builder()
+                .reviews(result.stream()
+                    .map(review -> ReviewInfoResponse.buildReviewInfoResponse(review, member))
+                    .collect(Collectors.toList()))
+                .hasNext(true)
+                .build();
+        }
+
+        return ReviewInfoResponses.builder()
+            .reviews(result.stream()
+                .map(review -> ReviewInfoResponse.buildReviewInfoResponse(review, member))
+                .collect(Collectors.toList()))
+            .hasNext(false)
+            .build();
     }
 }

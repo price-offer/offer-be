@@ -4,6 +4,12 @@ values (1, 2036674018, 'KAKAO', '빼어난 가전제품 3호', 'http://k.kakaocd
 insert into member(offer_level, oauth_id, oauth_type, nickname, profile_image_url, created_date)
 values (1, 2026674018, 'KAKAO', '지친 어썸오 1호', 'http://k.kakaocdn.net/dn/ia9Y5/btrXSxAKtaj/1yZZWN0bhuA627JBHiN2ck/img_640x640.jpg', now());
 
+insert into member(offer_level, oauth_id, oauth_type, nickname, profile_image_url, created_date)
+values (1, 3221448503, 'KAKAO', '빼어난 다리미 64호', null, now());
+
+insert into member(offer_level, oauth_id, oauth_type, nickname, profile_image_url, created_date)
+values (1, 3158623659, 'KAKAO', '빼어난 다리미 11호', null, now());
+
 insert into category(code, name, image_url) values ('MEN_FASHION', '남성패션/잡화', 'https://offer-be.kro.kr/images/7e0099c4-e75d-4636-88c1-d412676bb0b9.png');
 insert into category(code, name, image_url) values ('WOMEN_FASHION', '여성패션/잡화', 'https://offer-be.kro.kr/images/ef4e0e85-ef6b-452f-9968-dc57db57a76b.png');
 insert into category(code, name, image_url) values ('GAME', '게임', 'https://offer-be.kro.kr/images/c688952b-f585-4df1-8187-d836c0280492.png');
@@ -21,8 +27,10 @@ insert into sort_group(sort_type) values ('POST');
 insert into sort_group(sort_type) values ('OFFER');
 
 insert into sort_item(sort_group_id, name, code) values (1, '높은 가격순', 'PRICE_DESC');
+insert into sort_item(sort_group_id, name, code) values (1, '낮은 가격순', 'PRICE_ASC');
 insert into sort_item(sort_group_id, name, code) values (1, '최신순', 'CREATED_DATE_DESC');
 insert into sort_item(sort_group_id, name, code) values (2, '높은 가격순', 'PRICE_DESC');
+insert into sort_item(sort_group_id, name, code) values (2, '낮은 가격순', 'PRICE_ASC');
 insert into sort_item(sort_group_id, name, code) values (2, '최신순', 'CREATED_DATE_DESC');
 
 
@@ -85,3 +93,24 @@ values (28000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (29000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'MEN_FASHION', '234', '234', 'NEW', 'https://offer-be.kro.kr/images/17eb19ea-bcab-4280-a755-14326f09ccfd.jpeg', '324', 'FACE_TO_FACE', 'SELLING');
+
+insert into post_image(post_id, url) values (21, 'https://offer-be.kro.kr/images/91dc60a5-1934-4538-a6af-417422526cb4.jpeg');
+
+insert into favorite(member_id, post_id) values (3, 20);
+insert into favorite(member_id, post_id) values (3, 18);
+
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 1, 20, 'ALL');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 1, 19, 'ALL');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 3, 19, 'ALL');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 29000, now(), 3, 20, 'ALL');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 27000, now(), 3, 18, 'ALL');
+
+insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 5, 3, 1);
+
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 1, 1, '판매자로부터의 첫 메시지입니다.');
+
+insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 20, 1, 3, '조타이 조타이~?');
+insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 18, 1, 3, '조타이 조타이~?');

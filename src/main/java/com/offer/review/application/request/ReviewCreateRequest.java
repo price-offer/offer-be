@@ -26,14 +26,14 @@ public class ReviewCreateRequest {
         this.content = content;
     }
 
-    public Review toEntity(Member reviewee, Member reviewer, Post post, boolean isRevieweeBuyer) {
+    public Review toEntity(Member reviewee, Member reviewer, Post post, boolean revieweeIsBuyer) {
         return Review.builder()
                 .reviewee(reviewee)
                 .reviewer(reviewer)
                 .post(post)
                 .score(score)
                 .content(content)
-                .isRevieweeBuyer(isRevieweeBuyer)
+                .revieweeIsBuyer(revieweeIsBuyer)
                 .build();
     }
 }

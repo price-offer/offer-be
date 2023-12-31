@@ -134,7 +134,7 @@ public class OfferService {
 
         boolean reviewAvailable = !messages.isEmpty();
         ReviewInfoResponse review = reviewRepository.findByPostAndReviewer(offer.getPost(), offer.getOfferer())
-            .map(ReviewInfoResponse::from)
+            .map(it -> ReviewInfoResponse.buildReviewInfoResponse(it, offer.getOfferer()))
             .orElse(null);
 
         return OfferSummary.from(offer, reviewAvailable, review);
