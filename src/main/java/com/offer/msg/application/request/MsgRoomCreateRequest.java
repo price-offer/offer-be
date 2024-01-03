@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MsgRoomCreateRequest {
-    private Long targetMemberId;
 
     private Long offerId;
 

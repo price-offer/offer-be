@@ -95,18 +95,29 @@ insert into post(price, created_at, modified_at, seller_id, category, descriptio
 values (29000, now(), now(), 1, 'GAME', '닌텐도 스위치 판매중', '동작구 사당동', 'NEW', 'https://picsum.photos/200', '닌텐도 스위치 팝니다.', 'SHIPPING', 'SELLING');
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
-values (234, now(), now(), 4, 'MEN_FASHION', '234', '234', 'NEW', 'https://offer-be.kro.kr/images/17eb19ea-bcab-4280-a755-14326f09ccfd.jpeg', '324', 'FACE_TO_FACE', 'SELLING');
+values (234, now(), now(), 1, 'MEN_FASHION', '234', '234', 'NEW', 'https://picsum.photos/200', '324', 'FACE_TO_FACE', 'SELLING');
 
-insert into post_image(post_id, url) values (21, 'https://offer-be.kro.kr/images/91dc60a5-1934-4538-a6af-417422526cb4.jpeg');
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'MEN_FASHION', '123', '123', 'NEW', 'https://offer-be.kro.kr/images/00d81cca-8c5e-4644-9b25-1a6718bea3a8.jpeg', '판매합니다', 'FACE_TO_FACE', 'SOLD');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'FACE_TO_FACE', 'SELLING');
+
+insert into post_image(post_id, url) values (22, 'https://offer-be.kro.kr/images/4b4fd33f-a0d1-451e-819c-21f034d96b22.jpeg');
+insert into post_image(post_id, url) values (23, 'https://offer-be.kro.kr/images/bd9e710d-d8fc-474a-8dfd-4d3f1a471165.jpeg');
+insert into post_image(post_id, url) values (23, 'https://offer-be.kro.kr/images/62bb139d-b21b-4e5d-b534-8880211174ff.jpeg');
 
 insert into favorite(member_id, post_id) values (3, 20);
 insert into favorite(member_id, post_id) values (3, 18);
+insert into favorite(member_id, post_id) values (4, 22);
 
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 1, 20, 'ALL');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 1, 19, 'ALL');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 3, 19, 'ALL');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 29000, now(), 3, 20, 'ALL');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 27000, now(), 3, 18, 'ALL');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 12220, now(), 3, 22, 'FACE_TO_FACE');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 120, now(), 3, 22, 'FACE_TO_FACE');
 
 insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 5, 3, 1);
 

@@ -30,17 +30,15 @@ public class ReviewInfoResponse {
     @RequiredArgsConstructor
     public static class ReviewTargetMemberResponse {
         private final Long id;
-
         private final String profileImageUrl;
-
         private final String nickname;
+        private final int offerLevel;
     }
 
     @Getter
     @RequiredArgsConstructor
     public static class PostBriefResponse {
         private final Long id;
-
         private final String title;
     }
 
@@ -59,7 +57,8 @@ public class ReviewInfoResponse {
                 .reviewTargetMember(new ReviewTargetMemberResponse(
                     targetMember.getId(),
                     targetMember.getProfileImageUrl(),
-                    targetMember.getNickname())
+                    targetMember.getNickname(),
+                    targetMember.getOfferLevel())
                 )
                 .score(review.getScore())
                 .post(new PostBriefResponse(

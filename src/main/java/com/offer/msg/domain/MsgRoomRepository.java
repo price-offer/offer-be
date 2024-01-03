@@ -14,6 +14,7 @@ public interface MsgRoomRepository extends JpaRepository<MsgRoom, Long> {
     <S extends MsgRoom> S save(S entity);
 
     Optional<MsgRoom> findBySellerIdAndOffererIdAndOfferId(Long sellerId, Long offererId, Long offerId);
+    Optional<MsgRoom> findByOfferId(Long offerId);
 
     Slice<MsgRoom> findSliceBySellerId(PageRequest pageRequest, Long sellerId);
 

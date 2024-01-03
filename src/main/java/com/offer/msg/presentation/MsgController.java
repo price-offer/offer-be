@@ -28,15 +28,14 @@ public class MsgController {
 
     @Operation(summary = "쪽지 room 생성", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/api/msgrooms")
-    public ResponseEntity<ApiResponse<CommonCreationResponse>> createMsgRoom(
+    public ResponseEntity<ApiResponse> createMsgRoom(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @RequestBody MsgRoomCreateRequest request) {
 
-        CommonCreationResponse response = msgRoomService.createMsgRoom(request,
-            loginMember.getId());
+        msgRoomService.createMsgRoom(request, loginMember.getId());
 
         return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, response)
+            ApiResponse.of(ResponseMessage.SUCCESS, null)
         );
     }
 

@@ -3,30 +3,22 @@ package com.offer.review.application;
 import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.common.response.exception.BusinessException;
-import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.review.application.request.ReviewCreateRequest;
 import com.offer.review.application.response.ReviewInfoResponse;
-import com.offer.review.application.response.ReviewInfoResponse.ReviewTargetMemberResponse;
 import com.offer.review.application.response.ReviewInfoResponses;
 import com.offer.review.domain.Review;
 import com.offer.review.domain.ReviewRepository;
 import com.offer.review.domain.Role;
-import com.offer.utils.SliceUtils;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.spi.Limit;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -35,17 +35,16 @@ public class MsgRoomService {
 
     @Transactional
     public CommonCreationResponse createMsgRoom(MsgRoomCreateRequest request, Long memberId) {
-        Long targetMemberId = request.getTargetMemberId();
         Long offerId = request.getOfferId();
 
-        validateAlreadyExistRoom(memberId, targetMemberId, offerId);
+        validateAlreadyExistRoom(offerId);
 
-        Member member1 = memberRepository.getById(memberId);
-        Member member2 = memberRepository.getById(targetMemberId);
         Offer offer = offerRepository.getById(offerId);
+        Member seller = memberRepository.getById(memberId);
+        Member offerer = offer.getOfferer();
 
         MsgRoom msgRoom = msgRoomRepository.save(
-                request.toEntity(member1, member2, offer)
+                request.toEntity(seller, offerer, offer)
         );
 
         return CommonCreationResponse.of(msgRoom.getId(), msgRoom.getCreatedAt());
@@ -92,14 +91,11 @@ public class MsgRoomService {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public void validateAlreadyExistRoom(Long member1Id, Long member2Id, Long offerId) {
-        Optional<MsgRoom> opt1 = msgRoomRepository
-                .findBySellerIdAndOffererIdAndOfferId(member1Id, member2Id, offerId);
-        Optional<MsgRoom> opt2 = msgRoomRepository
-                .findBySellerIdAndOffererIdAndOfferId(member2Id, member1Id, offerId);
-
-        if (opt1.isEmpty() && opt2.isEmpty()) return;
-
+    public void validateAlreadyExistRoom(Long offerId) {
+        Optional<MsgRoom> msgRoom = msgRoomRepository.findByOfferId(offerId);
+        if (msgRoom.isEmpty()) {
+            return;
+        }
         throw new BusinessException(ResponseMessage.ALREADY_EXIST_MSG_ROOM);
     }
 }
