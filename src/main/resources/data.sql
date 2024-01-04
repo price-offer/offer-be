@@ -98,17 +98,36 @@ insert into post(price, created_at, modified_at, seller_id, category, descriptio
 values (234, now(), now(), 1, 'MEN_FASHION', '234', '234', 'NEW', 'https://picsum.photos/200', '324', 'FACE_TO_FACE', 'SELLING');
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
-values (234, now(), now(), 4, 'MEN_FASHION', '123', '123', 'NEW', 'https://offer-be.kro.kr/images/00d81cca-8c5e-4644-9b25-1a6718bea3a8.jpeg', '판매합니다', 'FACE_TO_FACE', 'SOLD');
+values (234, now(), now(), 4, 'MEN_FASHION', '123', '123', 'NEW', 'https://offer-be.kro.kr/images/00d81cca-8c5e-4644-9b25-1a6718bea3a8.jpeg', '수정', 'FACE_TO_FACE', 'SOLD');
+--  23
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'FACE_TO_FACE', 'SELLING');
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'FACE_TO_FACE', 'SELLING');
 
-insert into post_image(post_id, url) values (22, 'https://offer-be.kro.kr/images/4b4fd33f-a0d1-451e-819c-21f034d96b22.jpeg');
-insert into post_image(post_id, url) values (23, 'https://offer-be.kro.kr/images/bd9e710d-d8fc-474a-8dfd-4d3f1a471165.jpeg');
-insert into post_image(post_id, url) values (23, 'https://offer-be.kro.kr/images/62bb139d-b21b-4e5d-b534-8880211174ff.jpeg');
+--  25
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'WOMEN_FASHION', '123123', '234', 'NEW', null, '12312234', 'FACE_TO_FACE', 'SELLING');
 
-insert into favorite(member_id, post_id) values (3, 20);
-insert into favorite(member_id, post_id) values (3, 18);
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'MEN_FASHION', '123213', '123123124', 'NEW', null, '가나다라마', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'MEN_FASHION', '23423423', '123123124', 'NEW', 'https://offer-be.kro.kr/images/0597c051-24aa-40f0-b185-e69a55f28033.jpeg', '사세요 제발', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'MEN_FASHION', '우리집', '우릴집', 'NEW', 'https://offer-be.kro.kr/images/8f6e0d08-7e5a-4cd8-b26c-9bb4ea421520.jpeg', '사장님이 미쳤어요', 'FACE_TO_FACE', 'SELLING');
+
+insert into post_image(post_id, url) values (27, 'https://offer-be.kro.kr/images/252b35b5-ec17-46c1-897e-c582e21f053a.jpeg');
+insert into post_image(post_id, url) values (27, 'https://offer-be.kro.kr/images/c356b06d-c456-4be1-bf3e-0b46efa5016a.jpeg');
+insert into post_image(post_id, url) values (28, 'https://offer-be.kro.kr/images/9a5eb056-22aa-4adb-95f7-27d218c22ce2.jpeg');
+insert into post_image(post_id, url) values (28, 'https://offer-be.kro.kr/images/259c2fcb-e706-41af-b3ca-b11e495c2270.jpeg');
+insert into post_image(post_id, url) values (28, 'https://offer-be.kro.kr/images/05805172-5785-414e-8950-f7663701cce9.jpeg');
+insert into post_image(post_id, url) values (22, 'https://offer-be.kro.kr/images/4b4fd33f-a0d1-451e-819c-21f034d96b22.jpeg');
+
+insert into favorite(member_id, post_id) values (3, 28);
+insert into favorite(member_id, post_id) values (3, 27);
 insert into favorite(member_id, post_id) values (4, 22);
 
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 1, 20, 'ALL');
