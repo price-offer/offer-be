@@ -56,15 +56,15 @@ public class PostController {
 
     @Operation(summary = "게시글 수정", security = {@SecurityRequirement(name = "jwt")})
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<ApiResponse<Long>> updatePost(
+    public ResponseEntity<ApiResponse> updatePost(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long postId,
         @RequestBody PostUpdateRequest request) {
 
-        Long updatedPostId = postService.updatePost(postId, request, loginMember.getId());
+        postService.updatePost(postId, request, loginMember.getId());
 
         return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, updatedPostId)
+            ApiResponse.of(ResponseMessage.SUCCESS, null)
         );
     }
 
