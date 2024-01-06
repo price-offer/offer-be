@@ -137,6 +137,7 @@ insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_typ
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 27000, now(), 3, 18, 'ALL');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 12220, now(), 3, 22, 'FACE_TO_FACE');
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 120, now(), 3, 22, 'FACE_TO_FACE');
+insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 3, 18, 'FACE_TO_FACE');
 
 insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 5, 3, 1);
 
@@ -144,3 +145,4 @@ insert into msg(is_read, created_at, room_id, sender_id, content) values (false,
 
 insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 20, 1, 3, '조타이 조타이~?');
 insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 18, 1, 3, '조타이 조타이~?');
+insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 2, now(), now(), 22, 4, 3, '좋은디요?');

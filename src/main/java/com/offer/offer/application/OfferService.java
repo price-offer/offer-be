@@ -10,6 +10,7 @@ import com.offer.msg.domain.MsgRepository;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.application.request.OfferCreateRequest;
+import com.offer.offer.application.response.OfferResponse;
 import com.offer.offer.application.response.OfferSummaries;
 import com.offer.offer.application.response.OfferSummary;
 import com.offer.offer.application.response.OffersResponse;
@@ -80,7 +81,16 @@ public class OfferService {
             offerCount = offerRepository.countByPostAndOfferer(post, member);
         }
 
-        return OffersResponse.of(offersByPost.stream().toList(), postId, offerCount);
+        List<OfferResponse> offers = offersByPost.stream()
+            .map(offer -> {
+                Optional<MsgRoom> msgRoomOptional = msgRoomRepository.findByOfferId(offer.getId());
+                Long msgRoomId = msgRoomOptional.map(MsgRoom::getId).orElse(null);
+                return OfferResponse.from(offer, msgRoomId);
+            })
+            .toList();
+
+
+        return OffersResponse.from(offers, postId, offerCount);
     }
 
     @Transactional(readOnly = true)

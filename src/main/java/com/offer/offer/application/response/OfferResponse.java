@@ -1,5 +1,7 @@
 package com.offer.offer.application.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.offer.offer.domain.Offer;
 import com.offer.post.application.response.EnumResponse;
 import java.time.LocalDateTime;
@@ -8,6 +10,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
+@JsonInclude(Include.NON_NULL)
 public class OfferResponse {
 
     private Long id;
@@ -15,16 +18,19 @@ public class OfferResponse {
     private Integer price;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
+    private Long messageRoomId;
 
     @Builder
-    public OfferResponse(Long id, OffererResponse offerer, Integer price, LocalDateTime createdAt) {
+    public OfferResponse(Long id, OffererResponse offerer, Integer price, LocalDateTime createdAt,
+        Long messageRoomId) {
         this.id = id;
         this.offerer = offerer;
         this.price = price;
         this.createdAt = createdAt;
+        this.messageRoomId = messageRoomId;
     }
 
-    public static OfferResponse from(Offer offer) {
+    public static OfferResponse from(Offer offer, Long messageRoomId) {
         return new OfferResponse(offer.getId(),
             new OffererResponse(offer.getOfferer().getId(),
                 offer.getOfferer().getNickname(),
@@ -34,7 +40,7 @@ public class OfferResponse {
                     offer.getTradeType().getDescription()),
                 offer.getOfferer().getProfileImageUrl()),
             offer.getPrice(),
-            offer.getCreatedAt()
-        );
+            offer.getCreatedAt(),
+            messageRoomId);
     }
 }

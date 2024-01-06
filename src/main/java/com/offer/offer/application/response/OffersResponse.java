@@ -23,13 +23,7 @@ public class OffersResponse {
         this.offerCountOfCurrentMember = offerCountOfCurrentMember;
     }
 
-    public static OffersResponse of(List<Offer> offers, Long postId, Integer offerCountOfCurrentMember) {
-        return new OffersResponse(
-            postId,
-            offers.stream()
-                .map(OfferResponse::from)
-                .collect(Collectors.toList()),
-            offerCountOfCurrentMember
-        );
+    public static OffersResponse from(List<OfferResponse> offers, Long postId, Integer offerCountOfCurrentMember) {
+        return new OffersResponse(postId, offers, offerCountOfCurrentMember);
     }
 }
