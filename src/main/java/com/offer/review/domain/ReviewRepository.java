@@ -24,6 +24,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findTop10ByReviewerOrRevieweeAndIdGreaterThanEqual(Member reviewer, Member reviewee, Long id);
 
     List<Review> findTop10ByReviewerAndRevieweeIsBuyerAndIdGreaterThanEqual(Member reviewer, boolean revieweeIsBuyer, Long id);
+    int countByReviewerAndRevieweeIsBuyer(Member reviewer, boolean revieweeIsBuyer);
 
     List<Review> findTop10ByRevieweeAndRevieweeIsBuyerAndIdGreaterThanEqual(Member reviewee, boolean revieweeIsBuyer, Long id);
+    int countByRevieweeAndRevieweeIsBuyer(Member reviewee, boolean revieweeIsBuyer);
 }

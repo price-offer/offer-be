@@ -8,6 +8,7 @@ import com.offer.member.MemberRepository;
 import com.offer.post.domain.Post;
 import com.offer.post.domain.PostRepository;
 import com.offer.review.application.request.ReviewCreateRequest;
+import com.offer.review.application.response.ReviewCountResponse;
 import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.application.response.ReviewInfoResponses;
 import com.offer.review.domain.Review;
@@ -83,5 +84,16 @@ public class ReviewService {
                 .collect(Collectors.toList()))
             .hasNext(false)
             .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewCountResponse getReviewCounts(Long memberId) {
+
+        Member member = memberRepository.getById(memberId);
+        int all = reviewRepository.countByRevieweeIdOrReviewerId(memberId, memberId);
+        int asSeller = reviewRepository.countByReviewerAndRevieweeIsBuyer(member, true);
+        int asBuyer = reviewRepository.countByRevieweeAndRevieweeIsBuyer(member, false);
+
+        return new ReviewCountResponse(all, asSeller, asBuyer);
     }
 }

@@ -7,6 +7,7 @@ import com.offer.common.response.CommonCreationResponse;
 import com.offer.common.response.ResponseMessage;
 import com.offer.review.application.ReviewService;
 import com.offer.review.application.request.ReviewCreateRequest;
+import com.offer.review.application.response.ReviewCountResponse;
 import com.offer.review.application.response.ReviewInfoResponse;
 import com.offer.review.application.response.ReviewInfoResponses;
 import com.offer.review.domain.Role;
@@ -41,7 +42,6 @@ public class ReviewController {
     @Operation(summary = "리뷰 조회", security = {@SecurityRequirement(name = "jwt")})
     @GetMapping("/reviews")
     public ResponseEntity<ApiResponse<ReviewInfoResponses>> getReviews(
-        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @RequestParam Long memberId,
         @RequestParam(defaultValue = "ALL") String role,
         @RequestParam(defaultValue = "1") Long lastId,
@@ -49,6 +49,19 @@ public class ReviewController {
         ) {
 
         ReviewInfoResponses response = reviewService.getReviews(memberId, Role.of(role), lastId, limit);
+
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
+    @Operation(summary = "사용자 리뷰 개수 정보 조회", security = {@SecurityRequirement(name = "jwt")})
+    @GetMapping("/reviews/counts")
+    public ResponseEntity<ApiResponse<ReviewCountResponse>> getReviewCounts(
+        @RequestParam Long memberId
+    ) {
+
+        ReviewCountResponse response = reviewService.getReviewCounts(memberId);
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)
