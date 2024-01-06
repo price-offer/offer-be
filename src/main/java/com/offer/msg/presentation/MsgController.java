@@ -10,6 +10,7 @@ import com.offer.msg.application.MsgService;
 import com.offer.msg.application.request.MsgCreateRequest;
 import com.offer.msg.application.request.MsgRoomCreateRequest;
 import com.offer.msg.application.response.MsgInfoResponse;
+import com.offer.msg.application.response.MsgRoomBriefResponse;
 import com.offer.msg.application.response.MsgRoomInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -53,6 +54,19 @@ public class MsgController {
         );
     }
 
+    @Operation(summary = "쪽지 room 단건 조회", security = {@SecurityRequirement(name = "jwt")})
+    @GetMapping("/api/msgrooms/{roomId}")
+    public ResponseEntity<ApiResponse<MsgRoomBriefResponse>> getMsgRooms(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @PathVariable Long roomId) {
+
+        MsgRoomBriefResponse response = msgRoomService.getMsgRoom(roomId, loginMember.getId());
+
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, response)
+        );
+    }
+
     @Operation(summary = "쪽지 보내기", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/api/msgrooms/{msgRoomId}/msgs")
     public ResponseEntity<ApiResponse<CommonCreationResponse>> sendMsg(
@@ -81,6 +95,8 @@ public class MsgController {
             ApiResponse.of(ResponseMessage.SUCCESS, response)
         );
     }
+
+
 
     // TODO: msg room 삭제 API
 }

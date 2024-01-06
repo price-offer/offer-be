@@ -7,6 +7,7 @@ import com.offer.config.Properties;
 import com.offer.member.Member;
 import com.offer.member.MemberRepository;
 import com.offer.msg.application.request.MsgRoomCreateRequest;
+import com.offer.msg.application.response.MsgRoomBriefResponse;
 import com.offer.msg.application.response.MsgRoomInfoResponse;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
@@ -88,6 +89,24 @@ public class MsgRoomService {
         }
 
         return response;
+    }
+
+    @Transactional(readOnly = true)
+    public MsgRoomBriefResponse getMsgRoom(Long roomId, Long memberId) {
+        MsgRoom msgRoom = msgRoomRepository.findById(roomId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 roomId = " + roomId));
+
+        Member member = memberRepository.getById(memberId);
+        Member partner = null;
+        if (msgRoom.getSeller().getId().equals(member.getId())) {
+            partner = msgRoom.getOfferer();
+        } else if (msgRoom.getOfferer().getId().equals(member.getId())) {
+            partner = msgRoom.getSeller();
+        } else {
+            throw new IllegalArgumentException("해당 메시지룸에 사용자가 참여하고 있지 않습니다. roomId = " + roomId + ", memberId = " + memberId);
+        }
+
+        return MsgRoomBriefResponse.from(msgRoom.getId(), partner, msgRoom.getOffer().getPost(), msgRoom.getOffer().getPrice());
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
