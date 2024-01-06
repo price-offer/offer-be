@@ -44,7 +44,9 @@ public class MsgRoomInfoResponse {
     public static class PostBriefResponse {
         private final Long id;
 
-        private final String imageUrl;
+        private final String thumbnailImageUrl;
+
+        private final int price;
     }
 
     public static MsgRoomInfoResponse from(MsgRoom msgRoom, Member partner, String lastContent, int offerPrice,
@@ -52,7 +54,7 @@ public class MsgRoomInfoResponse {
         return MsgRoomInfoResponse.builder()
                 .id(msgRoom.getId())
                 .partner(new PartnerBriefResponse(partner.getId(), partner.getProfileImageUrl(), partner.getNickname()))
-                .post(new PostBriefResponse(post.getId(), post.getThumbnailImageUrl()))
+                .post(new PostBriefResponse(post.getId(), post.getThumbnailImageUrl(), post.getPrice()))
                 .offerPrice(offerPrice)
                 .lastContent(lastContent)
                 .lastSendTime(lastSendTime)
