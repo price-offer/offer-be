@@ -74,7 +74,7 @@ public class PostService {
         if (memberId != null) {
             List<Like> likes = likeRepository.findAllByMemberId(memberId);
             liked = likes.stream()
-                .anyMatch(like -> Objects.equals(like.getMember().getId(), memberId));
+                .anyMatch(like -> Objects.equals(like.getPost().getId(), postId));
         }
 
         Category byName = categoryRepository.findByCode(post.getCategory());
