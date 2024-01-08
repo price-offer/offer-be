@@ -117,4 +117,10 @@ public class MsgRoomService {
         }
         throw new BusinessException(ResponseMessage.ALREADY_EXIST_MSG_ROOM);
     }
+
+    @Transactional
+    public Long deleteMsgRoom(Long roomId, Long memberId) {
+        msgRoomRepository.deleteById(roomId);
+        return roomId;
+    }
 }

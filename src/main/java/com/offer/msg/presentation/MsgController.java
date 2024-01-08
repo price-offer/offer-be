@@ -15,6 +15,8 @@ import com.offer.msg.application.response.MsgRoomInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +69,20 @@ public class MsgController {
         );
     }
 
+    @Operation(summary = "쪽지 room 삭제", security = {@SecurityRequirement(name = "jwt")})
+    @DeleteMapping("/api/msgrooms/{roomId}")
+    public ResponseEntity<ApiResponse<Map<String, Long>>> deleteMsgRooms(
+        @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
+        @PathVariable Long roomId) {
+
+        Long deleteMsgRoomId = msgRoomService.deleteMsgRoom(roomId, loginMember.getId());
+        Map<String, Long> result = new HashMap<>();
+        result.put("msgRoomId", deleteMsgRoomId);
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseMessage.SUCCESS, result)
+        );
+    }
+
     @Operation(summary = "쪽지 보내기", security = {@SecurityRequirement(name = "jwt")})
     @PostMapping("/api/msgrooms/{msgRoomId}/msgs")
     public ResponseEntity<ApiResponse<CommonCreationResponse>> sendMsg(
@@ -97,6 +113,4 @@ public class MsgController {
     }
 
 
-
-    // TODO: msg room 삭제 API
 }
