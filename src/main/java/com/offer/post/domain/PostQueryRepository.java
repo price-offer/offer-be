@@ -47,6 +47,7 @@ public class PostQueryRepository {
                 categoryEq(params.getCategory()),
                 priceBetween(params.getMinPrice(), params.getMaxPrice()),
                 sellerEq(seller),
+                keywordContains(params.getSearchKeyword()),
                 tradeStatus(TradeStatus.from(params.getTradeStatus()))
             )
             .orderBy(order(params.getSort()))
@@ -138,5 +139,9 @@ public class PostQueryRepository {
 
     private BooleanExpression priceBetween(Integer minPrice, Integer maxPrice) {
         return priceGoe(minPrice).and(priceLoe(maxPrice));
+    }
+
+    private BooleanExpression keywordContains(String searchKeyword) {
+        return StringUtils.hasText(searchKeyword) ? post.title.contains(searchKeyword) : null;
     }
 }

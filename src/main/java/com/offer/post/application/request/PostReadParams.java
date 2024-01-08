@@ -18,4 +18,5 @@ public class PostReadParams {
     private int maxPrice = Integer.MAX_VALUE;
     private Long lastId;
     private int limit = 30;
+    private String searchKeyword;
 }
