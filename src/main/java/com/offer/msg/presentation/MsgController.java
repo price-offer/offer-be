@@ -105,7 +105,7 @@ public class MsgController {
         @PathVariable Long msgRoomId,
         @RequestParam(required = true) int page) {
 
-        List<MsgInfoResponse> response = msgService.getMsgs(page, msgRoomId);
+        List<MsgInfoResponse> response = msgService.getMsgs(page, msgRoomId, loginMember.getId());
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)

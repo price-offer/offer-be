@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class MsgInfoResponse {
+
+    private final Long id;
     private final String content;
 
     private final PartnerBriefResponse member;
@@ -27,8 +29,9 @@ public class MsgInfoResponse {
         private final String nickname;
     }
 
-    public static MsgInfoResponse from(String content, Member member, LocalDateTime sendTime) {
+    public static MsgInfoResponse from(Long id, String content, Member member, LocalDateTime sendTime) {
         return new MsgInfoResponse(
+                id,
                 content,
                 new PartnerBriefResponse(member.getId(), member.getProfileImageUrl(), member.getNickname()),
                 sendTime

@@ -140,8 +140,27 @@ insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_typ
 insert into offer(is_selected, price, created_at, offerer_id, post_id, trade_type) values (false, 30000, now(), 3, 18, 'FACE_TO_FACE');
 
 insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 5, 3, 1);
+insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 6, 3, 4);
 
 insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 1, 1, '판매자로부터의 첫 메시지입니다.');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '팔아요~');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '이거 사세요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '사시라구요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '얼른');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '사시에료');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, 'ㅎㅎ');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕하세요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '구매 원하세요?');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '구매해주세요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '반가워요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕하세요');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '바보');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '바보');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 5, 4, '안녕하세요');
 
 insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 20, 1, 3, '조타이 조타이~?');
 insert into review(reviewee_is_buyer, score, created_at, modified_at, post_id, reviewee_id, reviewer_id, content) values (false, 1, now(), now(), 18, 1, 3, '조타이 조타이~?');

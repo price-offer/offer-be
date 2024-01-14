@@ -10,7 +10,8 @@ public interface MsgRepository extends JpaRepository<Msg, Long> {
     @Override
     <S extends Msg> S save(S entity);
 
-    Slice<Msg> findSliceByRoomId(PageRequest pageRequest, Long roomId);
+    Slice<Msg> findSliceByRoomIdOrderByCreatedAtAsc(PageRequest pageRequest, Long roomId);
 
     List<Msg> findAllByRoomAndSenderId(MsgRoom room, Long sellerId);
+
 }

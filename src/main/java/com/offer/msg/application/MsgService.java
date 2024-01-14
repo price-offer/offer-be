@@ -42,13 +42,13 @@ public class MsgService {
     }
 
     @Transactional(readOnly = true)
-    public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId) {
+    public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId, Long loginMemberId) {
         PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
-        Slice<Msg> msgs = msgRepository.findSliceByRoomId(pageRequest, msgRoomId);
+        Slice<Msg> msgs = msgRepository.findSliceByRoomIdOrderByCreatedAtAsc(pageRequest,  msgRoomId);
 
         msgs.stream()
-                .filter(m -> !m.isRead())
+                .filter(m -> !m.getSenderId().equals(loginMemberId) && !m.isRead())
                 .forEach(m -> {
                     m.markRead();
                     msgRepository.save(m);
@@ -56,6 +56,7 @@ public class MsgService {
 
         return msgs.stream()
                 .map(m -> MsgInfoResponse.from(
+                        m.getId(),
                         m.getContent(),
                         memberRepository.getById(m.getSenderId()),
                         m.getCreatedAt())
