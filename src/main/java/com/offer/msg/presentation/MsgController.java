@@ -47,9 +47,9 @@ public class MsgController {
     @GetMapping("/api/msgrooms")
     public ResponseEntity<ApiResponse<List<MsgRoomInfoResponse>>> getMsgRooms(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
-        @RequestParam(required = true) int page) {
+        @RequestParam(required = true) int page, @RequestParam String sort) {
 
-        List<MsgRoomInfoResponse> response = msgRoomService.getMsgRooms(page, loginMember.getId());
+        List<MsgRoomInfoResponse> response = msgRoomService.getMsgRooms(page, sort, loginMember.getId());
 
         return ResponseEntity.ok(
             ApiResponse.of(ResponseMessage.SUCCESS, response)

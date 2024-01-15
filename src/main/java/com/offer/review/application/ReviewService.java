@@ -58,13 +58,13 @@ public class ReviewService {
 
         List<Review> result = new ArrayList<>();
 
-        if (role == Role.ALL) {
-            result = reviewRepository.findTop10ByReviewerOrRevieweeAndIdGreaterThanEqual(member, member, lastId);
+        if (role == Role.ALL) { // 전체 받은 후기
+            result = reviewRepository.findTop10ByRevieweeAndIdGreaterThanEqual(member, lastId);
         }
-        if (role == Role.SELLER) {
-            result = reviewRepository.findTop10ByReviewerAndRevieweeIsBuyerAndIdGreaterThanEqual(member, true, lastId);
+        if (role == Role.SELLER) { // 판매자에게 받은 후기
+            result = reviewRepository.findTop10ByRevieweeAndRevieweeIsBuyerAndIdGreaterThanEqual(member, true, lastId);
         }
-        if (role == Role.BUYER) {
+        if (role == Role.BUYER) { // 구매자에게 받은 후기
             result = reviewRepository.findTop10ByRevieweeAndRevieweeIsBuyerAndIdGreaterThanEqual(member, false, lastId);
         }
 
@@ -90,8 +90,8 @@ public class ReviewService {
     public ReviewCountResponse getReviewCounts(Long memberId) {
 
         Member member = memberRepository.getById(memberId);
-        int all = reviewRepository.countByRevieweeIdOrReviewerId(memberId, memberId);
-        int asSeller = reviewRepository.countByReviewerAndRevieweeIsBuyer(member, true);
+        int all = reviewRepository.countByRevieweeId(memberId);
+        int asSeller = reviewRepository.countByRevieweeAndRevieweeIsBuyer(member, true);
         int asBuyer = reviewRepository.countByRevieweeAndRevieweeIsBuyer(member, false);
 
         return new ReviewCountResponse(all, asSeller, asBuyer);

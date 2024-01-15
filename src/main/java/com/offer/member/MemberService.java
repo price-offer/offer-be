@@ -33,7 +33,7 @@ public class MemberService {
         Member member = memberRepository.getById(memberId);
         int selling = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SELLING);
         int sold = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SOLD);
-        int review = reviewRepository.countByRevieweeIdOrReviewerId(memberId, memberId);
+        int review = reviewRepository.countByRevieweeId(memberId);
         int like = likeRepository.countByMemberId(memberId);
 
         return MemberResponse.builder()
@@ -70,7 +70,7 @@ public class MemberService {
         Member member = memberRepository.getById(memberId);
         int selling = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SELLING);
         int sold = postRepository.countBySellerAndTradeStatus(member, TradeStatus.SOLD);
-        int review = reviewRepository.countByRevieweeIdOrReviewerId(memberId, memberId);
+        int review = reviewRepository.countByRevieweeId(memberId);
         return MemberProfileResponse.builder()
             .id(member.getId())
             .nickname(member.getNickname())
