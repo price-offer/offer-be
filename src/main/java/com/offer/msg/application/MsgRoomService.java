@@ -9,6 +9,8 @@ import com.offer.member.MemberRepository;
 import com.offer.msg.application.request.MsgRoomCreateRequest;
 import com.offer.msg.application.response.MsgRoomBriefResponse;
 import com.offer.msg.application.response.MsgRoomInfoResponse;
+import com.offer.msg.domain.Msg;
+import com.offer.msg.domain.MsgRepository;
 import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.offer.domain.Offer;
@@ -33,6 +35,7 @@ public class MsgRoomService {
     private final MsgRoomRepository msgRoomRepository;
     private final MemberRepository memberRepository;
     private final OfferRepository offerRepository;
+    private final MsgRepository msgRepository;
 
     @Transactional
     public CommonCreationResponse createMsgRoom(MsgRoomCreateRequest request, Long memberId) {
@@ -63,7 +66,10 @@ public class MsgRoomService {
         if (sort == null || sort.equalsIgnoreCase("ALL")) {
             for (MsgRoom msgRoom : msgRooms1) {  // TODO: refactor
                 Member partner = msgRoom.getOfferer();
-                String lastContent = "tmp_lastContent";
+
+                Msg lastMsg = msgRepository.findFirstByRoomOrderByCreatedAtDesc(msgRoom);
+                String lastContent = lastMsg != null ? lastMsg.getContent() : "";
+
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
@@ -77,7 +83,10 @@ public class MsgRoomService {
 
             for (MsgRoom msgRoom : msgRooms2) {
                 Member partner = msgRoom.getSeller();
-                String lastContent = "tmp_lastContent";
+
+                Msg lastMsg = msgRepository.findFirstByRoomOrderByCreatedAtDesc(msgRoom);
+                String lastContent = lastMsg != null ? lastMsg.getContent() : "";
+
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
@@ -93,7 +102,10 @@ public class MsgRoomService {
         if (sort != null && sort.equalsIgnoreCase("SELLER")) {
             for (MsgRoom msgRoom : msgRooms1) {  // TODO: refactor
                 Member partner = msgRoom.getOfferer();
-                String lastContent = "tmp_lastContent";
+
+                Msg lastMsg = msgRepository.findFirstByRoomOrderByCreatedAtDesc(msgRoom);
+                String lastContent = lastMsg != null ? lastMsg.getContent() : "";
+
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
@@ -109,7 +121,10 @@ public class MsgRoomService {
         if (sort != null && sort.equalsIgnoreCase("BUYER")) {
             for (MsgRoom msgRoom : msgRooms2) {
                 Member partner = msgRoom.getSeller();
-                String lastContent = "tmp_lastContent";
+
+                Msg lastMsg = msgRepository.findFirstByRoomOrderByCreatedAtDesc(msgRoom);
+                String lastContent = lastMsg != null ? lastMsg.getContent() : "";
+
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();

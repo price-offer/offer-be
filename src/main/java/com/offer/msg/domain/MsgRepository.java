@@ -14,4 +14,6 @@ public interface MsgRepository extends JpaRepository<Msg, Long> {
 
     List<Msg> findAllByRoomAndSenderId(MsgRoom room, Long sellerId);
 
+    Msg findFirstByRoomOrderByCreatedAtDesc(MsgRoom msgRoom);
+
 }
