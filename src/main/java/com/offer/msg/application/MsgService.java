@@ -32,7 +32,7 @@ public class MsgService {
     @Transactional
     public CommonCreationResponse sendMsg(Long msgRoomId, MsgCreateRequest request, Long senderId) {
         MsgRoom msgRoom = msgRoomRepository.findById(msgRoomId)
-                .orElseThrow(() -> new BusinessException(ResponseMessage.MESSAGE_ROOM_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException("메시지룸이 존재하지 않습니다. msgRoomId = " + msgRoomId));
 
         Msg msg = msgRepository.save(
                 request.toEntity(msgRoom, request.getContent(), senderId)

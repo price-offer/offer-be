@@ -31,13 +31,13 @@ public class ReviewService {
     @Transactional
     public CommonCreationResponse createReview(ReviewCreateRequest request, Long reviewerId) {
         Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new BusinessException(ResponseMessage.POST_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException("post가 존재하지 않습니다. postId = " + request.getPostId()));
 
         Member reviewer = memberRepository.getById(reviewerId);
         Member reviewee = memberRepository.getById(request.getTargetMemberId());
 
         if (reviewRepository.existsByReviewerAndPost(reviewer, post)) {
-            throw new BusinessException(ResponseMessage.ALREADY_REVIEWED);
+            throw new IllegalArgumentException("이미 리뷰를 작성했습니다. reviewer = " + reviewer + ", post = " + post);
         }
 
         boolean isRevieweeBuyer = !post.isWriter(reviewer.getId());

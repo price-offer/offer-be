@@ -164,7 +164,7 @@ public class MsgRoomService {
         if (msgRoom.isEmpty()) {
             return;
         }
-        throw new BusinessException(ResponseMessage.ALREADY_EXIST_MSG_ROOM);
+        throw new IllegalArgumentException("해당 offerId에 대한 msgRoom이 이미 존재합니다. msgRoomId = " + msgRoom.get().getId() + ", offerId = " + offerId);
     }
 
     @Transactional

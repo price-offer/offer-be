@@ -36,10 +36,8 @@ public class LikeService {
         if (likeOpt.isPresent()) {
             likeRepository.delete(likeOpt.get());
         } else {
-            Member member = memberRepository.findById(memberId)
-                    .orElseThrow(() -> new BusinessException(ResponseMessage.MEMBER_NOT_FOUND));
-            Post post = postRepository.findById(postId)
-                    .orElseThrow(() -> new BusinessException(ResponseMessage.POST_NOT_FOUND));
+            Member member = memberRepository.getById(memberId);
+            Post post = postRepository.getById(postId);
 
             Like like = new Like(member, post);
             likeRepository.save(like);
