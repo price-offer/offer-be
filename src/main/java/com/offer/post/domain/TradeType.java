@@ -2,8 +2,10 @@ package com.offer.post.domain;
 
 import java.util.Arrays;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public enum TradeType {
     FACE_TO_FACE("직거래"),
     SHIPPING("택배거래"),
@@ -19,6 +21,9 @@ public enum TradeType {
         return Arrays.stream(values())
             .filter(it -> it.name().equals(name))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 TradeType = " + name));
+            .orElseGet(() -> {
+                log.warn("잘못된 TradeType = {}", name);
+                return ALL;
+            });
     }
 }

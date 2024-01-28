@@ -48,15 +48,29 @@ public class PostQueryRepository {
                 priceBetween(params.getMinPrice(), params.getMaxPrice()),
                 sellerEq(seller),
                 keywordContains(params.getSearchKeyword()),
-                tradeStatus(TradeStatus.from(params.getTradeStatus()))
+                tradeStatus(TradeStatus.from(params.getTradeStatus())),
+                tradeType(TradeType.from(params.getTradeType()))
             )
             .orderBy(order(params.getSort()))
             .limit(params.getLimit() + 1)
             .fetch();
 
+        int totalCount = query.selectFrom(post)
+          .where(lastIdLt(params.getLastId()),
+            categoryEq(params.getCategory()),
+            priceBetween(params.getMinPrice(), params.getMaxPrice()),
+            sellerEq(seller),
+            keywordContains(params.getSearchKeyword()),
+            tradeStatus(TradeStatus.from(params.getTradeStatus())),
+            tradeType(TradeType.from(params.getTradeType()))
+          )
+          .fetch()
+          .size();
+
         if (posts.size() > params.getLimit()) {
             posts.remove(params.getLimit());
             return PostSummaries.builder()
+                .totalCount(totalCount)
                 .posts(posts.stream()
                     .map(post -> {
                         int likeCount = likeRepository.countByPost(post);
@@ -69,6 +83,7 @@ public class PostQueryRepository {
         }
 
         return PostSummaries.builder()
+            .totalCount(totalCount)
             .posts(posts.stream()
                 .map(post -> {
                     int likeCount = likeRepository.countByPost(post);
@@ -131,6 +146,10 @@ public class PostQueryRepository {
 
     private BooleanExpression tradeStatus(TradeStatus tradeStatus) {
         return tradeStatus != TradeStatus.UNKNOWN ? post.tradeStatus.eq(tradeStatus) : null;
+    }
+
+    private BooleanExpression tradeType(TradeType tradeType) {
+        return post.tradeType.eq(tradeType).or(post.tradeType.eq(TradeType.ALL));
     }
 
     private BooleanExpression priceLoe(Integer maxPrice) {

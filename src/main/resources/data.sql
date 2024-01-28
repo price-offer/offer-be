@@ -106,6 +106,9 @@ values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'h
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'FACE_TO_FACE', 'SELLING');
 
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'ALL', 'SELLING');
+
 --  25
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '123123', '234', 'NEW', null, '12312234', 'FACE_TO_FACE', 'SELLING');
