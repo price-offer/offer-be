@@ -12,6 +12,8 @@ public interface MsgRepository extends JpaRepository<Msg, Long> {
 
     Slice<Msg> findSliceByRoomIdOrderByCreatedAtAsc(PageRequest pageRequest, Long roomId);
 
+    List<Msg> findAllByRoomId(Long roomId);
+
     List<Msg> findAllByRoomAndSenderId(MsgRoom room, Long sellerId);
 
     Msg findFirstByRoomOrderByCreatedAtDesc(MsgRoom msgRoom);

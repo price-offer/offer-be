@@ -73,7 +73,8 @@ public class MsgRoomService {
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
-                int notReadCnt = 3;
+
+                int notReadCnt = getNotReadCnt(memberId, msgRoom);
 
                 MsgRoomInfoResponse tmpResponse = MsgRoomInfoResponse
                     .from(msgRoom, partner, lastContent, offerPrice, lastSendTime, post, notReadCnt);
@@ -90,7 +91,8 @@ public class MsgRoomService {
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
-                int notReadCnt = 2;
+
+                int notReadCnt = getNotReadCnt(memberId, msgRoom);
 
                 MsgRoomInfoResponse tmpResponse = MsgRoomInfoResponse
                     .from(msgRoom, partner, lastContent, offerPrice, lastSendTime, post, notReadCnt);
@@ -109,7 +111,8 @@ public class MsgRoomService {
                 int offerPrice = (msgRoom.getOffer() == null) ? -1 : msgRoom.getOffer().getPrice();
                 LocalDateTime lastSendTime = LocalDateTime.now();
                 Post post = msgRoom.getOffer().getPost();
-                int notReadCnt = 3;
+
+                int notReadCnt = getNotReadCnt(memberId, msgRoom);
 
                 MsgRoomInfoResponse tmpResponse = MsgRoomInfoResponse
                     .from(msgRoom, partner, lastContent, offerPrice, lastSendTime, post, notReadCnt);
@@ -138,6 +141,14 @@ public class MsgRoomService {
         }
 
         return response;
+    }
+
+    private int getNotReadCnt(Long memberId, MsgRoom msgRoom) {
+        List<Msg> messages = msgRepository.findAllByRoomId(msgRoom.getId());
+        int notReadCnt = (int) messages.stream()
+          .filter(m -> !m.getSenderId().equals(memberId) && !m.isRead())
+          .count();
+        return notReadCnt;
     }
 
     @Transactional(readOnly = true)

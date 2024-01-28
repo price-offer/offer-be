@@ -13,6 +13,7 @@ import com.offer.msg.domain.MsgRoom;
 import com.offer.msg.domain.MsgRoomRepository;
 import com.offer.utils.SliceUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MsgService {
     private final MsgRoomRepository msgRoomRepository;
     private final MsgRepository msgRepository;
@@ -41,7 +43,7 @@ public class MsgService {
         return CommonCreationResponse.of(msg.getId(), msg.getCreatedAt());
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<MsgInfoResponse> getMsgs(int page, Long msgRoomId, Long loginMemberId) {
         PageRequest pageRequest = PageRequest.of(SliceUtils.getSliceNumber(page), Properties.DEFAULT_SLICE_SIZE);
 
@@ -51,7 +53,7 @@ public class MsgService {
                 .filter(m -> !m.getSenderId().equals(loginMemberId) && !m.isRead())
                 .forEach(m -> {
                     m.markRead();
-                    msgRepository.save(m);
+                    log.info("message read id = {}", m);
                 });
 
         return msgs.stream()

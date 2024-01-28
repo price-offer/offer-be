@@ -70,15 +70,13 @@ public class PostController {
 
     @Operation(summary = "게시글 삭제", security = {@SecurityRequirement(name = "jwt")})
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<ApiResponse<Map<String, Long>>> updatePost(
+    public ResponseEntity<ApiResponse> updatePost(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long postId) {
 
-        Long deletePostId = postService.deletePost(postId, loginMember.getId());
-        Map<String, Long> result = new HashMap<>();
-        result.put("postId", deletePostId);
+        postService.deletePost(postId, loginMember.getId());
         return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, result)
+            ApiResponse.of(ResponseMessage.SUCCESS, null)
         );
     }
 

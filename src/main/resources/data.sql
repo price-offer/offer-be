@@ -146,6 +146,7 @@ insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(),
 insert into msg_room(created_at, offer_id, offerer_id, seller_id) values (now(), 6, 3, 4);
 
 insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 1, 1, '판매자로부터의 첫 메시지입니다.');
+insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 1, 3, '제안자로부터 첫 메시지입니다.');
 insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 2, 4, '팔아요~');
 insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 2, 4, '이거 사세요');
 insert into msg(is_read, created_at, room_id, sender_id, content) values (false, now(), 2, 4, '사시라구요');

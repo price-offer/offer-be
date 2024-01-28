@@ -71,15 +71,13 @@ public class MsgController {
 
     @Operation(summary = "쪽지 room 삭제", security = {@SecurityRequirement(name = "jwt")})
     @DeleteMapping("/api/msgrooms/{roomId}")
-    public ResponseEntity<ApiResponse<Map<String, Long>>> deleteMsgRooms(
+    public ResponseEntity<ApiResponse> deleteMsgRooms(
         @Schema(hidden = true) @AuthenticationPrincipal LoginMember loginMember,
         @PathVariable Long roomId) {
 
-        Long deleteMsgRoomId = msgRoomService.deleteMsgRoom(roomId, loginMember.getId());
-        Map<String, Long> result = new HashMap<>();
-        result.put("msgRoomId", deleteMsgRoomId);
+        msgRoomService.deleteMsgRoom(roomId, loginMember.getId());
         return ResponseEntity.ok(
-            ApiResponse.of(ResponseMessage.SUCCESS, result)
+            ApiResponse.of(ResponseMessage.SUCCESS, null)
         );
     }
 
