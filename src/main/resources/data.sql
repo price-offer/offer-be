@@ -106,10 +106,10 @@ values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'h
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'FACE_TO_FACE', 'SELLING');
 
+--  25
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '2345234', '123123124', 'NEW', 'https://offer-be.kro.kr/images/56ce3d34-3611-49c5-bd16-1e69c59ad849.jpeg', '가나다라마', 'ALL', 'SELLING');
 
---  25
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'WOMEN_FASHION', '123123', '234', 'NEW', null, '12312234', 'FACE_TO_FACE', 'SELLING');
 
@@ -121,6 +121,27 @@ values (234, now(), now(), 4, 'MEN_FASHION', '23423423', '123123124', 'NEW', 'ht
 
 insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
 values (234, now(), now(), 4, 'MEN_FASHION', '우리집', '우릴집', 'NEW', 'https://offer-be.kro.kr/images/8f6e0d08-7e5a-4cd8-b26c-9bb4ea421520.jpeg', '사장님이 미쳤어요', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12000, now(), now(), 4, 'WOMEN_FASHION', '판매합니다.', '동작 사당', 'NEW', 'https://offer-be.kro.kr/images/7076ff3d-8a02-41c5-b1ce-a025ffcb096b.jpeg', '인형 판매', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12000, now(), now(), 4, 'MEN_FASHION', '팔아요.', '동작 사당', 'NEW', 'https://offer-be.kro.kr/images/2fea266c-b1aa-4061-b0b4-c64d11fdc3f7.jpeg', '인형 판매', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12000, now(), now(), 4, 'MEN_FASHION', 'ㅍㅍ.', '123', 'NEW', 'https://offer-be.kro.kr/images/cbc774a7-2d8d-417b-91c2-d37c1ead32d3.jpeg', '판매합니다.', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12000, now(), now(), 4, 'MEN_FASHION', 'ㅍㅍ.', '123', 'NEW', 'https://offer-be.kro.kr/images/3a72a0f5-5cdf-42fd-9948-bcd5ba6dcd40.jpeg', '판매합니다.', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12900, now(), now(), 4, 'WOMEN_FASHION', '팔아 !!', '사당', 'NEW', 'https://offer-be.kro.kr/images/26f36fef-0d20-42e7-b6eb-e23aaff8bd88.jpeg', '팔까말까.', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (12000, now(), now(), 4, 'TOY', '팔아줍니다', '사당시', 'NEW', 'https://offer-be.kro.kr/images/aefffecb-7eb8-484c-943e-fbea73baea3f.jpeg', '포차코 다지털 굿즈.', 'FACE_TO_FACE', 'SELLING');
+
+insert into post(price, created_at, modified_at, seller_id, category, description, location, product_condition, thumbnail_image_url, title, trade_type, trade_status)
+values (123, now(), now(), 4, 'MEN_FASHION', '123', '123', 'NEW', 'https://offer-be.kro.kr/images/9f32b54c-041a-493d-825b-599cd5a55fdf.jpeg', '팔아보댜', 'FACE_TO_FACE', 'SELLING');
 
 insert into post_image(post_id, url) values (27, 'https://offer-be.kro.kr/images/252b35b5-ec17-46c1-897e-c582e21f053a.jpeg');
 insert into post_image(post_id, url) values (27, 'https://offer-be.kro.kr/images/c356b06d-c456-4be1-bf3e-0b46efa5016a.jpeg');

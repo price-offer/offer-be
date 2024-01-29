@@ -149,7 +149,8 @@ public class PostQueryRepository {
     }
 
     private BooleanExpression tradeType(TradeType tradeType) {
-        return post.tradeType.eq(tradeType).or(post.tradeType.eq(TradeType.ALL));
+        return tradeType == TradeType.UNKNOWN ? null :
+          post.tradeType.eq(tradeType).or(post.tradeType.eq(TradeType.ALL));
     }
 
     private BooleanExpression priceLoe(Integer maxPrice) {

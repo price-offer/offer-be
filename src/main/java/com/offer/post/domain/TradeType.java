@@ -9,7 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 public enum TradeType {
     FACE_TO_FACE("직거래"),
     SHIPPING("택배거래"),
-    ALL("직거래/택배거래");
+    ALL("직거래/택배거래"),
+    UNKNOWN("");
 
     private final String description;
 
@@ -23,7 +24,7 @@ public enum TradeType {
             .findFirst()
             .orElseGet(() -> {
                 log.warn("잘못된 TradeType = {}", name);
-                return ALL;
+                return UNKNOWN;
             });
     }
 }
